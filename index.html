@@ -1,1 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Phonics App</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- HOME SCREEN -->
+  <section id="home" class="screen screen--pink">
+    <div class="spacer"></div>
+    <div class="icon">🎥</div>
+    <button class="pill" id="btn-single">Learn single letter sounds</button>
+
+    <p class="hint">Then practise with these</p>
+    <button class="pill" id="btn-practise">Practise single letter sounds</button>
+
+    <div class="spacer"></div>
+    <div class="divider"></div>
+
+    <div class="icon">🎥</div>
+    <button class="pill pill--orange" id="btn-two">Practise blending two letter words</button>
+
+    <div class="spacer"></div>
+  </section>
+
+  <!-- LETTER SCREEN -->
+  <section id="letters" class="screen">
+    <header class="topbar">
+      <button id="back" class="back">←</button>
+      <h1>Single Letter Sounds</h1>
+      <div style="width:2rem"></div>
+    </header>
+
+    <main id="letterArea" class="letter-area" tabindex="0" aria-label="Letter area">
+      <div id="bigLetter" class="big-letter">S</div>
+      <div class="tap-hint">👉 Tap or swipe</div>
+    </main>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
 
