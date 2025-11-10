@@ -5,25 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Phonics App</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* minimal styling if you didn’t load styles.css */
+    body { font-family: system-ui, sans-serif; margin: 0; text-align: center; }
+    .screen { display: none; min-height: 100vh; }
+    .screen--pink { display: flex; flex-direction: column; justify-content: center; align-items: center; background:#ffe4e1; }
+    .pill { background:#ff4b3a; color:#fff; border:none; border-radius:999px; padding:1rem 2rem; font-size:1.2rem; margin:0.6rem; cursor:pointer; }
+    .pill--orange{background:#ff9800}
+    .topbar { display:flex; align-items:center; justify-content:space-between; padding:0.8rem 1rem; background:#ff4b3a; color:#fff;}
+    .back{background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer}
+    .big-letter { font-size:35vh; margin:2rem 0 1rem 0; user-select:none; }
+    .tap-hint { color:#ff4b3a; font-weight:600; margin-top:1rem; }
+    .nav-buttons button { margin:0.4rem; font-size:1.1rem; padding:0.6rem 1rem; border-radius:8px; border:none; background:#ff4b3a; color:white; cursor:pointer; }
+    .nav-buttons button:hover{opacity:0.9}
+  </style>
 </head>
 <body>
 
   <!-- HOME SCREEN -->
   <section id="home" class="screen screen--pink">
-    <div class="spacer"></div>
-    <div class="icon">🎥</div>
-    <button class="pill" id="btn-single">Learn single letter sounds</button>
-
-    <p class="hint">Then practise with these</p>
+    <h2>🎥 Learn single letter sounds</h2>
+    <button class="pill" id="btn-single">Start Learning</button>
+    <p>Then practise with these</p>
     <button class="pill" id="btn-practise">Practise single letter sounds</button>
-
-    <div class="spacer"></div>
-    <div class="divider"></div>
-
-    <div class="icon">🎥</div>
-    <button class="pill pill--orange" id="btn-two">Practise blending two letter words</button>
-
-    <div class="spacer"></div>
+    <button class="pill pill--orange" id="btn-two">Practise blending two-letter words</button>
   </section>
 
   <!-- LETTER SCREEN -->
@@ -35,12 +40,15 @@
     </header>
 
     <main id="letterArea" class="letter-area" tabindex="0" aria-label="Letter area">
-      <div id="bigLetter" class="big-letter">S</div>
+      <div id="bigLetter" class="big-letter">A</div>
       <div class="tap-hint">👉 Tap or swipe</div>
+      <div class="nav-buttons">
+        <button id="prevBtn">◀ Prev</button>
+        <button id="nextBtn">Next ▶</button>
+      </div>
     </main>
   </section>
 
   <script src="app.js"></script>
 </body>
 </html>
-
