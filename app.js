@@ -1,5 +1,8 @@
-// Letter order (you can extend this)
-const LETTERS = ['s','a','t','p','i','n','m','d','g','o','c','k','e','u','r','h','b','f','l'];
+// Show A–Z in order
+const LETTERS = [
+  'a','b','c','d','e','f','g','h','i','j','k','l','m',
+  'n','o','p','q','r','s','t','u','v','w','x','y','z'
+];
 
 const screens = {
   home: document.getElementById('home'),
@@ -80,3 +83,4 @@ function prev() {
 
 // start on home
 show('home');
+
