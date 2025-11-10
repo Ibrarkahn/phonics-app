@@ -1,248 +1,141 @@
-// ------------------ LETTER SETS ------------------
-const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'.split('');
-
-// Phase 2 sets used for general letter practice (Week 1 still letters; Week 2 has special page)
-const PHASE_SETS = {
-  phase1: ['s','a','t','p'],            // Autumn 1 – Week 1
-  phase4: ['ck','e','u','r'],           // still available under general practice if needed
-  phase5: ['h','b','f','l'],
-  phase6: ['f','ff','s','ss','l','ll','v','vv'] // Autumn 2 – Week 1 (letters list; we’ll also do blending)
-};
-
-// Week 2 specifics
-const WEEK2_LETTERS = ['i','n','m','d'];
-const WEEK2_WORDS   = ['sit','nap','man','dip','pat','sad','nip','mat'];
-
-// NEW: Sequential blending lists
-const BLEND_W3  = ['man','tap','dog','kit','cap','dig','kid','cog'];
-const BLEND_W4  = ['mum','duck','pet','pick','set','red','sock','run'];
-const BLEND_W5  = ['hug','big','fat','luck','bed','muck','kid','rub'];
-const BLEND_A2W1= ['huff','off','puff','bell','hill','tell','mess','hiss','fuss','jug','jam','jet'];
-
-let CURRENT_SET = [];   // active set for general letter practice screen
-let idx = 0;
-
-let audio;              // shared audio handle
-
-// DOM (screens)
-const screens = {
-  home:     document.getElementById('home'),
-  letters:  document.getElementById('letters'),
-  week2:    document.getElementById('week2'),
-  blendSeq: document.getElementById('blendSeq')
-};
-
-function shuffle(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
-function show(name) {
-  screens.home.style.display     = name === 'home'     ? 'flex'  : 'none';
-  screens.letters.style.display  = name === 'letters'  ? 'block' : 'none';
-  screens.week2.style.display    = name === 'week2'    ? 'block' : 'none';
-  screens.blendSeq.style.display = name === 'blendSeq' ? 'block' : 'none';
-}
-
-/* ------------ General letters screen logic ------------ */
-const bigLetter  = document.getElementById('bigLetter');
-const letterArea = document.getElementById('letterArea');
-
-function startPractice(lettersArray) {
-  CURRENT_SET = shuffle(lettersArray.slice());
-  idx = 0;
-  show('letters');
-  render();
-  setTimeout(() => letterArea.focus(), 50);
-}
-
-function render() {
-  const letter = CURRENT_SET[idx].toUpperCase();
-  bigLetter.textContent = letter;
-}
-
-function playSoundFor(letter) {
-  if (audio && !audio.paused) audio.pause();
-  audio = new Audio(`sounds/${letter}.mp3`);
-  audio.currentTime = 0;
-  audio.play().catch(() => console.warn(`Missing sound for ${letter}.mp3`));
-}
-
-function playSoundCurrent() { playSoundFor(CURRENT_SET[idx]); }
-
-function next() {
-  idx++;
-  if (idx >= CURRENT_SET.length) {
-    CURRENT_SET = shuffle(CURRENT_SET.slice());
-    idx = 0;
-  }
-  render(); playSoundCurrent();
-}
-
-function prev() {
-  idx = (idx - 1 + CURRENT_SET.length) % CURRENT_SET.length;
-  render(); playSoundCurrent();
-}
-
-/* ------------ Week 2 combined page (letters) ------------ */
-const bigLetterW2  = document.getElementById('bigLetterW2');
-const letterAreaW2 = document.getElementById('letterAreaW2');
-
-let w2Set = shuffle(WEEK2_LETTERS.slice());
-let w2Idx = 0;
-
-function renderW2() { bigLetterW2.textContent = w2Set[w2Idx].toUpperCase(); }
-function nextW2()   { w2Idx++; if (w2Idx>=w2Set.length){ w2Set=shuffle(w2Set.slice()); w2Idx=0; } renderW2(); playSoundFor(w2Set[w2Idx]); }
-function prevW2()   { w2Idx = (w2Idx-1+w2Set.length)%w2Set.length; renderW2(); playSoundFor(w2Set[w2Idx]); }
-
-/* ------------ Week 2 blending (grid) ------------ */
-function playBlend(word) {
-  const letters = word.split('');
-  let i = 0;
-  function playNext() {
-    if (i < letters.length) {
-      const a = new Audio(`sounds/${letters[i]}.mp3`);
-      a.play().catch(()=>{});
-      a.onended = () => { i++; playNext(); };
-    } else {
-      const w = new Audio(`sounds/${word}.mp3`);
-      w.play().catch(()=>{});
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Phonics App</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; text-align: center; }
+    .screen { display: none; min-height: 100vh; }
+    .screen--pink {
+      display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+      background:#ffe7e3; padding:2rem 1rem;
     }
-  }
-  playNext();
-}
+    h1{margin:.5rem 0 1rem 0}
+    .pill{
+      background:#ff4b3a;color:#fff;border:none;border-radius:999px;
+      padding:1rem 2rem;font-size:1.15rem;margin:.5rem 0;cursor:pointer;
+      width:min(92%,700px); box-shadow:0 6px 16px rgba(0,0,0,.12);
+    }
+    .pill--gold{background:#ff9f1a}
+    .group-title{margin:1.2rem 0 .4rem 0; font-weight:700}
 
-function attachBlendButtonsWeek2() {
-  document.querySelectorAll('#paneBlendW2 .blend-btn').forEach(btn => {
-    btn.addEventListener('click', () => playBlend(btn.dataset.word));
-  });
-}
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1rem;background:#ff4b3a;color:#fff}
+    .back{background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer}
 
-/* ------------ Sequential blending screen (Weeks 3/4/5/A2W1) ------------ */
-const blendSeqTitle = document.getElementById('blendSeqTitle');
-const blendSeqArea  = document.getElementById('blendSeqArea');
-const bigWord       = document.getElementById('bigWord');
+    .big-letter{font-size:35vh;margin:2rem 0 1rem;user-select:none}
+    .big-word{font-size:10vh;margin:2rem 0 1rem;user-select:none}
+    .tap-hint{color:#ff4b3a;font-weight:600;margin-top:.5rem}
+    .nav-buttons button{margin:.4rem;font-size:1.1rem;padding:.6rem 1rem;border-radius:8px;border:none;background:#ff4b3a;color:white;cursor:pointer}
 
-let CURRENT_WORDS = [];
-let wIdx = 0;
+    /* Week 2 tabs */
+    .tabs{display:flex; justify-content:center; gap:8px; padding:12px}
+    .tab{border:none; padding:.6rem 1rem; border-radius:999px; background:#ffd7c7; cursor:pointer; font-weight:600}
+    .tab.active{background:#ff9f1a}
+    .pane{display:none}
+    .pane.active{display:block}
 
-function startBlending(words, titleText) {
-  CURRENT_WORDS = shuffle(words.slice());
-  wIdx = 0;
-  bigWord.textContent = CURRENT_WORDS[wIdx];
-  blendSeqTitle.textContent = titleText || 'Blending Practice';
-  show('blendSeq');
-  setTimeout(()=>blendSeqArea.focus(), 50);
-}
+    /* Week 2 blending word buttons (grid) */
+    .words { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:12px; padding:16px; max-width:900px; margin:0 auto; }
+    .word-btn{
+      font-size:1.4rem; padding:.9rem 1.1rem; border:none; border-radius:14px;
+      background:#ff9f1a; color:#111; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,.12);
+    }
+  </style>
+</head>
+<body>
 
-function playCurrentWordBlend() { playBlend(CURRENT_WORDS[wIdx]); }
+  <!-- HOME SCREEN -->
+  <section id="home" class="screen screen--pink">
+    <h1>Choose a set to practise</h1>
 
-function nextWord() {
-  wIdx++;
-  if (wIdx >= CURRENT_WORDS.length) {
-    CURRENT_WORDS = shuffle(CURRENT_WORDS.slice());
-    wIdx = 0;
-  }
-  bigWord.textContent = CURRENT_WORDS[wIdx];
-  playCurrentWordBlend();
-}
+    <button class="pill" id="btn-practise">Practise single letter sounds</button>
 
-function prevWord() {
-  wIdx = (wIdx - 1 + CURRENT_WORDS.length) % CURRENT_WORDS.length;
-  bigWord.textContent = CURRENT_WORDS[wIdx];
-  playCurrentWordBlend();
-}
+    <div class="group-title">Phase 2</div>
+    <button class="pill pill--gold" id="btn-phase-1">Autumn 1 – Week 1</button>
+    <button class="pill pill--gold" id="btn-phase-2">Autumn 1 – Week 2</button> <!-- Combined page -->
+    <button class="pill pill--gold" id="btn-phase-3">Autumn 1 – Week 3</button> <!-- Sequential blending -->
+    <button class="pill pill--gold" id="btn-phase-4">Autumn 1 – Week 4</button> <!-- Sequential blending -->
+    <button class="pill pill--gold" id="btn-phase-5">Autumn 1 – Week 5</button> <!-- Sequential blending -->
+    <button class="pill pill--gold" id="btn-phase-6">Autumn 2 – Week 1</button> <!-- Sequential blending -->
+  </section>
 
-/* ------------ Listeners ------------ */
-// Home
-document.getElementById('btn-practise').addEventListener('click', () => startPractice(ALPHABET));
-document.getElementById('btn-phase-1').addEventListener('click', () => startPractice(PHASE_SETS.phase1));
-document.getElementById('btn-phase-2').addEventListener('click', () => { show('week2'); activateWeek2Tab('letters'); renderW2(); });
-document.getElementById('btn-phase-3').addEventListener('click', () => startBlending(BLEND_W3, 'Autumn 1 – Week 3'));
-document.getElementById('btn-phase-4').addEventListener('click', () => startBlending(BLEND_W4, 'Autumn 1 – Week 4'));
-document.getElementById('btn-phase-5').addEventListener('click', () => startBlending(BLEND_W5, 'Autumn 1 – Week 5'));
-document.getElementById('btn-phase-6').addEventListener('click', () => startBlending(BLEND_A2W1, 'Autumn 2 – Week 1'));
+  <!-- GENERAL LETTER PRACTICE -->
+  <section id="letters" class="screen">
+    <header class="topbar">
+      <button id="backLetters" class="back">←</button>
+      <h1>Single Letter Sounds</h1>
+      <div style="width:2rem"></div>
+    </header>
+    <main id="letterArea" class="letter-area" tabindex="0" aria-label="Letter area">
+      <div id="bigLetter" class="big-letter">A</div>
+      <div class="nav-buttons">
+        <button id="prevBtn">◀ Prev</button>
+        <button id="nextBtn">Next ▶</button>
+      </div>
+      <div class="tap-hint">👉 Tap or swipe</div>
+    </main>
+  </section>
 
-// Back
-document.getElementById('backLetters').addEventListener('click', () => show('home'));
-document.getElementById('backWeek2').addEventListener('click', () => show('home'));
-document.getElementById('backBlendSeq').addEventListener('click', () => show('home'));
+  <!-- WEEK 2 COMBINED: LETTERS + BLENDING GRID -->
+  <section id="week2" class="screen">
+    <header class="topbar">
+      <button id="backWeek2" class="back">←</button>
+      <h1>Autumn 1 – Week 2</h1>
+      <div style="width:2rem"></div>
+    </header>
 
-// General letters controls
-document.getElementById('prevBtn').addEventListener('click', prev);
-document.getElementById('nextBtn').addEventListener('click', next);
+    <div class="tabs">
+      <button id="tabLettersW2" class="tab active">Letters (i, n, m, d)</button>
+      <button id="tabBlendW2" class="tab">Blending words</button>
+    </div>
 
-letterArea.addEventListener('click', () => { playSoundCurrent(); next(); });
-letterArea.addEventListener('keydown', (e) => {
-  if (e.key === ' ' || e.key === 'Enter') { playSoundCurrent(); next(); }
-  if (e.key === 'ArrowRight') next();
-  if (e.key === 'ArrowLeft')  prev();
-});
-let touchStartX = 0;
-letterArea.addEventListener('touchstart', (e)=>{ touchStartX = e.changedTouches[0].clientX; }, {passive:true});
-letterArea.addEventListener('touchend',   (e)=>{
-  const dx = e.changedTouches[0].clientX - touchStartX;
-  if (Math.abs(dx) > 40) { if (dx < 0) next(); else prev(); }
-  else { playSoundCurrent(); next(); }
-},{passive:true});
+    <!-- Pane: Week 2 letters -->
+    <div id="paneLettersW2" class="pane active">
+      <main id="letterAreaW2" class="letter-area" tabindex="0" aria-label="Week 2 letter area">
+        <div id="bigLetterW2" class="big-letter">I</div>
+        <div class="nav-buttons">
+          <button id="prevBtnW2">◀ Prev</button>
+          <button id="nextBtnW2">Next ▶</button>
+        </div>
+        <div class="tap-hint">👉 Tap or swipe</div>
+      </main>
+    </div>
 
-// Week 2 letters controls
-document.getElementById('prevBtnW2').addEventListener('click', prevW2);
-document.getElementById('nextBtnW2').addEventListener('click', nextW2);
-letterAreaW2.addEventListener('click', () => { playSoundFor(w2Set[w2Idx]); nextW2(); });
-letterAreaW2.addEventListener('keydown', (e) => {
-  if (e.key === ' ' || e.key === 'Enter') { playSoundFor(w2Set[w2Idx]); nextW2(); }
-  if (e.key === 'ArrowRight') nextW2();
-  if (e.key === 'ArrowLeft')  prevW2();
-});
-let w2TouchStartX = 0;
-letterAreaW2.addEventListener('touchstart', (e)=>{ w2TouchStartX = e.changedTouches[0].clientX; }, {passive:true});
-letterAreaW2.addEventListener('touchend',   (e)=>{
-  const dx = e.changedTouches[0].clientX - w2TouchStartX;
-  if (Math.abs(dx) > 40) { if (dx < 0) nextW2(); else prevW2(); }
-  else { playSoundFor(w2Set[w2Idx]); nextW2(); }
-},{passive:true});
+    <!-- Pane: Week 2 blending (grid) -->
+    <div id="paneBlendW2" class="pane">
+      <div class="words">
+        <button class="word-btn blend-btn" data-word="sit">sit</button>
+        <button class="word-btn blend-btn" data-word="nap">nap</button>
+        <button class="word-btn blend-btn" data-word="man">man</button>
+        <button class="word-btn blend-btn" data-word="dip">dip</button>
+        <button class="word-btn blend-btn" data-word="pat">pat</button>
+        <button class="word-btn blend-btn" data-word="sad">sad</button>
+        <button class="word-btn blend-btn" data-word="nip">nip</button>
+        <button class="word-btn blend-btn" data-word="mat">mat</button>
+      </div>
+      <p class="tap-hint">Tap a word to hear the sounds blend</p>
+    </div>
+  </section>
 
-// Week 2 tabs
-function activateWeek2Tab(which) {
-  const tabLetters = document.getElementById('tabLettersW2');
-  const tabBlend   = document.getElementById('tabBlendW2');
-  const paneLetters= document.getElementById('paneLettersW2');
-  const paneBlend  = document.getElementById('paneBlendW2');
-  if (which === 'letters') {
-    tabLetters.classList.add('active'); tabBlend.classList.remove('active');
-    paneLetters.classList.add('active'); paneBlend.classList.remove('active');
-    setTimeout(()=>letterAreaW2.focus(), 50);
-  } else {
-    tabBlend.classList.add('active'); tabLetters.classList.remove('active');
-    paneBlend.classList.add('active'); paneLetters.classList.remove('active');
-  }
-}
-document.getElementById('tabLettersW2').addEventListener('click', ()=> activateWeek2Tab('letters'));
-document.getElementById('tabBlendW2').addEventListener('click',   ()=> activateWeek2Tab('blend'));
+  <!-- SEQUENTIAL BLENDING SCREEN (Weeks 3/4/5 + Autumn 2 Week 1) -->
+  <section id="blendSeq" class="screen">
+    <header class="topbar">
+      <button id="backBlendSeq" class="back">←</button>
+      <h1 id="blendSeqTitle">Blending Practice</h1>
+      <div style="width:2rem"></div>
+    </header>
+    <main id="blendSeqArea" class="letter-area" tabindex="0" aria-label="Blending word area">
+      <div id="bigWord" class="big-word">man</div>
+      <div class="nav-buttons">
+        <button id="prevWordBtn">◀ Prev</button>
+        <button id="nextWordBtn">Next ▶</button>
+      </div>
+      <div class="tap-hint">👉 Tap word or swipe</div>
+    </main>
+  </section>
 
-// Week 2 blending buttons (grid)
-attachBlendButtonsWeek2();
-
-// Sequential blending controls
-document.getElementById('prevWordBtn').addEventListener('click', prevWord);
-document.getElementById('nextWordBtn').addEventListener('click', nextWord);
-blendSeqArea.addEventListener('click', () => { playCurrentWordBlend(); nextWord(); });
-let wordTouchStartX = 0;
-blendSeqArea.addEventListener('touchstart', (e)=>{ wordTouchStartX = e.changedTouches[0].clientX; }, {passive:true});
-blendSeqArea.addEventListener('touchend',   (e)=>{
-  const dx = e.changedTouches[0].clientX - wordTouchStartX;
-  if (Math.abs(dx) > 40) { if (dx < 0) nextWord(); else prevWord(); }
-  else { playCurrentWordBlend(); nextWord(); }
-},{passive:true});
-blendSeqArea.addEventListener('keydown', (e)=>{
-  if (e.key === ' ' || e.key === 'Enter') { playCurrentWordBlend(); nextWord(); }
-  if (e.key === 'ArrowRight') nextWord();
-  if (e.key === 'ArrowLeft')  prevWord();
-});
-
-// Init
-show('home');
+  <script src="app.js"></script>
+</body>
+</html>
