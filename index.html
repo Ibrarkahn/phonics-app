@@ -26,8 +26,8 @@
     .nav-buttons button{margin:.45rem;font-size:1.1rem;padding:.65rem 1.15rem;border-radius:12px;border:none;background:var(--primary);color:white;cursor:pointer}
     .tap-hint{color:var(--primary);font-weight:600;margin-top:.5rem}
 
-    /* Week 2 tabs */
-    .tabs{display:flex; justify-content:center; gap:12px; padding:12px}
+    /* Tabs */
+    .tabs{display:flex; justify-content:center; gap:12px; padding:16px}
     .tab{border:none; padding:.6rem 1rem; border-radius:999px; background:var(--pill); cursor:pointer; font-weight:700}
     .tab.active{background:var(--gold)}
     .pane{display:none}
@@ -68,7 +68,7 @@
     </main>
   </section>
 
-  <!-- WEEK 2: LETTERS + SINGLE-WORD BLENDING -->
+  <!-- WEEK 2: Letters + single-word blending -->
   <section id="week2" class="screen">
     <header class="topbar">
       <button id="backWeek2" class="back">←</button>
@@ -81,7 +81,6 @@
       <button id="tabBlendW2" class="tab">Blending words</button>
     </div>
 
-    <!-- Pane: Week 2 letters -->
     <div id="paneLettersW2" class="pane active">
       <main id="letterAreaW2" class="letter-area" tabindex="0" aria-label="Week 2 letter area">
         <div id="bigLetterW2" class="big-letter">I</div>
@@ -93,7 +92,6 @@
       </main>
     </div>
 
-    <!-- Pane: Week 2 blending (ONE WORD AT A TIME) -->
     <div id="paneBlendW2" class="pane">
       <main id="blendSeqAreaW2" class="letter-area" tabindex="0" aria-label="Week 2 blending word area">
         <div id="bigWordW2" class="big-word">sit</div>
@@ -106,7 +104,43 @@
     </div>
   </section>
 
-  <!-- SEQUENTIAL BLENDING: Weeks 3/4/5 + A2W1 -->
+  <!-- WEEK 3: Letters + single-word blending -->
+  <section id="week3" class="screen">
+    <header class="topbar">
+      <button id="backWeek3" class="back">←</button>
+      <h1>Autumn 1 – Week 3</h1>
+      <div style="width:2rem"></div>
+    </header>
+
+    <div class="tabs">
+      <button id="tabLettersW3" class="tab active">Letters (g, o, c, k)</button>
+      <button id="tabBlendW3" class="tab">Blending words</button>
+    </div>
+
+    <div id="paneLettersW3" class="pane active">
+      <main id="letterAreaW3" class="letter-area" tabindex="0" aria-label="Week 3 letter area">
+        <div id="bigLetterW3" class="big-letter">G</div>
+        <div class="nav-buttons">
+          <button id="prevBtnW3">◀ Prev</button>
+          <button id="nextBtnW3">Next ▶</button>
+        </div>
+        <div class="tap-hint">👉 Tap or swipe</div>
+      </main>
+    </div>
+
+    <div id="paneBlendW3" class="pane">
+      <main id="blendSeqAreaW3" class="letter-area" tabindex="0" aria-label="Week 3 blending word area">
+        <div id="bigWordW3" class="big-word">man</div>
+        <div class="nav-buttons">
+          <button id="prevWordBtnW3">◀ Prev</button>
+          <button id="nextWordBtnW3">Next ▶</button>
+        </div>
+        <div class="tap-hint">👉 Tap word or swipe</div>
+      </main>
+    </div>
+  </section>
+
+  <!-- SEQUENTIAL BLENDING: Weeks 4/5 + A2W1 -->
   <section id="blendSeq" class="screen">
     <header class="topbar">
       <button id="backBlendSeq" class="back">←</button>
@@ -114,7 +148,7 @@
       <div style="width:2rem"></div>
     </header>
     <main id="blendSeqArea" class="letter-area" tabindex="0" aria-label="Blending word area">
-      <div id="bigWord" class="big-word">man</div>
+      <div id="bigWord" class="big-word">mum</div>
       <div class="nav-buttons">
         <button id="prevWordBtn">◀ Prev</button>
         <button id="nextWordBtn">Next ▶</button>
