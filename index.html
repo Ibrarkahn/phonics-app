@@ -20,11 +20,20 @@
     }
     .pill--gold{background:#ff9f1a}
     .group-title{margin:1.2rem 0 .4rem 0; font-weight:700}
+
     .topbar{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1rem;background:#ff4b3a;color:#fff}
     .back{background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer}
+
     .big-letter{font-size:35vh;margin:2rem 0 1rem;user-select:none}
     .tap-hint{color:#ff4b3a;font-weight:600;margin-top:.5rem}
     .nav-buttons button{margin:.4rem;font-size:1.1rem;padding:.6rem 1rem;border-radius:8px;border:none;background:#ff4b3a;color:white;cursor:pointer}
+
+    /* Blending word buttons */
+    .words { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:12px; padding:16px; max-width:900px; margin:0 auto; }
+    .word-btn{
+      font-size:1.4rem; padding:.9rem 1.1rem; border:none; border-radius:14px;
+      background:#ff9f1a; color:#111; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,.12);
+    }
   </style>
 </head>
 <body>
@@ -37,17 +46,17 @@
 
     <div class="group-title">Phase 2</div>
     <button class="pill pill--gold" id="btn-phase-1">Autumn 1 – Week 1</button>
-    <button class="pill pill--gold" id="btn-phase-2">Autumn 1 – Week 2</button>
+    <button class="pill pill--gold" id="btn-phase-2">Autumn 1 – Week 2</button>  <!-- Opens blending -->
     <button class="pill pill--gold" id="btn-phase-3">Autumn 1 – Week 3</button>
     <button class="pill pill--gold" id="btn-phase-4">Autumn 1 – Week 4</button>
     <button class="pill pill--gold" id="btn-phase-5">Autumn 1 – Week 5</button>
     <button class="pill pill--gold" id="btn-phase-6">Autumn 2 – Week 1</button>
   </section>
 
-  <!-- LETTER SCREEN -->
+  <!-- LETTER PRACTICE SCREEN -->
   <section id="letters" class="screen">
     <header class="topbar">
-      <button id="back" class="back">←</button>
+      <button id="backLetters" class="back">←</button>
       <h1>Single Letter Sounds</h1>
       <div style="width:2rem"></div>
     </header>
@@ -62,6 +71,29 @@
 
       <div class="tap-hint">👉 Tap or swipe</div>
     </main>
+  </section>
+
+  <!-- BLENDING PRACTICE (Autumn 1 – Week 2) -->
+  <section id="blending" class="screen">
+    <header class="topbar">
+      <button id="backBlend" class="back">←</button>
+      <h1>Blending – Autumn 1, Week 2</h1>
+      <div style="width:2rem"></div>
+    </header>
+
+    <div class="words">
+      <!-- The 8 words you asked for -->
+      <button class="word-btn blend-btn" data-word="sit">sit</button>
+      <button class="word-btn blend-btn" data-word="nap">nap</button>
+      <button class="word-btn blend-btn" data-word="man">man</button>
+      <button class="word-btn blend-btn" data-word="dip">dip</button>
+      <button class="word-btn blend-btn" data-word="pat">pat</button>
+      <button class="word-btn blend-btn" data-word="sad">sad</button>
+      <button class="word-btn blend-btn" data-word="nip">nip</button>
+      <button class="word-btn blend-btn" data-word="mat">mat</button>
+    </div>
+
+    <p class="tap-hint">Tap a word to hear the sounds blend</p>
   </section>
 
   <script src="app.js"></script>
