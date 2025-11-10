@@ -75,10 +75,18 @@ document.getElementById('nextBtn').addEventListener('click', next);
 
 // ------------------ EVENTS ------------------
 
-// Tap or key press
-letterArea.addEventListener('click', playSound);
+// Tap → play + next
+letterArea.addEventListener('click', () => {
+  playSound();
+  next();
+});
+
+// Keyboard arrows / space / enter
 letterArea.addEventListener('keydown', (e) => {
-  if (e.key === ' ' || e.key === 'Enter') playSound();
+  if (e.key === ' ' || e.key === 'Enter') {
+    playSound();
+    next();
+  }
   if (e.key === 'ArrowRight') next();
   if (e.key === 'ArrowLeft') prev();
 });
@@ -96,6 +104,7 @@ letterArea.addEventListener('touchend', (e) => {
     else prev();
   } else {
     playSound();
+    next();
   }
 }, { passive: true });
 
