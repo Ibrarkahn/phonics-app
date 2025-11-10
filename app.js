@@ -1,11 +1,14 @@
 // ------------------ SETS ------------------
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
-// Phase 2 sets (kept here; buttons just show week titles)
+// Phase 2 sets
 const PHASE_SETS = {
-  phase1: ['s','a','t','p'], // Autumn 1 – Week 1
-  phase2: ['i','n','m','d'], // Autumn 1 – Week 2
-  phase3: ['g','o','c','k']  // Autumn 1 – Week 3
+  phase1: ['s','a','t','p'],            // Autumn 1 – Week 1
+  phase2: ['i','n','m','d'],            // Autumn 1 – Week 2
+  phase3: ['g','o','c','k'],            // Autumn 1 – Week 3
+  phase4: ['ck','e','u','r'],           // Autumn 1 – Week 4
+  phase5: ['h','b','f','l'],            // Autumn 1 – Week 5
+  phase6: ['f','ff','s','ss','l','ll','v','vv'] // Autumn 2 – Week 1
 };
 
 let CURRENT_SET = [];   // active set while practising
@@ -79,6 +82,9 @@ document.getElementById('btn-practise').addEventListener('click', () => startPra
 document.getElementById('btn-phase-1').addEventListener('click', () => startPractice(PHASE_SETS.phase1));
 document.getElementById('btn-phase-2').addEventListener('click', () => startPractice(PHASE_SETS.phase2));
 document.getElementById('btn-phase-3').addEventListener('click', () => startPractice(PHASE_SETS.phase3));
+document.getElementById('btn-phase-4').addEventListener('click', () => startPractice(PHASE_SETS.phase4));
+document.getElementById('btn-phase-5').addEventListener('click', () => startPractice(PHASE_SETS.phase5));
+document.getElementById('btn-phase-6').addEventListener('click', () => startPractice(PHASE_SETS.phase6));
 
 // Letter-screen controls
 document.getElementById('prevBtn').addEventListener('click', prev);
