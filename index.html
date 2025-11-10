@@ -4,42 +4,39 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Phonics App</title>
-  <link rel="stylesheet" href="styles.css" />
   <style>
-    body { font-family: system-ui, sans-serif; margin: 0; text-align: center; }
+    :root { --primary:#ff4b3a; --gold:#ff9f1a; --pill:#ffd7c7; }
+    * { box-sizing:border-box; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; text-align: center; color:#111; }
     .screen { display: none; min-height: 100vh; }
-    .screen--pink {
-      display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
-      background:#ffe7e3; padding:2rem 1rem;
-    }
-    h1{margin:.5rem 0 1rem 0}
+    .screen--pink { display:flex; flex-direction:column; align-items:center; background:#ffe7e3; padding:2rem 1rem 4rem; }
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1rem;background:var(--primary);color:#fff}
+    .back{background:none;border:none;color:#fff;font-size:1.6rem;cursor:pointer}
+    h1{margin:.25rem 0 1rem 0; font-size:2rem}
     .pill{
-      background:#ff4b3a;color:#fff;border:none;border-radius:999px;
+      background:var(--primary);color:#fff;border:none;border-radius:999px;
       padding:1rem 2rem;font-size:1.15rem;margin:.5rem 0;cursor:pointer;
-      width:min(92%,700px); box-shadow:0 6px 16px rgba(0,0,0,.12);
+      width:min(92%,720px); box-shadow:0 6px 16px rgba(0,0,0,.12);
     }
-    .pill--gold{background:#ff9f1a}
+    .pill--gold{background:var(--gold)}
     .group-title{margin:1.2rem 0 .4rem 0; font-weight:700}
-
-    .topbar{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1rem;background:#ff4b3a;color:#fff}
-    .back{background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer}
-
-    .big-letter{font-size:35vh;margin:2rem 0 1rem;user-select:none}
-    .big-word{font-size:10vh;margin:2rem 0 1rem;user-select:none}
-    .tap-hint{color:#ff4b3a;font-weight:600;margin-top:.5rem}
-    .nav-buttons button{margin:.4rem;font-size:1.1rem;padding:.6rem 1rem;border-radius:8px;border:none;background:#ff4b3a;color:white;cursor:pointer}
+    .letter-area { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:65vh; padding:1rem; }
+    .big-letter{font-size:34vh; line-height:1; user-select:none}
+    .big-word{font-size:10vh; line-height:1.05; user-select:none}
+    .nav-buttons button{margin:.45rem;font-size:1.1rem;padding:.65rem 1.15rem;border-radius:12px;border:none;background:var(--primary);color:white;cursor:pointer}
+    .tap-hint{color:var(--primary);font-weight:600;margin-top:.5rem}
 
     /* Week 2 tabs */
-    .tabs{display:flex; justify-content:center; gap:12px; padding:16px}
-    .tab{border:none; padding:.6rem 1rem; border-radius:999px; background:#ffd7c7; cursor:pointer; font-weight:700}
-    .tab.active{background:#ff9f1a}
+    .tabs{display:flex; justify-content:center; gap:12px; padding:12px}
+    .tab{border:none; padding:.6rem 1rem; border-radius:999px; background:var(--pill); cursor:pointer; font-weight:700}
+    .tab.active{background:var(--gold)}
     .pane{display:none}
     .pane.active{display:block}
   </style>
 </head>
 <body>
 
-  <!-- HOME SCREEN -->
+  <!-- HOME -->
   <section id="home" class="screen screen--pink">
     <h1>Choose a set to practise</h1>
 
@@ -71,7 +68,7 @@
     </main>
   </section>
 
-  <!-- WEEK 2: Letters + single-word blending (sequential) -->
+  <!-- WEEK 2: LETTERS + SINGLE-WORD BLENDING -->
   <section id="week2" class="screen">
     <header class="topbar">
       <button id="backWeek2" class="back">←</button>
@@ -109,7 +106,7 @@
     </div>
   </section>
 
-  <!-- SEQUENTIAL BLENDING SCREEN (Weeks 3/4/5 + A2W1) -->
+  <!-- SEQUENTIAL BLENDING: Weeks 3/4/5 + A2W1 -->
   <section id="blendSeq" class="screen">
     <header class="topbar">
       <button id="backBlendSeq" class="back">←</button>
