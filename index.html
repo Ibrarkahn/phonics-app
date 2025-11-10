@@ -30,18 +30,11 @@
     .nav-buttons button{margin:.4rem;font-size:1.1rem;padding:.6rem 1rem;border-radius:8px;border:none;background:#ff4b3a;color:white;cursor:pointer}
 
     /* Week 2 tabs */
-    .tabs{display:flex; justify-content:center; gap:8px; padding:12px}
-    .tab{border:none; padding:.6rem 1rem; border-radius:999px; background:#ffd7c7; cursor:pointer; font-weight:600}
+    .tabs{display:flex; justify-content:center; gap:12px; padding:16px}
+    .tab{border:none; padding:.6rem 1rem; border-radius:999px; background:#ffd7c7; cursor:pointer; font-weight:700}
     .tab.active{background:#ff9f1a}
     .pane{display:none}
     .pane.active{display:block}
-
-    /* Week 2 blending word buttons (grid) */
-    .words { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:12px; padding:16px; max-width:900px; margin:0 auto; }
-    .word-btn{
-      font-size:1.4rem; padding:.9rem 1.1rem; border:none; border-radius:14px;
-      background:#ff9f1a; color:#111; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,.12);
-    }
   </style>
 </head>
 <body>
@@ -54,11 +47,11 @@
 
     <div class="group-title">Phase 2</div>
     <button class="pill pill--gold" id="btn-phase-1">Autumn 1 – Week 1</button>
-    <button class="pill pill--gold" id="btn-phase-2">Autumn 1 – Week 2</button> <!-- Combined page -->
-    <button class="pill pill--gold" id="btn-phase-3">Autumn 1 – Week 3</button> <!-- Sequential blending -->
-    <button class="pill pill--gold" id="btn-phase-4">Autumn 1 – Week 4</button> <!-- Sequential blending -->
-    <button class="pill pill--gold" id="btn-phase-5">Autumn 1 – Week 5</button> <!-- Sequential blending -->
-    <button class="pill pill--gold" id="btn-phase-6">Autumn 2 – Week 1</button> <!-- Sequential blending -->
+    <button class="pill pill--gold" id="btn-phase-2">Autumn 1 – Week 2</button>
+    <button class="pill pill--gold" id="btn-phase-3">Autumn 1 – Week 3</button>
+    <button class="pill pill--gold" id="btn-phase-4">Autumn 1 – Week 4</button>
+    <button class="pill pill--gold" id="btn-phase-5">Autumn 1 – Week 5</button>
+    <button class="pill pill--gold" id="btn-phase-6">Autumn 2 – Week 1</button>
   </section>
 
   <!-- GENERAL LETTER PRACTICE -->
@@ -78,7 +71,7 @@
     </main>
   </section>
 
-  <!-- WEEK 2 COMBINED: LETTERS + BLENDING GRID -->
+  <!-- WEEK 2: Letters + single-word blending (sequential) -->
   <section id="week2" class="screen">
     <header class="topbar">
       <button id="backWeek2" class="back">←</button>
@@ -103,23 +96,20 @@
       </main>
     </div>
 
-    <!-- Pane: Week 2 blending (grid) -->
+    <!-- Pane: Week 2 blending (ONE WORD AT A TIME) -->
     <div id="paneBlendW2" class="pane">
-      <div class="words">
-        <button class="word-btn blend-btn" data-word="sit">sit</button>
-        <button class="word-btn blend-btn" data-word="nap">nap</button>
-        <button class="word-btn blend-btn" data-word="man">man</button>
-        <button class="word-btn blend-btn" data-word="dip">dip</button>
-        <button class="word-btn blend-btn" data-word="pat">pat</button>
-        <button class="word-btn blend-btn" data-word="sad">sad</button>
-        <button class="word-btn blend-btn" data-word="nip">nip</button>
-        <button class="word-btn blend-btn" data-word="mat">mat</button>
-      </div>
-      <p class="tap-hint">Tap a word to hear the sounds blend</p>
+      <main id="blendSeqAreaW2" class="letter-area" tabindex="0" aria-label="Week 2 blending word area">
+        <div id="bigWordW2" class="big-word">sit</div>
+        <div class="nav-buttons">
+          <button id="prevWordBtnW2">◀ Prev</button>
+          <button id="nextWordBtnW2">Next ▶</button>
+        </div>
+        <div class="tap-hint">👉 Tap word or swipe</div>
+      </main>
     </div>
   </section>
 
-  <!-- SEQUENTIAL BLENDING SCREEN (Weeks 3/4/5 + Autumn 2 Week 1) -->
+  <!-- SEQUENTIAL BLENDING SCREEN (Weeks 3/4/5 + A2W1) -->
   <section id="blendSeq" class="screen">
     <header class="topbar">
       <button id="backBlendSeq" class="back">←</button>
