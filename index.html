@@ -6,84 +6,40 @@
   <title>Phonics App</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
-    body {
-      font-family: system-ui, sans-serif;
-      margin: 0;
-      text-align: center;
-    }
-    .screen {
-      display: none;
-      min-height: 100vh;
-    }
+    body { font-family: system-ui, sans-serif; margin: 0; text-align: center; }
+    .screen { display: none; min-height: 100vh; }
     .screen--pink {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: #ffe4e1;
+      display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+      background:#ffe7e3; padding:2rem 1rem;
     }
-    .pill {
-      background: #ff4b3a;
-      color: #fff;
-      border: none;
-      border-radius: 999px;
-      padding: 1rem 2rem;
-      font-size: 1.2rem;
-      margin: 0.6rem;
-      cursor: pointer;
+    h1{margin:.5rem 0 1rem 0}
+    .pill{
+      background:#ff4b3a;color:#fff;border:none;border-radius:999px;
+      padding:1rem 2rem;font-size:1.15rem;margin:.5rem 0;cursor:pointer;
+      width:min(92%,700px); box-shadow:0 6px 16px rgba(0,0,0,.12);
     }
-    .pill--orange {
-      background: #ff9800;
-    }
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.8rem 1rem;
-      background: #ff4b3a;
-      color: #fff;
-    }
-    .back {
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-    .big-letter {
-      font-size: 35vh;
-      margin: 2rem 0 1rem 0;
-      user-select: none;
-    }
-    .tap-hint {
-      color: #ff4b3a;
-      font-weight: 600;
-      margin-top: 0.5rem;
-    }
-    .nav-buttons button {
-      margin: 0.4rem;
-      font-size: 1.1rem;
-      padding: 0.6rem 1rem;
-      border-radius: 8px;
-      border: none;
-      background: #ff4b3a;
-      color: white;
-      cursor: pointer;
-    }
-    .nav-buttons button:hover {
-      opacity: 0.9;
-    }
+    .pill--gold{background:#ff9f1a}
+    .group-title{margin:1.2rem 0 .4rem 0; font-weight:700}
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1rem;background:#ff4b3a;color:#fff}
+    .back{background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer}
+    .big-letter{font-size:35vh;margin:2rem 0 1rem;user-select:none}
+    .tap-hint{color:#ff4b3a;font-weight:600;margin-top:.5rem}
+    .nav-buttons button{margin:.4rem;font-size:1.1rem;padding:.6rem 1rem;border-radius:8px;border:none;background:#ff4b3a;color:white;cursor:pointer}
   </style>
 </head>
 <body>
 
   <!-- HOME SCREEN -->
   <section id="home" class="screen screen--pink">
-    <h2>🎥 Learn single letter sounds</h2>
-    <button class="pill" id="btn-single">Start Learning</button>
-    <p>Then practise with these</p>
+    <h1>Choose a set to practise</h1>
+
+    <!-- General practice (A–Z random) -->
     <button class="pill" id="btn-practise">Practise single letter sounds</button>
-    <button class="pill pill--orange" id="btn-two">Practise blending two-letter words</button>
+
+    <div class="group-title">Phase 2</div>
+    <button class="pill pill--gold" id="btn-phase-1">Autumn 1 – Week 1 (s, a, t, p)</button>
+    <button class="pill pill--gold" id="btn-phase-2">Autumn 1 – Week 2 (i, n, m, d)</button>
+    <button class="pill pill--gold" id="btn-phase-3">Autumn 1 – Week 3 (g, o, c, k)</button>
   </section>
 
   <!-- LETTER SCREEN -->
