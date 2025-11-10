@@ -1,9 +1,11 @@
 // ------------------ SETS ------------------
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'.split('');
+
+// Phase 2 sets (kept here; buttons just show week titles)
 const PHASE_SETS = {
-  phase1: ['s','a','t','p'],
-  phase2: ['i','n','m','d'],
-  phase3: ['g','o','c','k']
+  phase1: ['s','a','t','p'], // Autumn 1 – Week 1
+  phase2: ['i','n','m','d'], // Autumn 1 – Week 2
+  phase3: ['g','o','c','k']  // Autumn 1 – Week 3
 };
 
 let CURRENT_SET = [];   // active set while practising
@@ -28,8 +30,7 @@ function shuffle(arr) {
 }
 
 function startPractice(lettersArray) {
-  // copy + shuffle so original sets stay intact
-  CURRENT_SET = shuffle(lettersArray.slice());
+  CURRENT_SET = shuffle(lettersArray.slice()); // copy + shuffle
   idx = 0;
   show('letters');
   render();
@@ -52,7 +53,6 @@ function playSound() {
 function next() {
   idx++;
   if (idx >= CURRENT_SET.length) {
-    // finished the set — reshuffle and start again
     CURRENT_SET = shuffle(CURRENT_SET.slice());
     idx = 0;
   }
