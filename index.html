@@ -140,23 +140,77 @@
     </div>
   </section>
 
-  <!-- SEQUENTIAL BLENDING: Weeks 4/5 + A2W1 -->
-  <section id="blendSeq" class="screen">
+ <!-- WEEK 4: Letters + single-word blending -->
+  <section id="week4" class="screen">
     <header class="topbar">
-      <button id="backBlendSeq" class="back">←</button>
-      <h1 id="blendSeqTitle">Blending Practice</h1>
+      <button id="backWeek4" class="back">←</button>
+      <h1>Autumn 1 – Week 4</h1>
       <div style="width:2rem"></div>
     </header>
-    <main id="blendSeqArea" class="letter-area" tabindex="0" aria-label="Blending word area">
-      <div id="bigWord" class="big-word">mum</div>
-      <div class="nav-buttons">
-        <button id="prevWordBtn">◀ Prev</button>
-        <button id="nextWordBtn">Next ▶</button>
-      </div>
-      <div class="tap-hint">👉 Tap word or swipe</div>
-    </main>
+
+    <div class="tabs">
+      <button id="tabLettersW4" class="tab active">Letters (ck,e,u,r)</button>
+      <button id="tabBlendW4" class="tab">Blending words</button>
+    </div>
+
+    <div id="paneLettersW4" class="pane active">
+      <main id="letterAreaW4" class="letter-area" tabindex="0" aria-label="Week 4 letter area">
+        <div id="bigLetterW4" class="big-letter">CK</div>
+        <div class="nav-buttons">
+          <button id="prevBtnW4">◀ Prev</button>
+          <button id="nextBtnW4">Next ▶</button>
+        </div>
+        <div class="tap-hint">👉 Tap or swipe</div>
+      </main>
+    </div>
+
+    <div id="paneBlendW4" class="pane">
+      <main id="blendSeqAreaW4" class="letter-area" tabindex="0" aria-label="Week 4 blending word area">
+        <div id="bigWordW4" class="big-word">mum</div>
+        <div class="nav-buttons">
+          <button id="prevWordBtnW4">◀ Prev</button>
+          <button id="nextWordBtnW4">Next ▶</button>
+        </div>
+        <div class="tap-hint">👉 Tap word or swipe</div>
+      </main>
+    </div>
   </section>
 
+   <!-- WEEK 3: Letters + single-word blending -->
+  <section id="week3" class="screen">
+    <header class="topbar">
+      <button id="backWeek3" class="back">←</button>
+      <h1>Autumn 1 – Week 3</h1>
+      <div style="width:2rem"></div>
+    </header>
+
+    <div class="tabs">
+      <button id="tabLettersW3" class="tab active">Letters (g, o, c, k)</button>
+      <button id="tabBlendW3" class="tab">Blending words</button>
+    </div>
+
+    <div id="paneLettersW3" class="pane active">
+      <main id="letterAreaW3" class="letter-area" tabindex="0" aria-label="Week 3 letter area">
+        <div id="bigLetterW3" class="big-letter">G</div>
+        <div class="nav-buttons">
+          <button id="prevBtnW3">◀ Prev</button>
+          <button id="nextBtnW3">Next ▶</button>
+        </div>
+        <div class="tap-hint">👉 Tap or swipe</div>
+      </main>
+    </div>
+
+    <div id="paneBlendW3" class="pane">
+      <main id="blendSeqAreaW3" class="letter-area" tabindex="0" aria-label="Week 3 blending word area">
+        <div id="bigWordW3" class="big-word">man</div>
+        <div class="nav-buttons">
+          <button id="prevWordBtnW3">◀ Prev</button>
+          <button id="nextWordBtnW3">Next ▶</button>
+        </div>
+        <div class="tap-hint">👉 Tap word or swipe</div>
+      </main>
+    </div>
+  </section>
   <script src="app.js"></script>
 </body>
 </html>
