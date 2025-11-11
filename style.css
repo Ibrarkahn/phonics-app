@@ -57,3 +57,12 @@ html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Robo
   user-select:none;
 }
 .tap-hint{color:#e44737;font-weight:600;margin-top:1rem}
+/* 👶 Child-friendly font style for phonics letters and words */
+.big-letter,
+.big-word {
+  font-family: 'Comic Neue', 'Poppins', sans-serif;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: lowercase;
+}
+
