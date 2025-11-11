@@ -30,11 +30,6 @@ const WEEK5_WORDS   = ['hug','big','fat','luck','bed','muck','kid','rub'];
 const A2W1_LETTERS = ['f','ff','s','ss','l','ll','v','vv'];
 const A2W1_WORDS = ['huff','off','puff','bell','hill','tell','mess','hiss','fuss','jug','jam','jet'];
 
-// Sequential blending lists (Weeks 4/5 + A2W1)
-const BLEND_W4   = ['mum','duck','pet','pick','set','red','sock','run'];
-const BLEND_W5   = ['hug','big','fat','luck','bed','muck','kid','rub'];
-const BLEND_A2W1 = ['huff','off','puff','bell','hill','tell','mess','hiss','fuss','jug','jam','jet'];
-
 /* ===================== Utils ===================== */
 let audio;
 const qs  = (s) => document.querySelector(s);
@@ -44,7 +39,8 @@ function show(name){
   qs('#letters').style.display   = name==='letters'  ? 'block':'none';
   qs('#week2').style.display     = name==='week2'    ? 'block':'none';
   qs('#week3').style.display     = name==='week3'    ? 'block':'none';
-  qs('#blendSeq').style.display  = name==='blendSeq' ? 'block':'none';
+  qs('#week4').style.display     = name==='week4'    ? 'block':'none';
+  qs('#week5').style.display     = name==='week5'    ? 'block':'none';
 }
 function shuffle(a){
   for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
@@ -258,10 +254,10 @@ qs('#tabBlendW4').addEventListener('click',   ()=>activateWeek4Tab('blend'));
 
 /* ===================== Week 5: letters + single-word blending ===================== */
 // letters pane
-let w3Letters = shuffle(WEEK3_LETTERS.slice()), w3LIdx=0;
-const bigLetterW3  = qs('#bigLetterW3');
-const letterAreaW3 = qs('#letterAreaW3');
-function renderW3Letter(){ bigLetterW3.textContent = w3Letters[w3LIdx].toUpperCase(); }
+let w3Letters = shuffle(WEEK5_LETTERS.slice()), w5LIdx=0;
+const bigLetterW5  = qs('#bigLetterW5');
+const letterAreaW5 = qs('#letterAreaW5');
+function renderW5Letter(){ bigLetterW3.textContent = w3Letters[w3LIdx].toUpperCase(); }
 function nextW3Letter(){ w3LIdx=(w3LIdx+1)%w3Letters.length; renderW3Letter(); playSoundFor(w3Letters[w3LIdx]); }
 function prevW3Letter(){ w3LIdx=(w3LIdx-1+w3Letters.length)%w3Letters.length; renderW3Letter(); playSoundFor(w3Letters[w3LIdx]); }
 qs('#prevBtnW3').addEventListener('click', prevW3Letter);
@@ -326,5 +322,6 @@ qs('#backBlendSeq').addEventListener('click',()=>show('home'));
 
 /* ===================== Init ===================== */
 show('home');
+
 
 
