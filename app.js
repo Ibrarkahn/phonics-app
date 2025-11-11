@@ -40,6 +40,7 @@ function show(name){
   qs('#week3').style.display     = name==='week3'  ? 'block':'none';
   qs('#week4').style.display     = name==='week4'  ? 'block':'none';
   qs('#week5').style.display     = name==='week5'  ? 'block':'none';
+  qs('#a2w1').style.display      = name==='a2w1'   ? 'block':'none'; 
 }
 function shuffle(a){
   for (let i=a.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
@@ -290,6 +291,70 @@ function activateWeek5Tab(which){
 qs('#tabLettersW5').addEventListener('click', ()=>activateWeek5Tab('letters'));
 qs('#tabBlendW5').addEventListener('click',   ()=>activateWeek5Tab('blend'));
 
+/* ===== Autumn 2 – Week 1: letters + single-word blending ===== */
+// Letters pane
+let a2Letters = shuffle(A2W1_LETTERS.slice()), a2LIdx = 0;
+const bigLetterA2  = qs('#bigLetterA2');
+const letterAreaA2 = qs('#letterAreaA2');
+
+function renderA2Letter(){ bigLetterA2.textContent = a2Letters[a2LIdx].toUpperCase(); }
+function nextA2Letter(){ a2LIdx=(a2LIdx+1)%a2Letters.length; renderA2Letter(); playSoundFor(a2Letters[a2LIdx]); }
+function prevA2Letter(){ a2LIdx=(a2LIdx-1+a2Letters.length)%a2Letters.length; renderA2Letter(); playSoundFor(a2Letters[a2LIdx]); }
+
+qs('#prevBtnA2').addEventListener('click', prevA2Letter);
+qs('#nextBtnA2').addEventListener('click', nextA2Letter);
+letterAreaA2.addEventListener('click', ()=>{ playSoundFor(a2Letters[a2LIdx]); nextA2Letter(); });
+
+let a2TouchStart = 0;
+letterAreaA2.addEventListener('touchstart', e => { a2TouchStart = e.changedTouches[0].clientX; }, {passive:true});
+letterAreaA2.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - a2TouchStart;
+  if (Math.abs(dx) > 40) { dx < 0 ? nextA2Letter() : prevA2Letter(); }
+  else { playSoundFor(a2Letters[a2LIdx]); nextA2Letter(); }
+}, {passive:true});
+
+// Blending words (single-word view)
+let a2Words = shuffle(A2W1_WORDS.slice()), a2WIdx = 0;
+const bigWordA2   = qs('#bigWordA2');
+const blendAreaA2 = qs('#blendSeqAreaA2');
+
+function renderA2Word(){ bigWordA2.textContent = a2Words[a2WIdx]; }
+function playCurrentA2(){ playBlend(a2Words[a2WIdx]); }
+function nextA2Word(){ a2WIdx=(a2WIdx+1)%a2Words.length; renderA2Word(); playCurrentA2(); }
+function prevA2Word(){ a2WIdx=(a2WIdx-1+a2Words.length)%a2Words.length; renderA2Word(); playCurrentA2(); }
+
+qs('#prevWordBtnA2').addEventListener('click', prevA2Word);
+qs('#nextWordBtnA2').addEventListener('click', nextA2Word);
+blendAreaA2.addEventListener('click', ()=>{ playCurrentA2(); nextA2Word(); });
+
+let a2WordTouch = 0;
+blendAreaA2.addEventListener('touchstart', e => { a2WordTouch = e.changedTouches[0].clientX; }, {passive:true});
+blendAreaA2.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - a2WordTouch;
+  if (Math.abs(dx) > 40) { dx < 0 ? nextA2Word() : prevA2Word(); }
+  else { playCurrentA2(); nextA2Word(); }
+}, {passive:true});
+
+// Tabs for A2W1
+function activateA2Tab(which){
+  const tabL = qs('#tabLettersA2'), tabB = qs('#tabBlendA2');
+  const paneL= qs('#paneLettersA2'), paneB= qs('#paneBlendA2');
+  if (which === 'letters'){
+    tabL.classList.add('active'); tabB.classList.remove('active');
+    paneL.classList.add('active'); paneB.classList.remove('active');
+    renderA2Letter(); setTimeout(()=>letterAreaA2.focus(),50);
+  } else {
+    tabB.classList.add('active'); tabL.classList.remove('active');
+    paneB.classList.add('active'); paneL.classList.remove('active');
+    renderA2Word(); setTimeout(()=>blendAreaA2.focus(),50);
+  }
+}
+qs('#tabLettersA2').addEventListener('click', ()=>activateA2Tab('letters'));
+qs('#tabBlendA2').addEventListener('click',   ()=>activateA2Tab('blend'));
+
+
+
+
 /* ===================== Navigation: home buttons & back ===================== */
 qs('#btn-practise').addEventListener('click', ()=>startPractice(ALPHABET));
 qs('#btn-phase-1').addEventListener('click', ()=>startPractice(PHASE_SETS.phase1));
@@ -297,13 +362,16 @@ qs('#btn-phase-2').addEventListener('click', ()=>{ show('week2'); activateWeek2T
 qs('#btn-phase-3').addEventListener('click', ()=>{ show('week3'); activateWeek3Tab('letters'); });
 qs('#btn-phase-4').addEventListener('click', ()=>{ show('week4'); activateWeek4Tab('letters'); });
 qs('#btn-phase-5').addEventListener('click', ()=>{ show('week5'); activateWeek5Tab('letters'); });
-// (btn-phase-6 not wired yet – no Week 6 screen in HTML)
+qs('#btn-phase-6').addEventListener('click', ()=>{ show('a2w1'); activateA2Tab('letters'); });
+
 
 qs('#backLetters').addEventListener('click', ()=>show('home'));
 qs('#backWeek2').addEventListener('click',   ()=>show('home'));
 qs('#backWeek3').addEventListener('click',   ()=>show('home'));
 qs('#backWeek4').addEventListener('click',   ()=>show('home'));
 qs('#backWeek5').addEventListener('click',   ()=>show('home'));
+qs('#backA2').addEventListener('click', ()=>show('home'));
 
 /* ===================== Init ===================== */
 show('home');
+
