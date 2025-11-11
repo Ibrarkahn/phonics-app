@@ -65,7 +65,7 @@ function startPractice(letters){
   renderLetter();
   setTimeout(()=>letterArea.focus(),50);
 }
-function renderLetter(){ bigLetter.textContent = CURRENT_SET[idx].toUpperCase(); }
+function renderLetter(){ bigLetter.textContent = CURRENT_SET[idx]; }
 function nextLetter(){ idx=(idx+1)%CURRENT_SET.length; renderLetter(); playSoundFor(CURRENT_SET[idx]); }
 function prevLetter(){ idx=(idx-1+CURRENT_SET.length)%CURRENT_SET.length; renderLetter(); playSoundFor(CURRENT_SET[idx]); }
 
@@ -83,7 +83,7 @@ letterArea.addEventListener('touchend',e=>{
 let w2Letters = shuffle(WEEK2_LETTERS.slice()), w2LIdx=0;
 const bigLetterW2  = qs('#bigLetterW2');
 const letterAreaW2 = qs('#letterAreaW2');
-function renderW2Letter(){ bigLetterW2.textContent = w2Letters[w2LIdx].toUpperCase(); }
+function renderW2Letter(){ bigLetterW2.textContent = w2Letters[w2LIdx]; }
 function nextW2Letter(){ w2LIdx=(w2LIdx+1)%w2Letters.length; renderW2Letter(); playSoundFor(w2Letters[w2LIdx]); }
 function prevW2Letter(){ w2LIdx=(w2LIdx-1+w2Letters.length)%w2Letters.length; renderW2Letter(); playSoundFor(w2Letters[w2LIdx]); }
 qs('#prevBtnW2').addEventListener('click', prevW2Letter);
@@ -145,7 +145,7 @@ qs('#tabBlendW2').addEventListener('click',   ()=>activateWeek2Tab('blend'));
 let w3Letters = shuffle(WEEK3_LETTERS.slice()), w3LIdx=0;
 const bigLetterW3  = qs('#bigLetterW3');
 const letterAreaW3 = qs('#letterAreaW3');
-function renderW3Letter(){ bigLetterW3.textContent = w3Letters[w3LIdx].toUpperCase(); }
+function renderW3Letter(){ bigLetterW3.textContent = w3Letters[w3LIdx]; }
 function nextW3Letter(){ w3LIdx=(w3LIdx+1)%w3Letters.length; renderW3Letter(); playSoundFor(w3Letters[w3LIdx]); }
 function prevW3Letter(){ w3LIdx=(w3LIdx-1+w3Letters.length)%w3Letters.length; renderW3Letter(); playSoundFor(w3Letters[w3LIdx]); }
 qs('#prevBtnW3').addEventListener('click', prevW3Letter);
@@ -195,7 +195,7 @@ qs('#tabBlendW3').addEventListener('click',   ()=>activateWeek3Tab('blend'));
 let w4Letters = shuffle(WEEK4_LETTERS.slice()), w4LIdx=0;
 const bigLetterW4  = qs('#bigLetterW4');
 const letterAreaW4 = qs('#letterAreaW4');
-function renderW4Letter(){ bigLetterW4.textContent = w4Letters[w4LIdx].toUpperCase(); }
+function renderW4Letter(){ bigLetterW4.textContent = w4Letters[w4LIdx]; }
 function nextW4Letter(){ w4LIdx=(w4LIdx+1)%w4Letters.length; renderW4Letter(); playSoundFor(w4Letters[w4LIdx]); }
 function prevW4Letter(){ w4LIdx=(w4LIdx-1+w4Letters.length)%w4Letters.length; renderW4Letter(); playSoundFor(w4Letters[w4LIdx]); }
 qs('#prevBtnW4').addEventListener('click', prevW4Letter);
@@ -245,7 +245,7 @@ qs('#tabBlendW4').addEventListener('click',   ()=>activateWeek4Tab('blend'));
 let w5Letters = shuffle(WEEK5_LETTERS.slice()), w5LIdx=0;
 const bigLetterW5  = qs('#bigLetterW5');
 const letterAreaW5 = qs('#letterAreaW5');
-function renderW5Letter(){ bigLetterW5.textContent = w5Letters[w5LIdx].toUpperCase(); }
+function renderW5Letter(){ bigLetterW5.textContent = w5Letters[w5LIdx]; }
 function nextW5Letter(){ w5LIdx=(w5LIdx+1)%w5Letters.length; renderW5Letter(); playSoundFor(w5Letters[w5LIdx]); }
 function prevW5Letter(){ w5LIdx=(w5LIdx-1+w5Letters.length)%w5Letters.length; renderW5Letter(); playSoundFor(w5Letters[w5LIdx]); }
 qs('#prevBtnW5').addEventListener('click', prevW5Letter);
@@ -297,7 +297,7 @@ let a2Letters = shuffle(A2W1_LETTERS.slice()), a2LIdx = 0;
 const bigLetterA2  = qs('#bigLetterA2');
 const letterAreaA2 = qs('#letterAreaA2');
 
-function renderA2Letter(){ bigLetterA2.textContent = a2Letters[a2LIdx].toUpperCase(); }
+function renderA2Letter(){ bigLetterA2.textContent = a2Letters[a2LIdx]; }
 function nextA2Letter(){ a2LIdx=(a2LIdx+1)%a2Letters.length; renderA2Letter(); playSoundFor(a2Letters[a2LIdx]); }
 function prevA2Letter(){ a2LIdx=(a2LIdx-1+a2Letters.length)%a2Letters.length; renderA2Letter(); playSoundFor(a2Letters[a2LIdx]); }
 
@@ -374,4 +374,5 @@ qs('#backA2').addEventListener('click', ()=>show('home'));
 
 /* ===================== Init ===================== */
 show('home');
+
 
