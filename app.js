@@ -311,9 +311,9 @@ qs('#btn-practise').addEventListener('click', ()=>startPractice(ALPHABET));
 qs('#btn-phase-1').addEventListener('click', ()=>startPractice(PHASE_SETS.phase1));
 qs('#btn-phase-2').addEventListener('click', ()=>{ show('week2'); activateWeek2Tab('letters'); });
 qs('#btn-phase-3').addEventListener('click', ()=>{ show('week3'); activateWeek3Tab('letters'); });
-qs('#btn-phase-4').addEventListener('click', ()=>startBlending(BLEND_W4,  'Autumn 1 – Week 4'));
-qs('#btn-phase-5').addEventListener('click', ()=>startBlending(BLEND_W5,  'Autumn 1 – Week 5'));
-qs('#btn-phase-6').addEventListener('click', ()=>startBlending(BLEND_A2W1,'Autumn 2 – Week 1'));
+qs('#btn-phase-4').addEventListener('click', ()=>{ show('week4'); activateWeek4Tab('letters'); });
+qs('#btn-phase-5').addEventListener('click', ()=>{ show('week5'); activateWeek5Tab('letters'); });
+
 
 qs('#backLetters').addEventListener('click', ()=>show('home'));
 qs('#backWeek2').addEventListener('click',   ()=>show('home'));
@@ -322,6 +322,7 @@ qs('#backBlendSeq').addEventListener('click',()=>show('home'));
 
 /* ===================== Init ===================== */
 show('home');
+
 
 
 
