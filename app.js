@@ -1,4 +1,3 @@
-
 /* ===================== Data ===================== */
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
@@ -26,31 +25,31 @@ const WEEK4_WORDS   = ['mum','duck','pet','pick','set','red','sock','run'];
 const WEEK5_LETTERS = ['h','b','f','l'];
 const WEEK5_WORDS   = ['hug','big','fat','luck','bed','muck','kid','rub'];
 
-// Autumn 2 Week 1
+// Autumn 2 Week 1 (data only for now)
 const A2W1_LETTERS = ['f','ff','s','ss','l','ll','v','vv'];
-const A2W1_WORDS = ['huff','off','puff','bell','hill','tell','mess','hiss','fuss','jug','jam','jet'];
+const A2W1_WORDS   = ['huff','off','puff','bell','hill','tell','mess','hiss','fuss','jug','jam','jet'];
 
 /* ===================== Utils ===================== */
 let audio;
 const qs  = (s) => document.querySelector(s);
 
 function show(name){
-  qs('#home').style.display      = name==='home'     ? 'flex':'none';
-  qs('#letters').style.display   = name==='letters'  ? 'block':'none';
-  qs('#week2').style.display     = name==='week2'    ? 'block':'none';
-  qs('#week3').style.display     = name==='week3'    ? 'block':'none';
-  qs('#week4').style.display     = name==='week4'    ? 'block':'none';
-  qs('#week5').style.display     = name==='week5'    ? 'block':'none';
+  qs('#home').style.display      = name==='home'   ? 'flex':'none';
+  qs('#letters').style.display   = name==='letters'? 'block':'none';
+  qs('#week2').style.display     = name==='week2'  ? 'block':'none';
+  qs('#week3').style.display     = name==='week3'  ? 'block':'none';
+  qs('#week4').style.display     = name==='week4'  ? 'block':'none';
+  qs('#week5').style.display     = name==='week5'  ? 'block':'none';
 }
 function shuffle(a){
-  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  for (let i=a.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
   return a;
 }
 function playSoundFor(key){
-  if(audio && !audio.paused) audio.pause();
+  if (audio && !audio.paused) audio.pause();
   audio = new Audio(`sounds/${key}.mp3`);
   audio.currentTime = 0;
-  audio.play().catch(()=>{ /* missing file ok */ });
+  audio.play().catch(()=>{});
 }
 
 /* ===================== General letter practice ===================== */
@@ -79,8 +78,7 @@ letterArea.addEventListener('touchend',e=>{
   if(Math.abs(dx)>40){ dx<0?nextLetter():prevLetter(); } else { playSoundFor(CURRENT_SET[idx]); nextLetter(); }
 },{passive:true});
 
-/* ===================== Week 2: letters + single-word blending ===================== */
-// letters pane
+/* ===== Week 2: letters + single-word blending (UNCHANGED) ===== */
 let w2Letters = shuffle(WEEK2_LETTERS.slice()), w2LIdx=0;
 const bigLetterW2  = qs('#bigLetterW2');
 const letterAreaW2 = qs('#letterAreaW2');
@@ -97,7 +95,6 @@ letterAreaW2.addEventListener('touchend',e=>{
   if(Math.abs(dx)>40){ dx<0?nextW2Letter():prevW2Letter(); } else { playSoundFor(w2Letters[w2LIdx]); nextW2Letter(); }
 },{passive:true});
 
-// blending pane (single word)
 let w2Words = shuffle(WEEK2_WORDS.slice()), w2WIdx=0;
 const bigWordW2   = qs('#bigWordW2');
 const blendAreaW2 = qs('#blendSeqAreaW2');
@@ -107,9 +104,7 @@ function playBlend(word){
   let i=0;
   const step=()=>{
     if(i<parts.length){
-      const a=new Audio(`sounds/${parts[i]}.mp3`);
-      a.play().catch(()=>{});
-      a.onended=()=>{i++; step();};
+      const a=new Audio(`sounds/${parts[i]}.mp3`); a.play().catch(()=>{}); a.onended=()=>{i++; step();};
     }else{
       new Audio(`sounds/${word}.mp3`).play().catch(()=>{});
     }
@@ -129,7 +124,6 @@ blendAreaW2.addEventListener('touchend',e=>{
   if(Math.abs(dx)>40){ dx<0?nextW2Word():prevW2Word(); } else { playCurrentW2(); nextW2Word(); }
 },{passive:true});
 
-// tab toggle week2
 function activateWeek2Tab(which){
   const tabL=qs('#tabLettersW2'), tabB=qs('#tabBlendW2');
   const paneL=qs('#paneLettersW2'), paneB=qs('#paneBlendW2');
@@ -146,8 +140,7 @@ function activateWeek2Tab(which){
 qs('#tabLettersW2').addEventListener('click', ()=>activateWeek2Tab('letters'));
 qs('#tabBlendW2').addEventListener('click',   ()=>activateWeek2Tab('blend'));
 
-/* ===================== Week 3: letters + single-word blending ===================== */
-// letters pane
+/* ===== Week 3: letters + single-word blending (UNCHANGED) ===== */
 let w3Letters = shuffle(WEEK3_LETTERS.slice()), w3LIdx=0;
 const bigLetterW3  = qs('#bigLetterW3');
 const letterAreaW3 = qs('#letterAreaW3');
@@ -164,7 +157,6 @@ letterAreaW3.addEventListener('touchend',e=>{
   if(Math.abs(dx)>40){ dx<0?nextW3Letter():prevW3Letter(); } else { playSoundFor(w3Letters[w3LIdx]); nextW3Letter(); }
 },{passive:true});
 
-// blending pane (single word)
 let w3Words = shuffle(WEEK3_WORDS.slice()), w3WIdx=0;
 const bigWordW3   = qs('#bigWordW3');
 const blendAreaW3 = qs('#blendSeqAreaW3');
@@ -182,7 +174,6 @@ blendAreaW3.addEventListener('touchend',e=>{
   if(Math.abs(dx)>40){ dx<0?nextW3Word():prevW3Word(); } else { playCurrentW3(); nextW3Word(); }
 },{passive:true});
 
-// tab toggle week3
 function activateWeek3Tab(which){
   const tabL=qs('#tabLettersW3'), tabB=qs('#tabBlendW3');
   const paneL=qs('#paneLettersW3'), paneB=qs('#paneBlendW3');
@@ -199,8 +190,7 @@ function activateWeek3Tab(which){
 qs('#tabLettersW3').addEventListener('click', ()=>activateWeek3Tab('letters'));
 qs('#tabBlendW3').addEventListener('click',   ()=>activateWeek3Tab('blend'));
 
-/* ===================== Week 4: letters + single-word blending ===================== */
-// letters pane
+/* ===== Week 4: letters + single-word blending (FIXED) ===== */
 let w4Letters = shuffle(WEEK4_LETTERS.slice()), w4LIdx=0;
 const bigLetterW4  = qs('#bigLetterW4');
 const letterAreaW4 = qs('#letterAreaW4');
@@ -217,7 +207,6 @@ letterAreaW4.addEventListener('touchend',e=>{
   if(Math.abs(dx)>40){ dx<0?nextW4Letter():prevW4Letter(); } else { playSoundFor(w4Letters[w4LIdx]); nextW4Letter(); }
 },{passive:true});
 
-// blending pane (single word)
 let w4Words = shuffle(WEEK4_WORDS.slice()), w4WIdx=0;
 const bigWordW4   = qs('#bigWordW4');
 const blendAreaW4 = qs('#blendSeqAreaW4');
@@ -235,7 +224,6 @@ blendAreaW4.addEventListener('touchend',e=>{
   if(Math.abs(dx)>40){ dx<0?nextW4Word():prevW4Word(); } else { playCurrentW4(); nextW4Word(); }
 },{passive:true});
 
-// tab toggle week4
 function activateWeek4Tab(which){
   const tabL=qs('#tabLettersW4'), tabB=qs('#tabBlendW4');
   const paneL=qs('#paneLettersW4'), paneB=qs('#paneBlendW4');
@@ -252,59 +240,55 @@ function activateWeek4Tab(which){
 qs('#tabLettersW4').addEventListener('click', ()=>activateWeek4Tab('letters'));
 qs('#tabBlendW4').addEventListener('click',   ()=>activateWeek4Tab('blend'));
 
-/* ===================== Week 5: letters + single-word blending ===================== */
-// letters pane
-let w3Letters = shuffle(WEEK5_LETTERS.slice()), w5LIdx=0;
+/* ===== Week 5: letters + single-word blending (FIXED) ===== */
+let w5Letters = shuffle(WEEK5_LETTERS.slice()), w5LIdx=0;
 const bigLetterW5  = qs('#bigLetterW5');
 const letterAreaW5 = qs('#letterAreaW5');
-function renderW5Letter(){ bigLetterW3.textContent = w3Letters[w3LIdx].toUpperCase(); }
-function nextW3Letter(){ w3LIdx=(w3LIdx+1)%w3Letters.length; renderW3Letter(); playSoundFor(w3Letters[w3LIdx]); }
-function prevW3Letter(){ w3LIdx=(w3LIdx-1+w3Letters.length)%w3Letters.length; renderW3Letter(); playSoundFor(w3Letters[w3LIdx]); }
-qs('#prevBtnW3').addEventListener('click', prevW3Letter);
-qs('#nextBtnW3').addEventListener('click', nextW3Letter);
-letterAreaW3.addEventListener('click', ()=>{ playSoundFor(w3Letters[w3LIdx]); nextW3Letter(); });
-let w3TouchStart=0;
-letterAreaW3.addEventListener('touchstart',e=>{w3TouchStart=e.changedTouches[0].clientX;},{passive:true});
-letterAreaW3.addEventListener('touchend',e=>{
-  const dx=e.changedTouches[0].clientX-w3TouchStart;
-  if(Math.abs(dx)>40){ dx<0?nextW3Letter():prevW3Letter(); } else { playSoundFor(w3Letters[w3LIdx]); nextW3Letter(); }
+function renderW5Letter(){ bigLetterW5.textContent = w5Letters[w5LIdx].toUpperCase(); }
+function nextW5Letter(){ w5LIdx=(w5LIdx+1)%w5Letters.length; renderW5Letter(); playSoundFor(w5Letters[w5LIdx]); }
+function prevW5Letter(){ w5LIdx=(w5LIdx-1+w5Letters.length)%w5Letters.length; renderW5Letter(); playSoundFor(w5Letters[w5LIdx]); }
+qs('#prevBtnW5').addEventListener('click', prevW5Letter);
+qs('#nextBtnW5').addEventListener('click', nextW5Letter);
+letterAreaW5.addEventListener('click', ()=>{ playSoundFor(w5Letters[w5LIdx]); nextW5Letter(); });
+let w5TouchStart=0;
+letterAreaW5.addEventListener('touchstart',e=>{w5TouchStart=e.changedTouches[0].clientX;},{passive:true});
+letterAreaW5.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-w5TouchStart;
+  if(Math.abs(dx)>40){ dx<0?nextW5Letter():prevW5Letter(); } else { playSoundFor(w5Letters[w5LIdx]); nextW5Letter(); }
 },{passive:true});
 
-// blending pane (single word)
-let w3Words = shuffle(WEEK3_WORDS.slice()), w3WIdx=0;
-const bigWordW3   = qs('#bigWordW3');
-const blendAreaW3 = qs('#blendSeqAreaW3');
-function renderW3Word(){ bigWordW3.textContent = w3Words[w3WIdx]; }
-function playCurrentW3(){ playBlend(w3Words[w3WIdx]); }
-function nextW3Word(){ w3WIdx=(w3WIdx+1)%w3Words.length; renderW3Word(); playCurrentW3(); }
-function prevW3Word(){ w3WIdx=(w3WIdx-1+w3Words.length)%w3Words.length; renderW3Word(); playCurrentW3(); }
-qs('#prevWordBtnW3').addEventListener('click', prevW3Word);
-qs('#nextWordBtnW3').addEventListener('click', nextW3Word);
-blendAreaW3.addEventListener('click', ()=>{ playCurrentW3(); nextW3Word(); });
-let w3WordTouch=0;
-blendAreaW3.addEventListener('touchstart',e=>{w3WordTouch=e.changedTouches[0].clientX;},{passive:true});
-blendAreaW3.addEventListener('touchend',e=>{
-  const dx=e.changedTouches[0].clientX-w3WordTouch;
-  if(Math.abs(dx)>40){ dx<0?nextW3Word():prevW3Word(); } else { playCurrentW3(); nextW3Word(); }
+let w5Words = shuffle(WEEK5_WORDS.slice()), w5WIdx=0;
+const bigWordW5   = qs('#bigWordW5');
+const blendAreaW5 = qs('#blendSeqAreaW5');
+function renderW5Word(){ bigWordW5.textContent = w5Words[w5WIdx]; }
+function playCurrentW5(){ playBlend(w5Words[w5WIdx]); }
+function nextW5Word(){ w5WIdx=(w5WIdx+1)%w5Words.length; renderW5Word(); playCurrentW5(); }
+function prevW5Word(){ w5WIdx=(w5WIdx-1+w5Words.length)%w5Words.length; renderW5Word(); playCurrentW5(); }
+qs('#prevWordBtnW5').addEventListener('click', prevW5Word);
+qs('#nextWordBtnW5').addEventListener('click', nextW5Word);
+blendAreaW5.addEventListener('click', ()=>{ playCurrentW5(); nextW5Word(); });
+let w5WordTouch=0;
+blendAreaW5.addEventListener('touchstart',e=>{w5WordTouch=e.changedTouches[0].clientX;},{passive:true});
+blendAreaW5.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-w5WordTouch;
+  if(Math.abs(dx)>40){ dx<0?nextW5Word():prevW5Word(); } else { playCurrentW5(); nextW5Word(); }
 },{passive:true});
 
-// tab toggle week3
-function activateWeek3Tab(which){
-  const tabL=qs('#tabLettersW3'), tabB=qs('#tabBlendW3');
-  const paneL=qs('#paneLettersW3'), paneB=qs('#paneBlendW3');
+function activateWeek5Tab(which){
+  const tabL=qs('#tabLettersW5'), tabB=qs('#tabBlendW5');
+  const paneL=qs('#paneLettersW5'), paneB=qs('#paneBlendW5');
   if(which==='letters'){
     tabL.classList.add('active'); tabB.classList.remove('active');
     paneL.classList.add('active'); paneB.classList.remove('active');
-    renderW3Letter(); setTimeout(()=>letterAreaW3.focus(),50);
+    renderW5Letter(); setTimeout(()=>letterAreaW5.focus(),50);
   }else{
     tabB.classList.add('active'); tabL.classList.remove('active');
     paneB.classList.add('active'); paneL.classList.remove('active');
-    renderW3Word(); setTimeout(()=>blendAreaW3.focus(),50);
+    renderW5Word(); setTimeout(()=>blendAreaW5.focus(),50);
   }
 }
-qs('#tabLettersW3').addEventListener('click', ()=>activateWeek3Tab('letters'));
-qs('#tabBlendW3').addEventListener('click',   ()=>activateWeek3Tab('blend'));
-
+qs('#tabLettersW5').addEventListener('click', ()=>activateWeek5Tab('letters'));
+qs('#tabBlendW5').addEventListener('click',   ()=>activateWeek5Tab('blend'));
 
 /* ===================== Navigation: home buttons & back ===================== */
 qs('#btn-practise').addEventListener('click', ()=>startPractice(ALPHABET));
@@ -313,16 +297,13 @@ qs('#btn-phase-2').addEventListener('click', ()=>{ show('week2'); activateWeek2T
 qs('#btn-phase-3').addEventListener('click', ()=>{ show('week3'); activateWeek3Tab('letters'); });
 qs('#btn-phase-4').addEventListener('click', ()=>{ show('week4'); activateWeek4Tab('letters'); });
 qs('#btn-phase-5').addEventListener('click', ()=>{ show('week5'); activateWeek5Tab('letters'); });
-
+// (btn-phase-6 not wired yet – no Week 6 screen in HTML)
 
 qs('#backLetters').addEventListener('click', ()=>show('home'));
 qs('#backWeek2').addEventListener('click',   ()=>show('home'));
 qs('#backWeek3').addEventListener('click',   ()=>show('home'));
-qs('#backBlendSeq').addEventListener('click',()=>show('home'));
+qs('#backWeek4').addEventListener('click',   ()=>show('home'));
+qs('#backWeek5').addEventListener('click',   ()=>show('home'));
 
 /* ===================== Init ===================== */
 show('home');
-
-
-
-
