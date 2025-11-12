@@ -41,6 +41,10 @@ const A2W3_WORDS   = ['zip','zap','buzz','fizz','quick','quit','chips','rich'];
 const A2W4_LETTERS = ['sh','th','ng','nk'];
 const A2W4_WORDS   = ['shell','dish','this','moth','ring','thing','pink','sink'];
 
+// Autumn 2 – Week 5
+const A2W5_LETTERS = ['f','l','s','j','v','w','x','y','z','qu','ch','sh','ng','th','nk'];
+const A2W5_WORDS   = ['zips','ships','chips','rings','pins','dogs','sings','ducks'];
+
 
 /* ===================== Utils ===================== */
 let audio;
@@ -57,6 +61,8 @@ function show(name){
   qs('#weekA2W2').style.display = name==='weekA2W2' ? 'block':'none';
   qs('#weekA2W3').style.display = name==='weekA2W3' ? 'block':'none';
   qs('#weekA2W4').style.display = name==='weekA2W4' ? 'block':'none';
+  qs('#weekA2W5').style.display = name==='weekA2W5' ? 'block':'none';
+
 
 }
 function shuffle(a){
@@ -529,6 +535,66 @@ function activateWeekA2W4Tab(which){
 qs('#tabLettersA2W4').addEventListener('click', ()=>activateWeekA2W4Tab('letters'));
 qs('#tabBlendA2W4').addEventListener('click',   ()=>activateWeekA2W4Tab('blend'));
 
+/* ===== Autumn 2 – Week 5 ===== */
+// Letters pane
+let a2w5Letters = shuffle(A2W5_LETTERS.slice()), a2w5LIdx = 0;
+const bigLetterA2W5  = qs('#bigLetterA2W5');
+const letterAreaA2W5 = qs('#letterAreaA2W5');
+
+function renderA2W5Letter(){ bigLetterA2W5.textContent = a2w5Letters[a2w5LIdx]; }
+function nextA2W5Letter(){ a2w5LIdx = (a2w5LIdx+1) % a2w5Letters.length; renderA2W5Letter(); playSoundFor(a2w5Letters[a2w5LIdx]); }
+function prevA2W5Letter(){ a2w5LIdx = (a2w5LIdx-1+a2w5Letters.length) % a2w5Letters.length; renderA2W5Letter(); playSoundFor(a2w5Letters[a2w5LIdx]); }
+
+qs('#prevBtnA2W5').addEventListener('click', prevA2W5Letter);
+qs('#nextBtnA2W5').addEventListener('click', nextA2W5Letter);
+letterAreaA2W5.addEventListener('click', ()=>{ playSoundFor(a2w5Letters[a2w5LIdx]); nextA2W5Letter(); });
+
+let a2w5Touch=0;
+letterAreaA2W5.addEventListener('touchstart', e => { a2w5Touch = e.changedTouches[0].clientX; }, {passive:true});
+letterAreaA2W5.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - a2w5Touch;
+  if (Math.abs(dx) > 40) { dx < 0 ? nextA2W5Letter() : prevA2W5Letter(); }
+  else { playSoundFor(a2w5Letters[a2w5LIdx]); nextA2W5Letter(); }
+}, {passive:true});
+
+// Blending words pane (single-word)
+let a2w5Words = shuffle(A2W5_WORDS.slice()), a2w5WIdx = 0;
+const bigWordA2W5   = qs('#bigWordA2W5');
+const blendAreaA2W5 = qs('#blendSeqAreaA2W5');
+
+function renderA2W5Word(){ bigWordA2W5.textContent = a2w5Words[a2w5WIdx]; }
+function playCurrentA2W5(){ playBlend(a2w5Words[a2w5WIdx]); }
+function nextA2W5Word(){ a2w5WIdx = (a2w5WIdx+1) % a2w5Words.length; renderA2W5Word(); playCurrentA2W5(); }
+function prevA2W5Word(){ a2w5WIdx = (a2w5WIdx-1+a2w5Words.length) % a2w5Words.length; renderA2W5Word(); playCurrentA2W5(); }
+
+qs('#prevWordBtnA2W5').addEventListener('click', prevA2W5Word);
+qs('#nextWordBtnA2W5').addEventListener('click', nextA2W5Word);
+blendAreaA2W5.addEventListener('click', ()=>{ playCurrentA2W5(); nextA2W5Word(); });
+
+let a2w5WordTouch=0;
+blendAreaA2W5.addEventListener('touchstart', e => { a2w5WordTouch = e.changedTouches[0].clientX; }, {passive:true});
+blendAreaA2W5.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - a2w5WordTouch;
+  if (Math.abs(dx) > 40) { dx < 0 ? nextA2W5Word() : prevA2W5Word(); }
+  else { playCurrentA2W5(); nextA2W5Word(); }
+}, {passive:true});
+
+// Tabs
+function activateWeekA2W5Tab(which){
+  const tabL = qs('#tabLettersA2W5'), tabB = qs('#tabBlendA2W5');
+  const paneL= qs('#paneLettersA2W5'), paneB= qs('#paneBlendA2W5');
+  if (which === 'letters'){
+    tabL.classList.add('active'); tabB.classList.remove('active');
+    paneL.classList.add('active'); paneB.classList.remove('active');
+    renderA2W5Letter(); setTimeout(()=>letterAreaA2W5.focus(),50);
+  } else {
+    tabB.classList.add('active'); tabL.classList.remove('active');
+    paneB.classList.add('active'); paneL.classList.remove('active');
+    renderA2W5Word(); setTimeout(()=>blendAreaA2W5.focus(),50);
+  }
+}
+qs('#tabLettersA2W5').addEventListener('click', ()=>activateWeekA2W5Tab('letters'));
+qs('#tabBlendA2W5').addEventListener('click',   ()=>activateWeekA2W5Tab('blend'));
 
 
 /* ===================== Navigation: home buttons & back ===================== */
@@ -542,6 +608,8 @@ qs('#btn-phase-6').addEventListener('click', ()=>{ show('a2w1'); activateA2Tab('
 qs('#btn-phase-7').addEventListener('click', ()=>{ show('weekA2W2'); activateWeekA2W2Tab('letters'); });
 qs('#btn-phase-8').addEventListener('click', ()=>{ show('weekA2W3'); activateWeekA2W3Tab('letters'); });
 qs('#btn-phase-9').addEventListener('click', ()=>{ show('weekA2W4'); activateWeekA2W4Tab('letters'); });
+qs('#btn-phase-10').addEventListener('click', ()=>{ show('weekA2W5'); activateWeekA2W5Tab('letters'); });
+
 
 
 
@@ -554,10 +622,12 @@ qs('#backA2').addEventListener('click', ()=>show('home'));
 qs('#backA2W2').addEventListener('click', ()=>show('home'));
 qs('#backA2W3').addEventListener('click', ()=>show('home'));
 qs('#backA2W4').addEventListener('click', ()=>show('home'));
+qs('#backA2W5').addEventListener('click', ()=>show('home'));
 
 
 /* ===================== Init ===================== */
 show('home');
+
 
 
 
