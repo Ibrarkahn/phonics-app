@@ -25,9 +25,22 @@ const WEEK4_WORDS   = ['mum','duck','pet','pick','set','red','sock','run'];
 const WEEK5_LETTERS = ['h','b','f','l'];
 const WEEK5_WORDS   = ['hug','big','fat','luck','bed','muck','kid','rub'];
 
-// Autumn 2 Week 1 (data only for now)
+// Autumn 2 Week 1 
 const A2W1_LETTERS = ['f','ff','s','ss','l','ll','v','vv'];
 const A2W1_WORDS   = ['huff','off','puff','bell','hill','tell','mess','hiss','fuss','jug','jam','jet'];
+
+// Autumn 2 Week 2
+const A2W2_LETTERS = ['v','w','x','y'];
+const A2W2_WORDS   = ['van','vet','wet','wig','fox','six','yes','yum'];
+
+// Autumn 2 Week 3
+const A2W3_LETTERS = ['z','qu','ch'];
+const A2W3_WORDS   = ['zip','zap','buzz','fizz','quick','quit','chips','rich'];
+
+// Autumn 2 Week 4
+const A2W4_LETTERS = ['sh','th','ng','nk'];
+const A2W4_WORDS   = ['shell','dish','this','moth','ring','thing','pink','sink'];
+
 
 /* ===================== Utils ===================== */
 let audio;
@@ -363,6 +376,10 @@ qs('#btn-phase-3').addEventListener('click', ()=>{ show('week3'); activateWeek3T
 qs('#btn-phase-4').addEventListener('click', ()=>{ show('week4'); activateWeek4Tab('letters'); });
 qs('#btn-phase-5').addEventListener('click', ()=>{ show('week5'); activateWeek5Tab('letters'); });
 qs('#btn-phase-6').addEventListener('click', ()=>{ show('a2w1'); activateA2Tab('letters'); });
+qs('#btn-phase-7').addEventListener('click', ()=>{ show('weekA2W2'); activateWeekA2W2Tab('letters'); });
+qs('#btn-phase-8').addEventListener('click', ()=>{ show('weekA2W3'); activateWeekA2W3Tab('letters'); });
+qs('#btn-phase-9').addEventListener('click', ()=>{ show('weekA2W4'); activateWeekA2W4Tab('letters'); });
+
 
 
 qs('#backLetters').addEventListener('click', ()=>show('home'));
@@ -374,5 +391,6 @@ qs('#backA2').addEventListener('click', ()=>show('home'));
 
 /* ===================== Init ===================== */
 show('home');
+
 
 
