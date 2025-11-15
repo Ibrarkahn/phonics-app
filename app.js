@@ -50,6 +50,37 @@ const A2W5_WORDS   = ['zips','ships','chips','rings','pins','dogs','sings','duck
 let audio;
 let currentBlend = null;   // 🔸 controller for cancelling ongoing blends
 
+// Phonics clusters that should be treated as a single sound
+const PHONICS_CLUSTERS = ['ck','ff','ss','ll','vv'];
+
+// Split a word into phonics parts (e.g. "duck" -> ["d","u","ck"])
+function splitForPhonics(word){
+  const parts = [];
+  let i = 0;
+
+  while (i < word.length){
+    let matched = false;
+
+    for (const cluster of PHONICS_CLUSTERS){
+      if (word.startsWith(cluster, i)){
+        parts.push(cluster);
+        i += cluster.length;
+        matched = true;
+        break;
+      }
+    }
+
+    if (!matched){
+      parts.push(word[i]);
+      i++;
+    }
+  }
+
+  return parts;
+}
+
+
+
 const qs  = (s) => document.querySelector(s);
 
 function show(name){
@@ -81,7 +112,7 @@ function playSoundFor(key){
   audio.play().catch(()=>{});
 }
 
-// 🔸 Blend helper: play sounds for each letter then the whole word,
+// 🔸 Blend helper: play sounds for each phonics part then the whole word,
 // and cancel any previous blend still in progress
 function playBlend(word){
   // cancel previous blend if any
@@ -94,14 +125,16 @@ function playBlend(word){
   const controller = { cancelled: false, audio: null };
   currentBlend = controller;
 
-  const parts = word.split('');
+  // Use phonics-aware splitting: ck, ff, ss, ll, vv
+  const parts = splitForPhonics(word);
   let i = 0;
 
   const step = () => {
     if (controller.cancelled) return;
 
     if (i < parts.length){
-      const a = new Audio(`sounds/${parts[i]}.mp3`);
+      const soundKey = parts[i];              // e.g. "ck", "ff", "s"
+      const a = new Audio(`sounds/${soundKey}.mp3`);
       controller.audio = a;
       a.play().catch(()=>{});
       a.onended = () => {
@@ -119,6 +152,7 @@ function playBlend(word){
 
   step();
 }
+
 
 
 /* ===================== General letter practice ===================== */
@@ -640,3 +674,4 @@ qs('#backA2W5').addEventListener('click',    ()=>show('home'));
 
 /* ===================== Init ===================== */
 show('home');
+
