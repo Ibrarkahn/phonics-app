@@ -62,8 +62,6 @@ function show(name){
   qs('#weekA2W3').style.display = name==='weekA2W3' ? 'block':'none';
   qs('#weekA2W4').style.display = name==='weekA2W4' ? 'block':'none';
   qs('#weekA2W5').style.display = name==='weekA2W5' ? 'block':'none';
-
-
 }
 function shuffle(a){
   for (let i=a.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
@@ -140,12 +138,14 @@ function nextW2Word(){ w2WIdx=(w2WIdx+1)%w2Words.length; renderW2Word(); playCur
 function prevW2Word(){ w2WIdx=(w2WIdx-1+w2Words.length)%w2Words.length; renderW2Word(); playCurrentW2(); }
 qs('#prevWordBtnW2').addEventListener('click', prevW2Word);
 qs('#nextWordBtnW2').addEventListener('click', nextW2Word);
-blendAreaW2.addEventListener('click', ()=>{ playCurrentW2(); nextW2Word(); });
+
+// ✅ Updated: click/tap only replays current word
+blendAreaW2.addEventListener('click', ()=>{ playCurrentW2(); });
 let w2WordTouch=0;
 blendAreaW2.addEventListener('touchstart',e=>{w2WordTouch=e.changedTouches[0].clientX;},{passive:true});
 blendAreaW2.addEventListener('touchend',e=>{
   const dx=e.changedTouches[0].clientX-w2WordTouch;
-  if(Math.abs(dx)>40){ dx<0?nextW2Word():prevW2Word(); } else { playCurrentW2(); nextW2Word(); }
+  if(Math.abs(dx)>40){ dx<0?nextW2Word():prevW2Word(); } else { playCurrentW2(); }
 },{passive:true});
 
 function activateWeek2Tab(which){
@@ -190,12 +190,14 @@ function nextW3Word(){ w3WIdx=(w3WIdx+1)%w3Words.length; renderW3Word(); playCur
 function prevW3Word(){ w3WIdx=(w3WIdx-1+w3Words.length)%w3Words.length; renderW3Word(); playCurrentW3(); }
 qs('#prevWordBtnW3').addEventListener('click', prevW3Word);
 qs('#nextWordBtnW3').addEventListener('click', nextW3Word);
-blendAreaW3.addEventListener('click', ()=>{ playCurrentW3(); nextW3Word(); });
+
+// ✅ Updated
+blendAreaW3.addEventListener('click', ()=>{ playCurrentW3(); });
 let w3WordTouch=0;
 blendAreaW3.addEventListener('touchstart',e=>{w3WordTouch=e.changedTouches[0].clientX;},{passive:true});
 blendAreaW3.addEventListener('touchend',e=>{
   const dx=e.changedTouches[0].clientX-w3WordTouch;
-  if(Math.abs(dx)>40){ dx<0?nextW3Word():prevW3Word(); } else { playCurrentW3(); nextW3Word(); }
+  if(Math.abs(dx)>40){ dx<0?nextW3Word():prevW3Word(); } else { playCurrentW3(); }
 },{passive:true});
 
 function activateWeek3Tab(which){
@@ -240,12 +242,14 @@ function nextW4Word(){ w4WIdx=(w4WIdx+1)%w4Words.length; renderW4Word(); playCur
 function prevW4Word(){ w4WIdx=(w4WIdx-1+w4Words.length)%w4Words.length; renderW4Word(); playCurrentW4(); }
 qs('#prevWordBtnW4').addEventListener('click', prevW4Word);
 qs('#nextWordBtnW4').addEventListener('click', nextW4Word);
-blendAreaW4.addEventListener('click', ()=>{ playCurrentW4(); nextW4Word(); });
+
+// ✅ Updated
+blendAreaW4.addEventListener('click', ()=>{ playCurrentW4(); });
 let w4WordTouch=0;
 blendAreaW4.addEventListener('touchstart',e=>{w4WordTouch=e.changedTouches[0].clientX;},{passive:true});
 blendAreaW4.addEventListener('touchend',e=>{
   const dx=e.changedTouches[0].clientX-w4WordTouch;
-  if(Math.abs(dx)>40){ dx<0?nextW4Word():prevW4Word(); } else { playCurrentW4(); nextW4Word(); }
+  if(Math.abs(dx)>40){ dx<0?nextW4Word():prevW4Word(); } else { playCurrentW4(); }
 },{passive:true});
 
 function activateWeek4Tab(which){
@@ -290,12 +294,14 @@ function nextW5Word(){ w5WIdx=(w5WIdx+1)%w5Words.length; renderW5Word(); playCur
 function prevW5Word(){ w5WIdx=(w5WIdx-1+w5Words.length)%w5Words.length; renderW5Word(); playCurrentW5(); }
 qs('#prevWordBtnW5').addEventListener('click', prevW5Word);
 qs('#nextWordBtnW5').addEventListener('click', nextW5Word);
-blendAreaW5.addEventListener('click', ()=>{ playCurrentW5(); nextW5Word(); });
+
+// ✅ Updated
+blendAreaW5.addEventListener('click', ()=>{ playCurrentW5(); });
 let w5WordTouch=0;
 blendAreaW5.addEventListener('touchstart',e=>{w5WordTouch=e.changedTouches[0].clientX;},{passive:true});
 blendAreaW5.addEventListener('touchend',e=>{
   const dx=e.changedTouches[0].clientX-w5WordTouch;
-  if(Math.abs(dx)>40){ dx<0?nextW5Word():prevW5Word(); } else { playCurrentW5(); nextW5Word(); }
+  if(Math.abs(dx)>40){ dx<0?nextW5Word():prevW5Word(); } else { playCurrentW5(); }
 },{passive:true});
 
 function activateWeek5Tab(which){
@@ -348,14 +354,16 @@ function prevA2Word(){ a2WIdx=(a2WIdx-1+a2Words.length)%a2Words.length; renderA2
 
 qs('#prevWordBtnA2').addEventListener('click', prevA2Word);
 qs('#nextWordBtnA2').addEventListener('click', nextA2Word);
-blendAreaA2.addEventListener('click', ()=>{ playCurrentA2(); nextA2Word(); });
+
+// ✅ Updated
+blendAreaA2.addEventListener('click', ()=>{ playCurrentA2(); });
 
 let a2WordTouch = 0;
 blendAreaA2.addEventListener('touchstart', e => { a2WordTouch = e.changedTouches[0].clientX; }, {passive:true});
 blendAreaA2.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - a2WordTouch;
   if (Math.abs(dx) > 40) { dx < 0 ? nextA2Word() : prevA2Word(); }
-  else { playCurrentA2(); nextA2Word(); }
+  else { playCurrentA2(); }
 }, {passive:true});
 
 // Tabs for A2W1
@@ -402,13 +410,15 @@ function nextA2W2Word(){ a2w2WIdx=(a2w2WIdx+1)%a2w2Words.length; renderA2W2Word(
 function prevA2W2Word(){ a2w2WIdx=(a2w2WIdx-1+a2w2Words.length)%a2w2Words.length; renderA2W2Word(); playCurrentA2W2(); }
 qs('#prevWordBtnA2W2').addEventListener('click', prevA2W2Word);
 qs('#nextWordBtnA2W2').addEventListener('click', nextA2W2Word);
-blendAreaA2W2.addEventListener('click', ()=>{ playCurrentA2W2(); nextA2W2Word(); });
+
+// ✅ Updated
+blendAreaA2W2.addEventListener('click', ()=>{ playCurrentA2W2(); });
 let a2w2WordTouch=0;
 blendAreaA2W2.addEventListener('touchstart', e => { a2w2WordTouch = e.changedTouches[0].clientX; }, {passive:true});
 blendAreaA2W2.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - a2w2WordTouch;
   if (Math.abs(dx) > 40) { dx < 0 ? nextA2W2Word() : prevA2W2Word(); }
-  else { playCurrentA2W2(); nextA2W2Word(); }
+  else { playCurrentA2W2(); }
 }, {passive:true});
 
 function activateWeekA2W2Tab(which){
@@ -455,14 +465,15 @@ function nextA2W3Word(){ a2w3WIdx=(a2w3WIdx+1)%a2w3Words.length; renderA2W3Word(
 function prevA2W3Word(){ a2w3WIdx=(a2w3WIdx-1+a2w3Words.length)%a2w3Words.length; renderA2W3Word(); playCurrentA2W3(); }
 qs('#prevWordBtnA2W3').addEventListener('click', prevA2W3Word);
 qs('#nextWordBtnA2W3').addEventListener('click', nextA2W3Word);
-blendAreaA2W3.addEventListener('click', ()=>{ playCurrentA2W3(); nextA2W3Word(); });
 
+// ✅ Updated
+blendAreaA2W3.addEventListener('click', ()=>{ playCurrentA2W3(); });
 let a2w3WordTouch=0;
 blendAreaA2W3.addEventListener('touchstart', e => { a2w3WordTouch = e.changedTouches[0].clientX; }, {passive:true});
 blendAreaA2W3.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - a2w3WordTouch;
   if (Math.abs(dx) > 40) { dx < 0 ? nextA2W3Word() : prevA2W3Word(); }
-  else { playCurrentA2W3(); nextA2W3Word(); }
+  else { playCurrentA2W3(); }
 }, {passive:true});
 
 function activateWeekA2W3Tab(which){
@@ -509,14 +520,15 @@ function nextA2W4Word(){ a2w4WIdx=(a2w4WIdx+1)%a2w4Words.length; renderA2W4Word(
 function prevA2W4Word(){ a2w4WIdx=(a2w4WIdx-1+a2w4Words.length)%a2w4Words.length; renderA2W4Word(); playCurrentA2W4(); }
 qs('#prevWordBtnA2W4').addEventListener('click', prevA2W4Word);
 qs('#nextWordBtnA2W4').addEventListener('click', nextA2W4Word);
-blendAreaA2W4.addEventListener('click', ()=>{ playCurrentA2W4(); nextA2W4Word(); });
 
+// ✅ Updated
+blendAreaA2W4.addEventListener('click', ()=>{ playCurrentA2W4(); });
 let a2w4WordTouch=0;
 blendAreaA2W4.addEventListener('touchstart', e => { a2w4WordTouch = e.changedTouches[0].clientX; }, {passive:true});
 blendAreaA2W4.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - a2w4WordTouch;
   if (Math.abs(dx) > 40) { dx < 0 ? nextA2W4Word() : prevA2W4Word(); }
-  else { playCurrentA2W4(); nextA2W4Word(); }
+  else { playCurrentA2W4(); }
 }, {passive:true});
 
 function activateWeekA2W4Tab(which){
@@ -569,14 +581,15 @@ function prevA2W5Word(){ a2w5WIdx = (a2w5WIdx-1+a2w5Words.length) % a2w5Words.le
 
 qs('#prevWordBtnA2W5').addEventListener('click', prevA2W5Word);
 qs('#nextWordBtnA2W5').addEventListener('click', nextA2W5Word);
-blendAreaA2W5.addEventListener('click', ()=>{ playCurrentA2W5(); nextA2W5Word(); });
 
+// ✅ Updated
+blendAreaA2W5.addEventListener('click', ()=>{ playCurrentA2W5(); });
 let a2w5WordTouch=0;
 blendAreaA2W5.addEventListener('touchstart', e => { a2w5WordTouch = e.changedTouches[0].clientX; }, {passive:true});
 blendAreaA2W5.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - a2w5WordTouch;
   if (Math.abs(dx) > 40) { dx < 0 ? nextA2W5Word() : prevA2W5Word(); }
-  else { playCurrentA2W5(); nextA2W5Word(); }
+  else { playCurrentA2W5(); }
 }, {passive:true});
 
 // Tabs
@@ -610,9 +623,6 @@ qs('#btn-phase-8').addEventListener('click', ()=>{ show('weekA2W3'); activateWee
 qs('#btn-phase-9').addEventListener('click', ()=>{ show('weekA2W4'); activateWeekA2W4Tab('letters'); });
 qs('#btn-phase-10').addEventListener('click', ()=>{ show('weekA2W5'); activateWeekA2W5Tab('letters'); });
 
-
-
-
 qs('#backLetters').addEventListener('click', ()=>show('home'));
 qs('#backWeek2').addEventListener('click',   ()=>show('home'));
 qs('#backWeek3').addEventListener('click',   ()=>show('home'));
@@ -627,8 +637,3 @@ qs('#backA2W5').addEventListener('click', ()=>show('home'));
 
 /* ===================== Init ===================== */
 show('home');
-
-
-
-
-
