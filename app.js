@@ -51,7 +51,11 @@ let audio;
 let currentBlend = null;   // 🔸 controller for cancelling ongoing blends
 
 // Phonics clusters that should be treated as a single sound
-const PHONICS_CLUSTERS = ['ck','ff','ss','ll','vv'];
+const PHONICS_CLUSTERS = [
+  'ck','ff','ss','ll','vv',  // double consonants
+  'sh','ch','th','ng','nk', // digraphs
+  'qu','zz'                 // other common clusters
+];
 
 // Split a word into phonics parts (e.g. "duck" -> ["d","u","ck"])
 function splitForPhonics(word){
@@ -112,7 +116,7 @@ function playSoundFor(key){
   audio.play().catch(()=>{});
 }
 
-// 🔸 Blend helper: play sounds for each phonics part then the whole word,
+// 🔸 Blend helper: play sounds for each phonics part (no final word),
 // and cancel any previous blend still in progress
 function playBlend(word){
   // cancel previous blend if any
@@ -125,7 +129,8 @@ function playBlend(word){
   const controller = { cancelled: false, audio: null };
   currentBlend = controller;
 
-  // Use phonics-aware splitting: ck, ff, ss, ll, vv
+  // Use phonics-aware splitting, e.g.
+  // "duck" -> ["d","u","ck"], "huff" -> ["h","u","ff"], "bell" -> ["b","e","ll"]
   const parts = splitForPhonics(word);
   let i = 0;
 
@@ -133,7 +138,7 @@ function playBlend(word){
     if (controller.cancelled) return;
 
     if (i < parts.length){
-      const soundKey = parts[i];              // e.g. "ck", "ff", "s"
+      const soundKey = parts[i];           // e.g. "ck", "ff", "s"
       const a = new Audio(`sounds/${soundKey}.mp3`);
       controller.audio = a;
       a.play().catch(()=>{});
@@ -143,10 +148,8 @@ function playBlend(word){
         step();
       };
     } else {
-      const a = new Audio(`sounds/${word}.mp3`);
-      controller.audio = a;
-      a.play().catch(()=>{});
-      a.onended = null;
+      // ✅ finished all parts – do NOT play the full word
+      controller.audio = null;
     }
   };
 
@@ -674,4 +677,5 @@ qs('#backA2W5').addEventListener('click',    ()=>show('home'));
 
 /* ===================== Init ===================== */
 show('home');
+
 
