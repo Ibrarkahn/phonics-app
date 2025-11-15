@@ -100,7 +100,7 @@ letterArea.addEventListener('touchend',e=>{
   if(Math.abs(dx)>40){ dx<0?nextLetter():prevLetter(); } else { playSoundFor(CURRENT_SET[idx]); nextLetter(); }
 },{passive:true});
 
-/* ===== Week 2: letters + single-word blending (UNCHANGED) ===== */
+/* ===== Week 2: letters + single-word blending ===== */
 let w2Letters = shuffle(WEEK2_LETTERS.slice()), w2LIdx=0;
 const bigLetterW2  = qs('#bigLetterW2');
 const letterAreaW2 = qs('#letterAreaW2');
@@ -126,7 +126,9 @@ function playBlend(word){
   let i=0;
   const step=()=>{
     if(i<parts.length){
-      const a=new Audio(`sounds/${parts[i]}.mp3`); a.play().catch(()=>{}); a.onended=()=>{i++; step();};
+      const a=new Audio(`sounds/${parts[i]}.mp3`); 
+      a.play().catch(()=>{}); 
+      a.onended=()=>{i++; step();};
     }else{
       new Audio(`sounds/${word}.mp3`).play().catch(()=>{});
     }
@@ -139,13 +141,14 @@ function prevW2Word(){ w2WIdx=(w2WIdx-1+w2Words.length)%w2Words.length; renderW2
 qs('#prevWordBtnW2').addEventListener('click', prevW2Word);
 qs('#nextWordBtnW2').addEventListener('click', nextW2Word);
 
-// ✅ Updated: click/tap only replays current word
+// Click = replay current word, touchend only handles swipes
 blendAreaW2.addEventListener('click', ()=>{ playCurrentW2(); });
 let w2WordTouch=0;
 blendAreaW2.addEventListener('touchstart',e=>{w2WordTouch=e.changedTouches[0].clientX;},{passive:true});
 blendAreaW2.addEventListener('touchend',e=>{
   const dx=e.changedTouches[0].clientX-w2WordTouch;
-  if(Math.abs(dx)>40){ dx<0?nextW2Word():prevW2Word(); } else { playCurrentW2(); }
+  if(Math.abs(dx)>40){ dx<0?nextW2Word():prevW2Word(); }
+  // else: tap handled by click event
 },{passive:true});
 
 function activateWeek2Tab(which){
@@ -164,7 +167,7 @@ function activateWeek2Tab(which){
 qs('#tabLettersW2').addEventListener('click', ()=>activateWeek2Tab('letters'));
 qs('#tabBlendW2').addEventListener('click',   ()=>activateWeek2Tab('blend'));
 
-/* ===== Week 3: letters + single-word blending (UNCHANGED) ===== */
+/* ===== Week 3: letters + single-word blending ===== */
 let w3Letters = shuffle(WEEK3_LETTERS.slice()), w3LIdx=0;
 const bigLetterW3  = qs('#bigLetterW3');
 const letterAreaW3 = qs('#letterAreaW3');
@@ -191,13 +194,13 @@ function prevW3Word(){ w3WIdx=(w3WIdx-1+w3Words.length)%w3Words.length; renderW3
 qs('#prevWordBtnW3').addEventListener('click', prevW3Word);
 qs('#nextWordBtnW3').addEventListener('click', nextW3Word);
 
-// ✅ Updated
 blendAreaW3.addEventListener('click', ()=>{ playCurrentW3(); });
 let w3WordTouch=0;
 blendAreaW3.addEventListener('touchstart',e=>{w3WordTouch=e.changedTouches[0].clientX;},{passive:true});
 blendAreaW3.addEventListener('touchend',e=>{
   const dx=e.changedTouches[0].clientX-w3WordTouch;
-  if(Math.abs(dx)>40){ dx<0?nextW3Word():prevW3Word(); } else { playCurrentW3(); }
+  if(Math.abs(dx)>40){ dx<0?nextW3Word():prevW3Word(); }
+  // tap handled by click
 },{passive:true});
 
 function activateWeek3Tab(which){
@@ -216,7 +219,7 @@ function activateWeek3Tab(which){
 qs('#tabLettersW3').addEventListener('click', ()=>activateWeek3Tab('letters'));
 qs('#tabBlendW3').addEventListener('click',   ()=>activateWeek3Tab('blend'));
 
-/* ===== Week 4: letters + single-word blending (FIXED) ===== */
+/* ===== Week 4: letters + single-word blending ===== */
 let w4Letters = shuffle(WEEK4_LETTERS.slice()), w4LIdx=0;
 const bigLetterW4  = qs('#bigLetterW4');
 const letterAreaW4 = qs('#letterAreaW4');
@@ -243,13 +246,12 @@ function prevW4Word(){ w4WIdx=(w4WIdx-1+w4Words.length)%w4Words.length; renderW4
 qs('#prevWordBtnW4').addEventListener('click', prevW4Word);
 qs('#nextWordBtnW4').addEventListener('click', nextW4Word);
 
-// ✅ Updated
 blendAreaW4.addEventListener('click', ()=>{ playCurrentW4(); });
 let w4WordTouch=0;
 blendAreaW4.addEventListener('touchstart',e=>{w4WordTouch=e.changedTouches[0].clientX;},{passive:true});
 blendAreaW4.addEventListener('touchend',e=>{
   const dx=e.changedTouches[0].clientX-w4WordTouch;
-  if(Math.abs(dx)>40){ dx<0?nextW4Word():prevW4Word(); } else { playCurrentW4(); }
+  if(Math.abs(dx)>40){ dx<0?nextW4Word():prevW4Word(); }
 },{passive:true});
 
 function activateWeek4Tab(which){
@@ -268,7 +270,7 @@ function activateWeek4Tab(which){
 qs('#tabLettersW4').addEventListener('click', ()=>activateWeek4Tab('letters'));
 qs('#tabBlendW4').addEventListener('click',   ()=>activateWeek4Tab('blend'));
 
-/* ===== Week 5: letters + single-word blending (FIXED) ===== */
+/* ===== Week 5: letters + single-word blending ===== */
 let w5Letters = shuffle(WEEK5_LETTERS.slice()), w5LIdx=0;
 const bigLetterW5  = qs('#bigLetterW5');
 const letterAreaW5 = qs('#letterAreaW5');
@@ -295,13 +297,12 @@ function prevW5Word(){ w5WIdx=(w5WIdx-1+w5Words.length)%w5Words.length; renderW5
 qs('#prevWordBtnW5').addEventListener('click', prevW5Word);
 qs('#nextWordBtnW5').addEventListener('click', nextW5Word);
 
-// ✅ Updated
 blendAreaW5.addEventListener('click', ()=>{ playCurrentW5(); });
 let w5WordTouch=0;
 blendAreaW5.addEventListener('touchstart',e=>{w5WordTouch=e.changedTouches[0].clientX;},{passive:true});
 blendAreaW5.addEventListener('touchend',e=>{
   const dx=e.changedTouches[0].clientX-w5WordTouch;
-  if(Math.abs(dx)>40){ dx<0?nextW5Word():prevW5Word(); } else { playCurrentW5(); }
+  if(Math.abs(dx)>40){ dx<0?nextW5Word():prevW5Word(); }
 },{passive:true});
 
 function activateWeek5Tab(which){
@@ -355,7 +356,6 @@ function prevA2Word(){ a2WIdx=(a2WIdx-1+a2Words.length)%a2Words.length; renderA2
 qs('#prevWordBtnA2').addEventListener('click', prevA2Word);
 qs('#nextWordBtnA2').addEventListener('click', nextA2Word);
 
-// ✅ Updated
 blendAreaA2.addEventListener('click', ()=>{ playCurrentA2(); });
 
 let a2WordTouch = 0;
@@ -363,7 +363,7 @@ blendAreaA2.addEventListener('touchstart', e => { a2WordTouch = e.changedTouches
 blendAreaA2.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - a2WordTouch;
   if (Math.abs(dx) > 40) { dx < 0 ? nextA2Word() : prevA2Word(); }
-  else { playCurrentA2(); }
+  // tap handled by click
 }, {passive:true});
 
 // Tabs for A2W1
@@ -411,14 +411,13 @@ function prevA2W2Word(){ a2w2WIdx=(a2w2WIdx-1+a2w2Words.length)%a2w2Words.length
 qs('#prevWordBtnA2W2').addEventListener('click', prevA2W2Word);
 qs('#nextWordBtnA2W2').addEventListener('click', nextA2W2Word);
 
-// ✅ Updated
 blendAreaA2W2.addEventListener('click', ()=>{ playCurrentA2W2(); });
 let a2w2WordTouch=0;
 blendAreaA2W2.addEventListener('touchstart', e => { a2w2WordTouch = e.changedTouches[0].clientX; }, {passive:true});
 blendAreaA2W2.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - a2w2WordTouch;
   if (Math.abs(dx) > 40) { dx < 0 ? nextA2W2Word() : prevA2W2Word(); }
-  else { playCurrentA2W2(); }
+  // tap handled by click
 }, {passive:true});
 
 function activateWeekA2W2Tab(which){
@@ -466,14 +465,13 @@ function prevA2W3Word(){ a2w3WIdx=(a2w3WIdx-1+a2w3Words.length)%a2w3Words.length
 qs('#prevWordBtnA2W3').addEventListener('click', prevA2W3Word);
 qs('#nextWordBtnA2W3').addEventListener('click', nextA2W3Word);
 
-// ✅ Updated
 blendAreaA2W3.addEventListener('click', ()=>{ playCurrentA2W3(); });
 let a2w3WordTouch=0;
 blendAreaA2W3.addEventListener('touchstart', e => { a2w3WordTouch = e.changedTouches[0].clientX; }, {passive:true});
 blendAreaA2W3.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - a2w3WordTouch;
   if (Math.abs(dx) > 40) { dx < 0 ? nextA2W3Word() : prevA2W3Word(); }
-  else { playCurrentA2W3(); }
+  // tap handled by click
 }, {passive:true});
 
 function activateWeekA2W3Tab(which){
@@ -521,14 +519,13 @@ function prevA2W4Word(){ a2w4WIdx=(a2w4WIdx-1+a2w4Words.length)%a2w4Words.length
 qs('#prevWordBtnA2W4').addEventListener('click', prevA2W4Word);
 qs('#nextWordBtnA2W4').addEventListener('click', nextA2W4Word);
 
-// ✅ Updated
 blendAreaA2W4.addEventListener('click', ()=>{ playCurrentA2W4(); });
 let a2w4WordTouch=0;
 blendAreaA2W4.addEventListener('touchstart', e => { a2w4WordTouch = e.changedTouches[0].clientX; }, {passive:true});
 blendAreaA2W4.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - a2w4WordTouch;
   if (Math.abs(dx) > 40) { dx < 0 ? nextA2W4Word() : prevA2W4Word(); }
-  else { playCurrentA2W4(); }
+  // tap handled by click
 }, {passive:true});
 
 function activateWeekA2W4Tab(which){
@@ -582,14 +579,13 @@ function prevA2W5Word(){ a2w5WIdx = (a2w5WIdx-1+a2w5Words.length) % a2w5Words.le
 qs('#prevWordBtnA2W5').addEventListener('click', prevA2W5Word);
 qs('#nextWordBtnA2W5').addEventListener('click', nextA2W5Word);
 
-// ✅ Updated
 blendAreaA2W5.addEventListener('click', ()=>{ playCurrentA2W5(); });
 let a2w5WordTouch=0;
 blendAreaA2W5.addEventListener('touchstart', e => { a2w5WordTouch = e.changedTouches[0].clientX; }, {passive:true});
 blendAreaA2W5.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - a2w5WordTouch;
   if (Math.abs(dx) > 40) { dx < 0 ? nextA2W5Word() : prevA2W5Word(); }
-  else { playCurrentA2W5(); }
+  // tap handled by click
 }, {passive:true});
 
 // Tabs
