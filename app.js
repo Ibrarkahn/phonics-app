@@ -48,6 +48,8 @@ const A2W5_WORDS   = ['zips','ships','chips','rings','pins','dogs','sings','duck
 
 /* ===================== Utils ===================== */
 let audio;
+let currentBlend = null;   // 🔸 controller for cancelling ongoing blends
+
 const qs  = (s) => document.querySelector(s);
 
 function show(name){
@@ -79,19 +81,42 @@ function playSoundFor(key){
   audio.play().catch(()=>{});
 }
 
-// Blend helper: play sounds for each letter then the whole word
+// 🔸 Blend helper: play sounds for each letter then the whole word,
+// and cancel any previous blend still in progress
 function playBlend(word){
+  // cancel previous blend if any
+  if (currentBlend && currentBlend.audio) {
+    currentBlend.cancelled = true;
+    currentBlend.audio.pause();
+    currentBlend.audio.currentTime = 0;
+  }
+
+  const controller = { cancelled: false, audio: null };
+  currentBlend = controller;
+
   const parts = word.split('');
   let i = 0;
+
   const step = () => {
+    if (controller.cancelled) return;
+
     if (i < parts.length){
       const a = new Audio(`sounds/${parts[i]}.mp3`);
+      controller.audio = a;
       a.play().catch(()=>{});
-      a.onended = () => { i++; step(); };
+      a.onended = () => {
+        if (controller.cancelled) return;
+        i++;
+        step();
+      };
     } else {
-      new Audio(`sounds/${word}.mp3`).play().catch(()=>{});
+      const a = new Audio(`sounds/${word}.mp3`);
+      controller.audio = a;
+      a.play().catch(()=>{});
+      a.onended = null;
     }
   };
+
   step();
 }
 
