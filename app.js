@@ -103,7 +103,8 @@ function show(name){
   qs('#weekA2W3').style.display  = name==='weekA2W3' ? 'block':'none';
   qs('#weekA2W4').style.display  = name==='weekA2W4' ? 'block':'none';
   qs('#weekA2W5').style.display  = name==='weekA2W5' ? 'block':'none';
-  qs('#sprint1w1').style.display = name==='spring1w1' ? 'block':'none';
+  qs('#spring1w1').style.display = name==='spring1w1' ? 'block' : 'none';
+
 
 }
 
@@ -729,7 +730,8 @@ qs('#btn-phase-7').addEventListener('click', ()=>{ show('weekA2W2'); activateWee
 qs('#btn-phase-8').addEventListener('click', ()=>{ show('weekA2W3'); activateWeekA2W3Tab('letters'); });
 qs('#btn-phase-9').addEventListener('click', ()=>{ show('weekA2W4'); activateWeekA2W4Tab('letters'); });
 qs('#btn-phase-10').addEventListener('click', ()=>{ show('weekA2W5'); activateWeekA2W5Tab('letters'); });
-qs('#btn-s1w1').addEventListener('click', ()=>{ show('sprint1w1'); activateS1W1Tab('letters'); });
+qs('#btn-s1w1').addEventListener('click', ()=>{ show('spring1w1'); activateS1W1Tab('letters'); });
+
 
 
 
@@ -747,6 +749,7 @@ qs('#backS1W1').addEventListener('click', ()=>show('home'));
 
 /* ===================== Init ===================== */
 show('home');
+
 
 
 
