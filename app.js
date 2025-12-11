@@ -45,7 +45,7 @@ const A2W4_WORDS   = ['shell','dish','this','moth','ring','thing','pink','sink']
 const A2W5_LETTERS = ['f','l','s','j','v','w','x','y','z','qu','ch','sh','ng','th','nk'];
 const A2W5_WORDS   = ['zips','ships','chips','rings','pins','dogs','sings','ducks'];
 
-// Sprint 1 – Week 1
+// Spring 1 – Week 1
 const S1W1_LETTERS = ['ai','ee','igh','oa'];
 const S1W1_WORDS   = ['pain','see','sight','coat','hail','jeep','high','road'];
 
@@ -749,6 +749,7 @@ qs('#backS1W1').addEventListener('click', ()=>show('home'));
 
 /* ===================== Init ===================== */
 show('home');
+
 
 
 
