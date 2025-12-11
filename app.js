@@ -49,6 +49,29 @@ const A2W5_WORDS   = ['zips','ships','chips','rings','pins','dogs','sings','duck
 const S1W1_LETTERS = ['ai','ee','igh','oa'];
 const S1W1_WORDS   = ['pain','see','sight','coat','hail','jeep','high','road'];
 
+// Spring 1 – Week 2
+const S1W2_LETTERS = ['oo-long','oo-short','ar','or'];
+const S1W2_WORDS   = ['zoo','good','bark','pork','room','hook','yard','born'];
+
+// Spring 1 – Week 3
+const S1W3_LETTERS = ['ur','ow','oi','ear'];
+const S1W3_WORDS   = ['surf','howl','oil','hear','turn','down','join','tear'];
+
+// Spring 1 – Week 4
+const S1W4_LETTERS = ['air','er'];
+const S1W4_WORDS   = ['hair','boxer','letter','rubber','chair','summer','rubbish','coffee'];
+
+// Spring 1 – Week 5
+const S1W5_LETTERS = [
+  'ai','ee','ur','ow','igh','oa','oi','ear',
+  'oo-long','oo-short','air','er','ar','or'
+];
+const S1W5_WORDS = [
+  'laptop','popcorn','market','raincoat',
+  'sunset','starfish','ticket','melon'
+];
+
+
 
 /* ===================== Utils ===================== */
 let audio;
@@ -104,6 +127,10 @@ function show(name){
   qs('#weekA2W4').style.display  = name==='weekA2W4' ? 'block':'none';
   qs('#weekA2W5').style.display  = name==='weekA2W5' ? 'block':'none';
   qs('#spring1w1').style.display = name==='spring1w1' ? 'block' : 'none';
+  qs('#spring1w2').style.display = name==='spring1w2' ? 'block':'none';
+  qs('#spring1w3').style.display = name==='spring1w3' ? 'block':'none';
+  qs('#spring1w4').style.display = name==='spring1w4' ? 'block':'none';
+  qs('#spring1w5').style.display = name==='spring1w5' ? 'block':'none';
 
 
 }
@@ -731,7 +758,10 @@ qs('#btn-phase-8').addEventListener('click', ()=>{ show('weekA2W3'); activateWee
 qs('#btn-phase-9').addEventListener('click', ()=>{ show('weekA2W4'); activateWeekA2W4Tab('letters'); });
 qs('#btn-phase-10').addEventListener('click', ()=>{ show('weekA2W5'); activateWeekA2W5Tab('letters'); });
 qs('#btn-s1w1').addEventListener('click', ()=>{ show('spring1w1'); activateS1W1Tab('letters'); });
-
+qs('#btn-s1w2').addEventListener('click', ()=>{ show('spring1w2'); activateS1W2Tab('letters'); });
+qs('#btn-s1w3').addEventListener('click', ()=>{ show('spring1w3'); activateS1W3Tab('letters'); });
+qs('#btn-s1w4').addEventListener('click', ()=>{ show('spring1w4'); activateS1W4Tab('letters'); });
+qs('#btn-s1w5').addEventListener('click', ()=>{ show('spring1w5'); activateS1W5Tab('letters'); });
 
 
 
@@ -746,9 +776,15 @@ qs('#backA2W3').addEventListener('click',    ()=>show('home'));
 qs('#backA2W4').addEventListener('click',    ()=>show('home'));
 qs('#backA2W5').addEventListener('click',    ()=>show('home'));
 qs('#backS1W1').addEventListener('click', ()=>show('home'));
+qs('#backS1W2').addEventListener('click', ()=>show('home'));
+qs('#backS1W3').addEventListener('click', ()=>show('home'));
+qs('#backS1W4').addEventListener('click', ()=>show('home'));
+qs('#backS1W5').addEventListener('click', ()=>show('home'));
+
 
 /* ===================== Init ===================== */
 show('home');
+
 
 
 
