@@ -103,7 +103,7 @@ function show(name){
   qs('#weekA2W3').style.display  = name==='weekA2W3' ? 'block':'none';
   qs('#weekA2W4').style.display  = name==='weekA2W4' ? 'block':'none';
   qs('#weekA2W5').style.display  = name==='weekA2W5' ? 'block':'none';
-  qs('#sprint1w1').style.display = name==='sprint1w1' ? 'block':'none';
+  qs('#sprint1w1').style.display = name==='spring1w1' ? 'block':'none';
 
 }
 
@@ -655,7 +655,7 @@ function activateWeekA2W5Tab(which){
 qs('#tabLettersA2W5').addEventListener('click', ()=>activateWeekA2W5Tab('letters'));
 qs('#tabBlendA2W5').addEventListener('click',   ()=>activateWeekA2W5Tab('blend'));
 
-/* ===== Sprint 1 – Week 1 ===== */
+/* ===== Spring 1 – Week 1 ===== */
 let s1w1Letters = shuffle(S1W1_LETTERS.slice()), s1w1LIdx = 0;
 const bigLetterS1W1  = qs('#bigLetterS1W1');
 const letterAreaS1W1 = qs('#letterAreaS1W1');
@@ -747,6 +747,7 @@ qs('#backS1W1').addEventListener('click', ()=>show('home'));
 
 /* ===================== Init ===================== */
 show('home');
+
 
 
 
