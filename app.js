@@ -81,8 +81,21 @@ let currentBlend = null;   // 🔸 controller for cancelling ongoing blends
 const PHONICS_CLUSTERS = [
   'ck','ff','ss','ll','vv',  // double consonants
   'sh','ch','th','ng','nk', // digraphs
-  'qu','zz'                 // other common clusters
+  'qu','zz',                // other common clusters
+
+  // vowel digraphs / trigraphs (Phase 5)
+  'ai','ee','igh','oa','oo','ur','ow','oi','ear','air','er','ar','or'
 ];
+
+// Display helper (keeps special sound keys like "oo-long" while showing "oo")
+function displayKey(key){
+  if (key === 'oo-long' || key === 'oo-short') return 'oo';
+  return key;
+}
+function displayGrapheme(key){
+  if (key === 'oo-long' || key === 'oo-short') return 'oo';
+  return key;
+}
 
 // Split a word into phonics parts (e.g. "duck" -> ["d","u","ck"])
 function splitForPhonics(word){
@@ -204,7 +217,7 @@ function startPractice(letters){
   renderLetter();
   setTimeout(()=>letterArea.focus(),50);
 }
-function renderLetter(){ bigLetter.textContent = CURRENT_SET[idx]; }
+function renderLetter(){ bigLetter.textContent = displayKey(CURRENT_SET[idx]); }
 function nextLetter(){ idx=(idx+1)%CURRENT_SET.length; renderLetter(); playSoundFor(CURRENT_SET[idx]); }
 function prevLetter(){ idx=(idx-1+CURRENT_SET.length)%CURRENT_SET.length; renderLetter(); playSoundFor(CURRENT_SET[idx]); }
 
@@ -224,7 +237,7 @@ letterArea.addEventListener('touchend',e=>{
 let w2Letters = shuffle(WEEK2_LETTERS.slice()), w2LIdx=0;
 const bigLetterW2  = qs('#bigLetterW2');
 const letterAreaW2 = qs('#letterAreaW2');
-function renderW2Letter(){ bigLetterW2.textContent = w2Letters[w2LIdx]; }
+function renderW2Letter(){ bigLetterW2.textContent = displayKey(w2Letters[w2LIdx]); }
 function nextW2Letter(){ w2LIdx=(w2LIdx+1)%w2Letters.length; renderW2Letter(); playSoundFor(w2Letters[w2LIdx]); }
 function prevW2Letter(){ w2LIdx=(w2LIdx-1+w2Letters.length)%w2Letters.length; renderW2Letter(); playSoundFor(w2Letters[w2LIdx]); }
 qs('#prevBtnW2').addEventListener('click', prevW2Letter);
@@ -273,7 +286,7 @@ qs('#tabBlendW2').addEventListener('click',   ()=>activateWeek2Tab('blend'));
 let w3Letters = shuffle(WEEK3_LETTERS.slice()), w3LIdx=0;
 const bigLetterW3  = qs('#bigLetterW3');
 const letterAreaW3 = qs('#letterAreaW3');
-function renderW3Letter(){ bigLetterW3.textContent = w3Letters[w3LIdx]; }
+function renderW3Letter(){ bigLetterW3.textContent = displayKey(w3Letters[w3LIdx]); }
 function nextW3Letter(){ w3LIdx=(w3LIdx+1)%w3Letters.length; renderW3Letter(); playSoundFor(w3Letters[w3LIdx]); }
 function prevW3Letter(){ w3LIdx=(w3LIdx-1+w3Letters.length)%w3Letters.length; renderW3Letter(); playSoundFor(w3Letters[w3LIdx]); }
 
@@ -323,7 +336,7 @@ qs('#tabBlendW3').addEventListener('click',   ()=>activateWeek3Tab('blend'));
 let w4Letters = shuffle(WEEK4_LETTERS.slice()), w4LIdx=0;
 const bigLetterW4  = qs('#bigLetterW4');
 const letterAreaW4 = qs('#letterAreaW4');
-function renderW4Letter(){ bigLetterW4.textContent = w4Letters[w4LIdx]; }
+function renderW4Letter(){ bigLetterW4.textContent = displayKey(w4Letters[w4LIdx]); }
 function nextW4Letter(){ w4LIdx=(w4LIdx+1)%w4Letters.length; renderW4Letter(); playSoundFor(w4Letters[w4LIdx]); }
 function prevW4Letter(){ w4LIdx=(w4LIdx-1+w4Letters.length)%w4Letters.length; renderW4Letter(); playSoundFor(w4Letters[w4LIdx]); }
 
@@ -373,7 +386,7 @@ qs('#tabBlendW4').addEventListener('click',   ()=>activateWeek4Tab('blend'));
 let w5Letters = shuffle(WEEK5_LETTERS.slice()), w5LIdx=0;
 const bigLetterW5  = qs('#bigLetterW5');
 const letterAreaW5 = qs('#letterAreaW5');
-function renderW5Letter(){ bigLetterW5.textContent = w5Letters[w5LIdx]; }
+function renderW5Letter(){ bigLetterW5.textContent = displayKey(w5Letters[w5LIdx]); }
 function nextW5Letter(){ w5LIdx=(w5LIdx+1)%w5Letters.length; renderW5Letter(); playSoundFor(w5Letters[w5LIdx]); }
 function prevW5Letter(){ w5LIdx=(w5LIdx-1+w5Letters.length)%w5Letters.length; renderW5Letter(); playSoundFor(w5Letters[w5LIdx]); }
 
@@ -425,7 +438,7 @@ let a2Letters = shuffle(A2W1_LETTERS.slice()), a2LIdx = 0;
 const bigLetterA2  = qs('#bigLetterA2');
 const letterAreaA2 = qs('#letterAreaA2');
 
-function renderA2Letter(){ bigLetterA2.textContent = a2Letters[a2LIdx]; }
+function renderA2Letter(){ bigLetterA2.textContent = displayKey(a2Letters[a2LIdx]); }
 function nextA2Letter(){ a2LIdx=(a2LIdx+1)%a2Letters.length; renderA2Letter(); playSoundFor(a2Letters[a2LIdx]); }
 function prevA2Letter(){ a2LIdx=(a2LIdx-1+a2Letters.length)%a2Letters.length; renderA2Letter(); playSoundFor(a2Letters[a2LIdx]); }
 
@@ -479,7 +492,7 @@ qs('#tabBlendA2').addEventListener('click',   ()=>activateA2Tab('blend'));
 let a2w2Letters = shuffle(A2W2_LETTERS.slice()), a2w2LIdx=0;
 const bigLetterA2W2  = qs('#bigLetterA2W2');
 const letterAreaA2W2 = qs('#letterAreaA2W2');
-function renderA2W2Letter(){ bigLetterA2W2.textContent = a2w2Letters[a2w2LIdx]; }
+function renderA2W2Letter(){ bigLetterA2W2.textContent = displayKey(a2w2Letters[a2w2LIdx]); }
 function nextA2W2Letter(){ a2w2LIdx=(a2w2LIdx+1)%a2w2Letters.length; renderA2W2Letter(); playSoundFor(a2w2Letters[a2w2LIdx]); }
 function prevA2W2Letter(){ a2w2LIdx=(a2w2LIdx-1+a2w2Letters.length)%a2w2Letters.length; renderA2W2Letter(); playSoundFor(a2w2Letters[a2w2LIdx]); }
 
@@ -530,7 +543,7 @@ qs('#tabBlendA2W2').addEventListener('click',   ()=>activateWeekA2W2Tab('blend')
 let a2w3Letters = shuffle(A2W3_LETTERS.slice()), a2w3LIdx=0;
 const bigLetterA2W3  = qs('#bigLetterA2W3');
 const letterAreaA2W3 = qs('#letterAreaA2W3');
-function renderA2W3Letter(){ bigLetterA2W3.textContent = a2w3Letters[a2w3LIdx]; }
+function renderA2W3Letter(){ bigLetterA2W3.textContent = displayKey(a2w3Letters[a2w3LIdx]); }
 function nextA2W3Letter(){ a2w3LIdx=(a2w3LIdx+1)%a2w3Letters.length; renderA2W3Letter(); playSoundFor(a2w3Letters[a2w3LIdx]); }
 function prevA2W3Letter(){ a2w3LIdx=(a2w3LIdx-1+a2w3Letters.length)%a2w3Letters.length; renderA2W3Letter(); playSoundFor(a2w3Letters[a2w3LIdx]); }
 
@@ -581,7 +594,7 @@ qs('#tabBlendA2W3').addEventListener('click',   ()=>activateWeekA2W3Tab('blend')
 let a2w4Letters = shuffle(A2W4_LETTERS.slice()), a2w4LIdx=0;
 const bigLetterA2W4  = qs('#bigLetterA2W4');
 const letterAreaA2W4 = qs('#letterAreaA2W4');
-function renderA2W4Letter(){ bigLetterA2W4.textContent = a2w4Letters[a2w4LIdx]; }
+function renderA2W4Letter(){ bigLetterA2W4.textContent = displayKey(a2w4Letters[a2w4LIdx]); }
 function nextA2W4Letter(){ a2w4LIdx=(a2w4LIdx+1)%a2w4Letters.length; renderA2W4Letter(); playSoundFor(a2w4Letters[a2w4LIdx]); }
 function prevA2W4Letter(){ a2w4LIdx=(a2w4LIdx-1+a2w4Letters.length)%a2w4Letters.length; renderA2W4Letter(); playSoundFor(a2w4Letters[a2w4LIdx]); }
 
@@ -634,7 +647,7 @@ let a2w5Letters = shuffle(A2W5_LETTERS.slice()), a2w5LIdx = 0;
 const bigLetterA2W5  = qs('#bigLetterA2W5');
 const letterAreaA2W5 = qs('#letterAreaA2W5');
 
-function renderA2W5Letter(){ bigLetterA2W5.textContent = a2w5Letters[a2w5LIdx]; }
+function renderA2W5Letter(){ bigLetterA2W5.textContent = displayKey(a2w5Letters[a2w5LIdx]); }
 function nextA2W5Letter(){ a2w5LIdx = (a2w5LIdx+1) % a2w5Letters.length; renderA2W5Letter(); playSoundFor(a2w5Letters[a2w5LIdx]); }
 function prevA2W5Letter(){ a2w5LIdx = (a2w5LIdx-1+a2w5Letters.length) % a2w5Letters.length; renderA2W5Letter(); playSoundFor(a2w5Letters[a2w5LIdx]); }
 
@@ -688,7 +701,7 @@ let s1w1Letters = shuffle(S1W1_LETTERS.slice()), s1w1LIdx = 0;
 const bigLetterS1W1  = qs('#bigLetterS1W1');
 const letterAreaS1W1 = qs('#letterAreaS1W1');
 
-function renderS1W1Letter(){ bigLetterS1W1.textContent = s1w1Letters[s1w1LIdx]; }
+function renderS1W1Letter(){ bigLetterS1W1.textContent = displayKey(s1w1Letters[s1w1LIdx]); }
 function nextS1W1Letter(){ s1w1LIdx=(s1w1LIdx+1)%s1w1Letters.length; renderS1W1Letter(); playSoundFor(s1w1Letters[s1w1LIdx]); }
 function prevS1W1Letter(){ s1w1LIdx=(s1w1LIdx-1+s1w1Letters.length)%s1w1Letters.length; renderS1W1Letter(); playSoundFor(s1w1Letters[s1w1LIdx]); }
 
@@ -742,6 +755,218 @@ function activateS1W1Tab(which){
 }
 qs('#tabLettersS1W1').addEventListener('click', ()=>activateS1W1Tab('letters'));
 qs('#tabBlendS1W1').addEventListener('click',   ()=>activateS1W1Tab('blend'));
+
+
+/* ===== Spring 1 – Week 2 ===== */
+let s1w2Letters = shuffle(S1W2_LETTERS.slice()), s1w2LIdx = 0;
+const bigLetterS1W2  = qs('#bigLetterS1W2');
+const letterAreaS1W2 = qs('#letterAreaS1W2');
+function renderS1W2Letter(){ bigLetterS1W2.textContent = displayKey(s1w2Letters[s1w2LIdx]); }
+function nextS1W2Letter(){ s1w2LIdx=(s1w2LIdx+1)%s1w2Letters.length; renderS1W2Letter(); playSoundFor(s1w2Letters[s1w2LIdx]); }
+function prevS1W2Letter(){ s1w2LIdx=(s1w2LIdx-1+s1w2Letters.length)%s1w2Letters.length; renderS1W2Letter(); playSoundFor(s1w2Letters[s1w2LIdx]); }
+qs('#prevBtnS1W2').addEventListener('click', prevS1W2Letter);
+qs('#nextBtnS1W2').addEventListener('click', nextS1W2Letter);
+letterAreaS1W2.addEventListener('click', ()=>{ playSoundFor(s1w2Letters[s1w2LIdx]); nextS1W2Letter(); });
+let s1w2Touch=0;
+letterAreaS1W2.addEventListener('touchstart', e=>{ s1w2Touch=e.changedTouches[0].clientX; }, {passive:true});
+letterAreaS1W2.addEventListener('touchend', e=>{
+  const dx=e.changedTouches[0].clientX - s1w2Touch;
+  if(Math.abs(dx)>40){ dx<0 ? nextS1W2Letter() : prevS1W2Letter(); }
+  else { playSoundFor(s1w2Letters[s1w2LIdx]); nextS1W2Letter(); }
+},{passive:true});
+
+let s1w2Words = shuffle(S1W2_WORDS.slice()), s1w2WIdx = 0;
+const bigWordS1W2   = qs('#bigWordS1W2');
+const blendAreaS1W2 = qs('#blendSeqAreaS1W2');
+function renderS1W2Word(){ bigWordS1W2.textContent = s1w2Words[s1w2WIdx]; }
+function playCurrentS1W2(){ playBlend(s1w2Words[s1w2WIdx]); }
+function nextS1W2Word(){ s1w2WIdx=(s1w2WIdx+1)%s1w2Words.length; renderS1W2Word(); playCurrentS1W2(); }
+function prevS1W2Word(){ s1w2WIdx=(s1w2WIdx-1+s1w2Words.length)%s1w2Words.length; renderS1W2Word(); playCurrentS1W2(); }
+qs('#prevWordBtnS1W2').addEventListener('click', prevS1W2Word);
+qs('#nextWordBtnS1W2').addEventListener('click', nextS1W2Word);
+blendAreaS1W2.addEventListener('click', ()=>{ playCurrentS1W2(); });
+let s1w2WordTouch=0;
+blendAreaS1W2.addEventListener('touchstart', e=>{ s1w2WordTouch=e.changedTouches[0].clientX; }, {passive:true});
+blendAreaS1W2.addEventListener('touchend', e=>{
+  const dx=e.changedTouches[0].clientX - s1w2WordTouch;
+  if(Math.abs(dx)>40){ dx<0 ? nextS1W2Word() : prevS1W2Word(); }
+  else { playCurrentS1W2(); }
+},{passive:true});
+
+function activateS1W2Tab(which){
+  const tabL=qs('#tabLettersS1W2'), tabB=qs('#tabBlendS1W2');
+  const paneL=qs('#paneLettersS1W2'), paneB=qs('#paneBlendS1W2');
+  if(which==='letters'){
+    tabL.classList.add('active'); tabB.classList.remove('active');
+    paneL.classList.add('active'); paneB.classList.remove('active');
+    renderS1W2Letter(); setTimeout(()=>letterAreaS1W2.focus(),50);
+  } else {
+    tabB.classList.add('active'); tabL.classList.remove('active');
+    paneB.classList.add('active'); paneL.classList.remove('active');
+    renderS1W2Word(); setTimeout(()=>blendAreaS1W2.focus(),50);
+  }
+}
+qs('#tabLettersS1W2').addEventListener('click', ()=>activateS1W2Tab('letters'));
+qs('#tabBlendS1W2').addEventListener('click',   ()=>activateS1W2Tab('blend'));
+
+
+/* ===== Spring 1 – Week 3 ===== */
+let s1w3Letters = shuffle(S1W3_LETTERS.slice()), s1w3LIdx = 0;
+const bigLetterS1W3  = qs('#bigLetterS1W3');
+const letterAreaS1W3 = qs('#letterAreaS1W3');
+function renderS1W3Letter(){ bigLetterS1W3.textContent = displayKey(s1w3Letters[s1w3LIdx]); }
+function nextS1W3Letter(){ s1w3LIdx=(s1w3LIdx+1)%s1w3Letters.length; renderS1W3Letter(); playSoundFor(s1w3Letters[s1w3LIdx]); }
+function prevS1W3Letter(){ s1w3LIdx=(s1w3LIdx-1+s1w3Letters.length)%s1w3Letters.length; renderS1W3Letter(); playSoundFor(s1w3Letters[s1w3LIdx]); }
+qs('#prevBtnS1W3').addEventListener('click', prevS1W3Letter);
+qs('#nextBtnS1W3').addEventListener('click', nextS1W3Letter);
+letterAreaS1W3.addEventListener('click', ()=>{ playSoundFor(s1w3Letters[s1w3LIdx]); nextS1W3Letter(); });
+let s1w3Touch=0;
+letterAreaS1W3.addEventListener('touchstart', e=>{ s1w3Touch=e.changedTouches[0].clientX; }, {passive:true});
+letterAreaS1W3.addEventListener('touchend', e=>{
+  const dx=e.changedTouches[0].clientX - s1w3Touch;
+  if(Math.abs(dx)>40){ dx<0 ? nextS1W3Letter() : prevS1W3Letter(); }
+  else { playSoundFor(s1w3Letters[s1w3LIdx]); nextS1W3Letter(); }
+},{passive:true});
+
+let s1w3Words = shuffle(S1W3_WORDS.slice()), s1w3WIdx = 0;
+const bigWordS1W3   = qs('#bigWordS1W3');
+const blendAreaS1W3 = qs('#blendSeqAreaS1W3');
+function renderS1W3Word(){ bigWordS1W3.textContent = s1w3Words[s1w3WIdx]; }
+function playCurrentS1W3(){ playBlend(s1w3Words[s1w3WIdx]); }
+function nextS1W3Word(){ s1w3WIdx=(s1w3WIdx+1)%s1w3Words.length; renderS1W3Word(); playCurrentS1W3(); }
+function prevS1W3Word(){ s1w3WIdx=(s1w3WIdx-1+s1w3Words.length)%s1w3Words.length; renderS1W3Word(); playCurrentS1W3(); }
+qs('#prevWordBtnS1W3').addEventListener('click', prevS1W3Word);
+qs('#nextWordBtnS1W3').addEventListener('click', nextS1W3Word);
+blendAreaS1W3.addEventListener('click', ()=>{ playCurrentS1W3(); });
+let s1w3WordTouch=0;
+blendAreaS1W3.addEventListener('touchstart', e=>{ s1w3WordTouch=e.changedTouches[0].clientX; }, {passive:true});
+blendAreaS1W3.addEventListener('touchend', e=>{
+  const dx=e.changedTouches[0].clientX - s1w3WordTouch;
+  if(Math.abs(dx)>40){ dx<0 ? nextS1W3Word() : prevS1W3Word(); }
+  else { playCurrentS1W3(); }
+},{passive:true});
+
+function activateS1W3Tab(which){
+  const tabL=qs('#tabLettersS1W3'), tabB=qs('#tabBlendS1W3');
+  const paneL=qs('#paneLettersS1W3'), paneB=qs('#paneBlendS1W3');
+  if(which==='letters'){
+    tabL.classList.add('active'); tabB.classList.remove('active');
+    paneL.classList.add('active'); paneB.classList.remove('active');
+    renderS1W3Letter(); setTimeout(()=>letterAreaS1W3.focus(),50);
+  } else {
+    tabB.classList.add('active'); tabL.classList.remove('active');
+    paneB.classList.add('active'); paneL.classList.remove('active');
+    renderS1W3Word(); setTimeout(()=>blendAreaS1W3.focus(),50);
+  }
+}
+qs('#tabLettersS1W3').addEventListener('click', ()=>activateS1W3Tab('letters'));
+qs('#tabBlendS1W3').addEventListener('click',   ()=>activateS1W3Tab('blend'));
+
+
+/* ===== Spring 1 – Week 4 ===== */
+let s1w4Letters = shuffle(S1W4_LETTERS.slice()), s1w4LIdx = 0;
+const bigLetterS1W4  = qs('#bigLetterS1W4');
+const letterAreaS1W4 = qs('#letterAreaS1W4');
+function renderS1W4Letter(){ bigLetterS1W4.textContent = displayKey(s1w4Letters[s1w4LIdx]); }
+function nextS1W4Letter(){ s1w4LIdx=(s1w4LIdx+1)%s1w4Letters.length; renderS1W4Letter(); playSoundFor(s1w4Letters[s1w4LIdx]); }
+function prevS1W4Letter(){ s1w4LIdx=(s1w4LIdx-1+s1w4Letters.length)%s1w4Letters.length; renderS1W4Letter(); playSoundFor(s1w4Letters[s1w4LIdx]); }
+qs('#prevBtnS1W4').addEventListener('click', prevS1W4Letter);
+qs('#nextBtnS1W4').addEventListener('click', nextS1W4Letter);
+letterAreaS1W4.addEventListener('click', ()=>{ playSoundFor(s1w4Letters[s1w4LIdx]); nextS1W4Letter(); });
+let s1w4Touch=0;
+letterAreaS1W4.addEventListener('touchstart', e=>{ s1w4Touch=e.changedTouches[0].clientX; }, {passive:true});
+letterAreaS1W4.addEventListener('touchend', e=>{
+  const dx=e.changedTouches[0].clientX - s1w4Touch;
+  if(Math.abs(dx)>40){ dx<0 ? nextS1W4Letter() : prevS1W4Letter(); }
+  else { playSoundFor(s1w4Letters[s1w4LIdx]); nextS1W4Letter(); }
+},{passive:true});
+
+let s1w4Words = shuffle(S1W4_WORDS.slice()), s1w4WIdx = 0;
+const bigWordS1W4   = qs('#bigWordS1W4');
+const blendAreaS1W4 = qs('#blendSeqAreaS1W4');
+function renderS1W4Word(){ bigWordS1W4.textContent = s1w4Words[s1w4WIdx]; }
+function playCurrentS1W4(){ playBlend(s1w4Words[s1w4WIdx]); }
+function nextS1W4Word(){ s1w4WIdx=(s1w4WIdx+1)%s1w4Words.length; renderS1W4Word(); playCurrentS1W4(); }
+function prevS1W4Word(){ s1w4WIdx=(s1w4WIdx-1+s1w4Words.length)%s1w4Words.length; renderS1W4Word(); playCurrentS1W4(); }
+qs('#prevWordBtnS1W4').addEventListener('click', prevS1W4Word);
+qs('#nextWordBtnS1W4').addEventListener('click', nextS1W4Word);
+blendAreaS1W4.addEventListener('click', ()=>{ playCurrentS1W4(); });
+let s1w4WordTouch=0;
+blendAreaS1W4.addEventListener('touchstart', e=>{ s1w4WordTouch=e.changedTouches[0].clientX; }, {passive:true});
+blendAreaS1W4.addEventListener('touchend', e=>{
+  const dx=e.changedTouches[0].clientX - s1w4WordTouch;
+  if(Math.abs(dx)>40){ dx<0 ? nextS1W4Word() : prevS1W4Word(); }
+  else { playCurrentS1W4(); }
+},{passive:true});
+
+function activateS1W4Tab(which){
+  const tabL=qs('#tabLettersS1W4'), tabB=qs('#tabBlendS1W4');
+  const paneL=qs('#paneLettersS1W4'), paneB=qs('#paneBlendS1W4');
+  if(which==='letters'){
+    tabL.classList.add('active'); tabB.classList.remove('active');
+    paneL.classList.add('active'); paneB.classList.remove('active');
+    renderS1W4Letter(); setTimeout(()=>letterAreaS1W4.focus(),50);
+  } else {
+    tabB.classList.add('active'); tabL.classList.remove('active');
+    paneB.classList.add('active'); paneL.classList.remove('active');
+    renderS1W4Word(); setTimeout(()=>blendAreaS1W4.focus(),50);
+  }
+}
+qs('#tabLettersS1W4').addEventListener('click', ()=>activateS1W4Tab('letters'));
+qs('#tabBlendS1W4').addEventListener('click',   ()=>activateS1W4Tab('blend'));
+
+
+/* ===== Spring 1 – Week 5 ===== */
+let s1w5Letters = shuffle(S1W5_LETTERS.slice()), s1w5LIdx = 0;
+const bigLetterS1W5  = qs('#bigLetterS1W5');
+const letterAreaS1W5 = qs('#letterAreaS1W5');
+function renderS1W5Letter(){ bigLetterS1W5.textContent = displayKey(s1w5Letters[s1w5LIdx]); }
+function nextS1W5Letter(){ s1w5LIdx=(s1w5LIdx+1)%s1w5Letters.length; renderS1W5Letter(); playSoundFor(s1w5Letters[s1w5LIdx]); }
+function prevS1W5Letter(){ s1w5LIdx=(s1w5LIdx-1+s1w5Letters.length)%s1w5Letters.length; renderS1W5Letter(); playSoundFor(s1w5Letters[s1w5LIdx]); }
+qs('#prevBtnS1W5').addEventListener('click', prevS1W5Letter);
+qs('#nextBtnS1W5').addEventListener('click', nextS1W5Letter);
+letterAreaS1W5.addEventListener('click', ()=>{ playSoundFor(s1w5Letters[s1w5LIdx]); nextS1W5Letter(); });
+let s1w5Touch=0;
+letterAreaS1W5.addEventListener('touchstart', e=>{ s1w5Touch=e.changedTouches[0].clientX; }, {passive:true});
+letterAreaS1W5.addEventListener('touchend', e=>{
+  const dx=e.changedTouches[0].clientX - s1w5Touch;
+  if(Math.abs(dx)>40){ dx<0 ? nextS1W5Letter() : prevS1W5Letter(); }
+  else { playSoundFor(s1w5Letters[s1w5LIdx]); nextS1W5Letter(); }
+},{passive:true});
+
+let s1w5Words = shuffle(S1W5_WORDS.slice()), s1w5WIdx = 0;
+const bigWordS1W5   = qs('#bigWordS1W5');
+const blendAreaS1W5 = qs('#blendSeqAreaS1W5');
+function renderS1W5Word(){ bigWordS1W5.textContent = s1w5Words[s1w5WIdx]; }
+function playCurrentS1W5(){ playBlend(s1w5Words[s1w5WIdx]); }
+function nextS1W5Word(){ s1w5WIdx=(s1w5WIdx+1)%s1w5Words.length; renderS1W5Word(); playCurrentS1W5(); }
+function prevS1W5Word(){ s1w5WIdx=(s1w5WIdx-1+s1w5Words.length)%s1w5Words.length; renderS1W5Word(); playCurrentS1W5(); }
+qs('#prevWordBtnS1W5').addEventListener('click', prevS1W5Word);
+qs('#nextWordBtnS1W5').addEventListener('click', nextS1W5Word);
+blendAreaS1W5.addEventListener('click', ()=>{ playCurrentS1W5(); });
+let s1w5WordTouch=0;
+blendAreaS1W5.addEventListener('touchstart', e=>{ s1w5WordTouch=e.changedTouches[0].clientX; }, {passive:true});
+blendAreaS1W5.addEventListener('touchend', e=>{
+  const dx=e.changedTouches[0].clientX - s1w5WordTouch;
+  if(Math.abs(dx)>40){ dx<0 ? nextS1W5Word() : prevS1W5Word(); }
+  else { playCurrentS1W5(); }
+},{passive:true});
+
+function activateS1W5Tab(which){
+  const tabL=qs('#tabLettersS1W5'), tabB=qs('#tabBlendS1W5');
+  const paneL=qs('#paneLettersS1W5'), paneB=qs('#paneBlendS1W5');
+  if(which==='letters'){
+    tabL.classList.add('active'); tabB.classList.remove('active');
+    paneL.classList.add('active'); paneB.classList.remove('active');
+    renderS1W5Letter(); setTimeout(()=>letterAreaS1W5.focus(),50);
+  } else {
+    tabB.classList.add('active'); tabL.classList.remove('active');
+    paneB.classList.add('active'); paneL.classList.remove('active');
+    renderS1W5Word(); setTimeout(()=>blendAreaS1W5.focus(),50);
+  }
+}
+qs('#tabLettersS1W5').addEventListener('click', ()=>activateS1W5Tab('letters'));
+qs('#tabBlendS1W5').addEventListener('click',   ()=>activateS1W5Tab('blend'));
 
 
 
