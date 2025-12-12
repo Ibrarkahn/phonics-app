@@ -128,25 +128,24 @@ function splitForPhonics(word){
 const qs  = (s) => document.querySelector(s);
 
 function show(name){
-  qs('#home').style.display      = name==='home'   ? 'flex':'none';
-  qs('#letters').style.display   = name==='letters'? 'block':'none';
-  qs('#week2').style.display     = name==='week2'  ? 'block':'none';
-  qs('#week3').style.display     = name==='week3'  ? 'block':'none';
-  qs('#week4').style.display     = name==='week4'  ? 'block':'none';
-  qs('#week5').style.display     = name==='week5'  ? 'block':'none';
-  qs('#a2w1').style.display      = name==='a2w1'   ? 'block':'none'; 
-  qs('#weekA2W2').style.display  = name==='weekA2W2' ? 'block':'none';
-  qs('#weekA2W3').style.display  = name==='weekA2W3' ? 'block':'none';
-  qs('#weekA2W4').style.display  = name==='weekA2W4' ? 'block':'none';
-  qs('#weekA2W5').style.display  = name==='weekA2W5' ? 'block':'none';
-  qs('#spring1w1').style.display = name==='spring1w1' ? 'block' : 'none';
-  qs('#spring1w2').style.display = name==='spring1w2' ? 'block':'none';
-  qs('#spring1w3').style.display = name==='spring1w3' ? 'block':'none';
-  qs('#spring1w4').style.display = name==='spring1w4' ? 'block':'none';
-  qs('#spring1w5').style.display = name==='spring1w5' ? 'block':'none';
+  const screens = [
+    'home','letters','week2','week3','week4','week5',
+    'a2w1','weekA2W2','weekA2W3','weekA2W4','weekA2W5',
+    'spring1w1','spring1w2','spring1w3','spring1w4','spring1w5'
+  ];
 
+  screens.forEach(id => {
+    const el = qs('#' + id);
+    if (!el) return; // ✅ prevent crash
+    el.style.display = (id === name) ? 'block' : 'none';
+  });
 
+  if (name === 'home') {
+    const home = qs('#home');
+    if (home) home.style.display = 'flex';
+  }
 }
+
 
 function a{
   for (let i=a.length-1;i>0;i--) {
@@ -1009,6 +1008,7 @@ qs('#backS1W5').addEventListener('click', ()=>show('home'));
 
 /* ===================== Init ===================== */
 show('home');
+
 
 
 
