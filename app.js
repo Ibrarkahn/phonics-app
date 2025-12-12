@@ -259,7 +259,7 @@ qs('#prevWordBtnW2').addEventListener('click', prevW2Word);
 qs('#nextWordBtnW2').addEventListener('click', nextW2Word);
 
 // Tap on word = replay once
-blendAreaW2.addEventListener('click', ()=>{ playCurrentW2(); });
+blendAreaW2.addEventListener('click', ()=>{ playCurrentW2(); nextW2Word(); });
 
 function activateWeek2Tab(which){
   const tabL=qs('#tabLettersW2'), tabB=qs('#tabBlendW2');
@@ -309,7 +309,7 @@ qs('#prevWordBtnW3').addEventListener('click', prevW3Word);
 qs('#nextWordBtnW3').addEventListener('click', nextW3Word);
 
 // Tap = replay current word
-blendAreaW3.addEventListener('click', ()=>{ playCurrentW3(); });
+blendAreaW3.addEventListener('click', ()=>{ playCurrentW3(); nextW3Word(); });
 
 function activateWeek3Tab(which){
   const tabL=qs('#tabLettersW3'), tabB=qs('#tabBlendW3');
@@ -359,7 +359,7 @@ qs('#prevWordBtnW4').addEventListener('click', prevW4Word);
 qs('#nextWordBtnW4').addEventListener('click', nextW4Word);
 
 // Tap = replay word
-blendAreaW4.addEventListener('click', ()=>{ playCurrentW4(); });
+blendAreaW4.addEventListener('click', ()=>{ playCurrentW4(); nextW4Word(); });
 
 function activateWeek4Tab(which){
   const tabL=qs('#tabLettersW4'), tabB=qs('#tabBlendW4');
@@ -409,7 +409,7 @@ qs('#prevWordBtnW5').addEventListener('click', prevW5Word);
 qs('#nextWordBtnW5').addEventListener('click', nextW5Word);
 
 // Tap = replay word
-blendAreaW5.addEventListener('click', ()=>{ playCurrentW5(); });
+blendAreaW5.addEventListener('click', ()=>{ playCurrentW5(); nextW5Word(); });
 
 function activateWeek5Tab(which){
   const tabL=qs('#tabLettersW5'), tabB=qs('#tabBlendW5');
@@ -464,7 +464,7 @@ qs('#prevWordBtnA2').addEventListener('click', prevA2Word);
 qs('#nextWordBtnA2').addEventListener('click', nextA2Word);
 
 // Tap = replay word
-blendAreaA2.addEventListener('click', ()=>{ playCurrentA2(); });
+blendAreaA2.addEventListener('click', ()=>{ playCurrentA2(); nextA2Word(); });
 
 // Tabs for A2W1
 function activateA2Tab(which){
@@ -516,7 +516,7 @@ qs('#prevWordBtnA2W2').addEventListener('click', prevA2W2Word);
 qs('#nextWordBtnA2W2').addEventListener('click', nextA2W2Word);
 
 // Tap = replay
-blendAreaA2W2.addEventListener('click', ()=>{ playCurrentA2W2(); });
+blendAreaA2W2.addEventListener('click', ()=>{ playCurrentA2W2(); nextA2W2Word(); });
 
 function activateWeekA2W2Tab(which){
   const tabL=qs('#tabLettersA2W2'), tabB=qs('#tabBlendA2W2');
@@ -567,7 +567,7 @@ qs('#prevWordBtnA2W3').addEventListener('click', prevA2W3Word);
 qs('#nextWordBtnA2W3').addEventListener('click', nextA2W3Word);
 
 // Tap = replay
-blendAreaA2W3.addEventListener('click', ()=>{ playCurrentA2W3(); });
+blendAreaA2W3.addEventListener('click', ()=>{ playCurrentA2W3(); nextA2W3Word(); });
 
 function activateWeekA2W3Tab(which){
   const tabL=qs('#tabLettersA2W3'), tabB=qs('#tabBlendA2W3');
@@ -618,7 +618,7 @@ qs('#prevWordBtnA2W4').addEventListener('click', prevA2W4Word);
 qs('#nextWordBtnA2W4').addEventListener('click', nextA2W4Word);
 
 // Tap = replay
-blendAreaA2W4.addEventListener('click', ()=>{ playCurrentA2W4(); });
+blendAreaA2W4.addEventListener('click', ()=>{ playCurrentA2W4(); nextA2W4Word(); });
 
 function activateWeekA2W4Tab(which){
   const tabL=qs('#tabLettersA2W4'), tabB=qs('#tabBlendA2W4');
@@ -673,7 +673,7 @@ qs('#prevWordBtnA2W5').addEventListener('click', prevA2W5Word);
 qs('#nextWordBtnA2W5').addEventListener('click', nextA2W5Word);
 
 // Tap = replay
-blendAreaA2W5.addEventListener('click', ()=>{ playCurrentA2W5(); });
+blendAreaA2W5.addEventListener('click', ()=>{ playCurrentA2W5(); nextA2W5Word(); });
 
 // Tabs
 function activateWeekA2W5Tab(which){
@@ -780,7 +780,7 @@ function nextS1W2Word(){ s1w2WIdx=(s1w2WIdx+1)%s1w2Words.length; renderS1W2Word(
 function prevS1W2Word(){ s1w2WIdx=(s1w2WIdx-1+s1w2Words.length)%s1w2Words.length; renderS1W2Word(); playCurrentS1W2(); }
 qs('#prevWordBtnS1W2').addEventListener('click', prevS1W2Word);
 qs('#nextWordBtnS1W2').addEventListener('click', nextS1W2Word);
-blendAreaS1W2.addEventListener('click', ()=>{ playCurrentS1W2(); });
+blendAreaS1W2.addEventListener('click', ()=>{ playCurrentS1W2(); nextS1W2Word(); });
 let s1w2WordTouch=0;
 blendAreaS1W2.addEventListener('touchstart', e=>{ s1w2WordTouch=e.changedTouches[0].clientX; }, {passive:true});
 blendAreaS1W2.addEventListener('touchend', e=>{
@@ -833,7 +833,7 @@ function nextS1W3Word(){ s1w3WIdx=(s1w3WIdx+1)%s1w3Words.length; renderS1W3Word(
 function prevS1W3Word(){ s1w3WIdx=(s1w3WIdx-1+s1w3Words.length)%s1w3Words.length; renderS1W3Word(); playCurrentS1W3(); }
 qs('#prevWordBtnS1W3').addEventListener('click', prevS1W3Word);
 qs('#nextWordBtnS1W3').addEventListener('click', nextS1W3Word);
-blendAreaS1W3.addEventListener('click', ()=>{ playCurrentS1W3(); });
+blendAreaS1W3.addEventListener('click', ()=>{ playCurrentS1W3(); nextS1W3Word(); });
 let s1w3WordTouch=0;
 blendAreaS1W3.addEventListener('touchstart', e=>{ s1w3WordTouch=e.changedTouches[0].clientX; }, {passive:true});
 blendAreaS1W3.addEventListener('touchend', e=>{
@@ -886,7 +886,7 @@ function nextS1W4Word(){ s1w4WIdx=(s1w4WIdx+1)%s1w4Words.length; renderS1W4Word(
 function prevS1W4Word(){ s1w4WIdx=(s1w4WIdx-1+s1w4Words.length)%s1w4Words.length; renderS1W4Word(); playCurrentS1W4(); }
 qs('#prevWordBtnS1W4').addEventListener('click', prevS1W4Word);
 qs('#nextWordBtnS1W4').addEventListener('click', nextS1W4Word);
-blendAreaS1W4.addEventListener('click', ()=>{ playCurrentS1W4(); });
+blendAreaS1W4.addEventListener('click', ()=>{ playCurrentS1W4(); nextS1W4Word(); });
 let s1w4WordTouch=0;
 blendAreaS1W4.addEventListener('touchstart', e=>{ s1w4WordTouch=e.changedTouches[0].clientX; }, {passive:true});
 blendAreaS1W4.addEventListener('touchend', e=>{
@@ -939,7 +939,7 @@ function nextS1W5Word(){ s1w5WIdx=(s1w5WIdx+1)%s1w5Words.length; renderS1W5Word(
 function prevS1W5Word(){ s1w5WIdx=(s1w5WIdx-1+s1w5Words.length)%s1w5Words.length; renderS1W5Word(); playCurrentS1W5(); }
 qs('#prevWordBtnS1W5').addEventListener('click', prevS1W5Word);
 qs('#nextWordBtnS1W5').addEventListener('click', nextS1W5Word);
-blendAreaS1W5.addEventListener('click', ()=>{ playCurrentS1W5(); });
+blendAreaS1W5.addEventListener('click', ()=>{ playCurrentS1W5(); nextS1W5Word(); });
 let s1w5WordTouch=0;
 blendAreaS1W5.addEventListener('touchstart', e=>{ s1w5WordTouch=e.changedTouches[0].clientX; }, {passive:true});
 blendAreaS1W5.addEventListener('touchend', e=>{
@@ -1005,7 +1005,6 @@ qs('#backS1W5').addEventListener('click', ()=>show('home'));
 
 /* ===================== Init ===================== */
 show('home');
-
 
 
 
