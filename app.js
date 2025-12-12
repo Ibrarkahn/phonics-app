@@ -148,7 +148,7 @@ function show(name){
 
 }
 
-function shuffle(a){
+function a{
   for (let i=a.length-1;i>0;i--) {
     const j=Math.floor(Math.random()*(i+1));
     [a[i],a[j]]=[a[j],a[i]];
@@ -211,7 +211,7 @@ const bigLetter  = qs('#bigLetter');
 const letterArea = qs('#letterArea');
 
 function startPractice(letters){
-  CURRENT_SET = shuffle(letters.slice());
+  CURRENT_SET = letters.slice();
   idx = 0;
   show('letters');
   renderLetter();
@@ -234,7 +234,7 @@ letterArea.addEventListener('touchend',e=>{
 
 
 /* ===== Week 2: letters + single-word blending ===== */
-let w2Letters = shuffle(WEEK2_LETTERS.slice()), w2LIdx=0;
+let w2Letters = WEEK2_LETTERS.slice(), w2LIdx=0;
 const bigLetterW2  = qs('#bigLetterW2');
 const letterAreaW2 = qs('#letterAreaW2');
 function renderW2Letter(){ bigLetterW2.textContent = displayKey(w2Letters[w2LIdx]); }
@@ -251,7 +251,7 @@ letterAreaW2.addEventListener('touchend',e=>{
   if(Math.abs(dx)>40){ dx<0?nextW2Letter():prevW2Letter(); } else { playSoundFor(w2Letters[w2LIdx]); nextW2Letter(); }
 },{passive:true});
 
-let w2Words = shuffle(WEEK2_WORDS.slice()), w2WIdx=0;
+let w2Words = WEEK2_WORDS.slice(), w2WIdx=0;
 const bigWordW2   = qs('#bigWordW2');
 const blendAreaW2 = qs('#blendSeqAreaW2');
 function renderW2Word(){ bigWordW2.textContent = w2Words[w2WIdx]; }
@@ -283,7 +283,7 @@ qs('#tabBlendW2').addEventListener('click',   ()=>activateWeek2Tab('blend'));
 
 
 /* ===== Week 3: letters + single-word blending ===== */
-let w3Letters = shuffle(WEEK3_LETTERS.slice()), w3LIdx=0;
+let w3Letters = WEEK3_LETTERS.slice(), w3LIdx=0;
 const bigLetterW3  = qs('#bigLetterW3');
 const letterAreaW3 = qs('#letterAreaW3');
 function renderW3Letter(){ bigLetterW3.textContent = displayKey(w3Letters[w3LIdx]); }
@@ -301,7 +301,7 @@ letterAreaW3.addEventListener('touchend',e=>{
   if(Math.abs(dx)>40){ dx<0?nextW3Letter():prevW3Letter(); } else { playSoundFor(w3Letters[w3LIdx]); nextW3Letter(); }
 },{passive:true});
 
-let w3Words = shuffle(WEEK3_WORDS.slice()), w3WIdx=0;
+let w3Words = WEEK3_WORDS.slice(), w3WIdx=0;
 const bigWordW3   = qs('#bigWordW3');
 const blendAreaW3 = qs('#blendSeqAreaW3');
 function renderW3Word(){ bigWordW3.textContent = w3Words[w3WIdx]; }
@@ -333,7 +333,7 @@ qs('#tabBlendW3').addEventListener('click',   ()=>activateWeek3Tab('blend'));
 
 
 /* ===== Week 4: letters + single-word blending ===== */
-let w4Letters = shuffle(WEEK4_LETTERS.slice()), w4LIdx=0;
+let w4Letters = WEEK4_LETTERS.slice(), w4LIdx=0;
 const bigLetterW4  = qs('#bigLetterW4');
 const letterAreaW4 = qs('#letterAreaW4');
 function renderW4Letter(){ bigLetterW4.textContent = displayKey(w4Letters[w4LIdx]); }
@@ -351,7 +351,7 @@ letterAreaW4.addEventListener('touchend',e=>{
   if(Math.abs(dx)>40){ dx<0?nextW4Letter():prevW4Letter(); } else { playSoundFor(w4Letters[w4LIdx]); nextW4Letter(); }
 },{passive:true});
 
-let w4Words = shuffle(WEEK4_WORDS.slice()), w4WIdx=0;
+let w4Words = WEEK4_WORDS.slice(), w4WIdx=0;
 const bigWordW4   = qs('#bigWordW4');
 const blendAreaW4 = qs('#blendSeqAreaW4');
 function renderW4Word(){ bigWordW4.textContent = w4Words[w4WIdx]; }
@@ -383,7 +383,7 @@ qs('#tabBlendW4').addEventListener('click',   ()=>activateWeek4Tab('blend'));
 
 
 /* ===== Week 5: letters + single-word blending ===== */
-let w5Letters = shuffle(WEEK5_LETTERS.slice()), w5LIdx=0;
+let w5Letters = WEEK5_LETTERS.slice(), w5LIdx=0;
 const bigLetterW5  = qs('#bigLetterW5');
 const letterAreaW5 = qs('#letterAreaW5');
 function renderW5Letter(){ bigLetterW5.textContent = displayKey(w5Letters[w5LIdx]); }
@@ -401,7 +401,7 @@ letterAreaW5.addEventListener('touchend',e=>{
   if(Math.abs(dx)>40){ dx<0?nextW5Letter():prevW5Letter(); } else { playSoundFor(w5Letters[w5LIdx]); nextW5Letter(); }
 },{passive:true});
 
-let w5Words = shuffle(WEEK5_WORDS.slice()), w5WIdx=0;
+let w5Words = WEEK5_WORDS.slice(), w5WIdx=0;
 const bigWordW5   = qs('#bigWordW5');
 const blendAreaW5 = qs('#blendSeqAreaW5');
 function renderW5Word(){ bigWordW5.textContent = w5Words[w5WIdx]; }
@@ -434,7 +434,7 @@ qs('#tabBlendW5').addEventListener('click',   ()=>activateWeek5Tab('blend'));
 
 /* ===== Autumn 2 – Week 1: letters + single-word blending ===== */
 // Letters pane
-let a2Letters = shuffle(A2W1_LETTERS.slice()), a2LIdx = 0;
+let a2Letters = A2W1_LETTERS.slice(), a2LIdx = 0;
 const bigLetterA2  = qs('#bigLetterA2');
 const letterAreaA2 = qs('#letterAreaA2');
 
@@ -455,7 +455,7 @@ letterAreaA2.addEventListener('touchend', e => {
 }, {passive:true});
 
 // Blending words (single-word view)
-let a2Words = shuffle(A2W1_WORDS.slice()), a2WIdx = 0;
+let a2Words = A2W1_WORDS.slice(), a2WIdx = 0;
 const bigWordA2   = qs('#bigWordA2');
 const blendAreaA2 = qs('#blendSeqAreaA2');
 
@@ -489,7 +489,7 @@ qs('#tabBlendA2').addEventListener('click',   ()=>activateA2Tab('blend'));
 
 
 /* ===== Autumn 2 – Week 2 ===== */
-let a2w2Letters = shuffle(A2W2_LETTERS.slice()), a2w2LIdx=0;
+let a2w2Letters = A2W2_LETTERS.slice(), a2w2LIdx=0;
 const bigLetterA2W2  = qs('#bigLetterA2W2');
 const letterAreaA2W2 = qs('#letterAreaA2W2');
 function renderA2W2Letter(){ bigLetterA2W2.textContent = displayKey(a2w2Letters[a2w2LIdx]); }
@@ -508,7 +508,7 @@ letterAreaA2W2.addEventListener('touchend', e => {
   else { playSoundFor(a2w2Letters[a2w2LIdx]); nextA2W2Letter(); }
 }, {passive:true});
 
-let a2w2Words = shuffle(A2W2_WORDS.slice()), a2w2WIdx=0;
+let a2w2Words = A2W2_WORDS.slice(), a2w2WIdx=0;
 const bigWordA2W2   = qs('#bigWordA2W2');
 const blendAreaA2W2 = qs('#blendSeqAreaA2W2');
 function renderA2W2Word(){ bigWordA2W2.textContent = a2w2Words[a2w2WIdx]; }
@@ -540,7 +540,7 @@ qs('#tabBlendA2W2').addEventListener('click',   ()=>activateWeekA2W2Tab('blend')
 
 
 /* ===== Autumn 2 – Week 3 ===== */
-let a2w3Letters = shuffle(A2W3_LETTERS.slice()), a2w3LIdx=0;
+let a2w3Letters = A2W3_LETTERS.slice(), a2w3LIdx=0;
 const bigLetterA2W3  = qs('#bigLetterA2W3');
 const letterAreaA2W3 = qs('#letterAreaA2W3');
 function renderA2W3Letter(){ bigLetterA2W3.textContent = displayKey(a2w3Letters[a2w3LIdx]); }
@@ -559,7 +559,7 @@ letterAreaA2W3.addEventListener('touchend', e => {
   else { playSoundFor(a2w3Letters[a2w3LIdx]); nextA2W3Letter(); }
 }, {passive:true});
 
-let a2w3Words = shuffle(A2W3_WORDS.slice()), a2w3WIdx=0;
+let a2w3Words = A2W3_WORDS.slice(), a2w3WIdx=0;
 const bigWordA2W3   = qs('#bigWordA2W3');
 const blendAreaA2W3 = qs('#blendSeqAreaA2W3');
 function renderA2W3Word(){ bigWordA2W3.textContent = a2w3Words[a2w3WIdx]; }
@@ -591,7 +591,7 @@ qs('#tabBlendA2W3').addEventListener('click',   ()=>activateWeekA2W3Tab('blend')
 
 
 /* ===== Autumn 2 – Week 4 ===== */
-let a2w4Letters = shuffle(A2W4_LETTERS.slice()), a2w4LIdx=0;
+let a2w4Letters = A2W4_LETTERS.slice(), a2w4LIdx=0;
 const bigLetterA2W4  = qs('#bigLetterA2W4');
 const letterAreaA2W4 = qs('#letterAreaA2W4');
 function renderA2W4Letter(){ bigLetterA2W4.textContent = displayKey(a2w4Letters[a2w4LIdx]); }
@@ -610,7 +610,7 @@ letterAreaA2W4.addEventListener('touchend', e => {
   else { playSoundFor(a2w4Letters[a2w4LIdx]); nextA2W4Letter(); }
 }, {passive:true});
 
-let a2w4Words = shuffle(A2W4_WORDS.slice()), a2w4WIdx=0;
+let a2w4Words = A2W4_WORDS.slice(), a2w4WIdx=0;
 const bigWordA2W4   = qs('#bigWordA2W4');
 const blendAreaA2W4 = qs('#blendSeqAreaA2W4');
 function renderA2W4Word(){ bigWordA2W4.textContent = a2w4Words[a2w4WIdx]; }
@@ -643,7 +643,7 @@ qs('#tabBlendA2W4').addEventListener('click',   ()=>activateWeekA2W4Tab('blend')
 
 /* ===== Autumn 2 – Week 5 ===== */
 // Letters pane
-let a2w5Letters = shuffle(A2W5_LETTERS.slice()), a2w5LIdx = 0;
+let a2w5Letters = A2W5_LETTERS.slice(), a2w5LIdx = 0;
 const bigLetterA2W5  = qs('#bigLetterA2W5');
 const letterAreaA2W5 = qs('#letterAreaA2W5');
 
@@ -664,7 +664,7 @@ letterAreaA2W5.addEventListener('touchend', e => {
 }, {passive:true});
 
 // Blending words pane (single-word)
-let a2w5Words = shuffle(A2W5_WORDS.slice()), a2w5WIdx = 0;
+let a2w5Words = A2W5_WORDS.slice(), a2w5WIdx = 0;
 const bigWordA2W5   = qs('#bigWordA2W5');
 const blendAreaA2W5 = qs('#blendSeqAreaA2W5');
 
@@ -697,7 +697,7 @@ qs('#tabLettersA2W5').addEventListener('click', ()=>activateWeekA2W5Tab('letters
 qs('#tabBlendA2W5').addEventListener('click',   ()=>activateWeekA2W5Tab('blend'));
 
 /* ===== Spring 1 – Week 1 ===== */
-let s1w1Letters = shuffle(S1W1_LETTERS.slice()), s1w1LIdx = 0;
+let s1w1Letters = S1W1_LETTERS.slice(), s1w1LIdx = 0;
 const bigLetterS1W1  = qs('#bigLetterS1W1');
 const letterAreaS1W1 = qs('#letterAreaS1W1');
 
@@ -718,7 +718,7 @@ letterAreaS1W1.addEventListener('touchend', e=>{
 },{passive:true});
 
 // Words
-let s1w1Words = shuffle(S1W1_WORDS.slice()), s1w1WIdx = 0;
+let s1w1Words = S1W1_WORDS.slice(), s1w1WIdx = 0;
 const bigWordS1W1   = qs('#bigWordS1W1');
 const blendAreaS1W1 = qs('#blendSeqAreaS1W1');
 
@@ -758,7 +758,7 @@ qs('#tabBlendS1W1').addEventListener('click',   ()=>activateS1W1Tab('blend'));
 
 
 /* ===== Spring 1 – Week 2 ===== */
-let s1w2Letters = shuffle(S1W2_LETTERS.slice()), s1w2LIdx = 0;
+let s1w2Letters = S1W2_LETTERS.slice(), s1w2LIdx = 0;
 const bigLetterS1W2  = qs('#bigLetterS1W2');
 const letterAreaS1W2 = qs('#letterAreaS1W2');
 function renderS1W2Letter(){ bigLetterS1W2.textContent = displayKey(s1w2Letters[s1w2LIdx]); }
@@ -775,7 +775,7 @@ letterAreaS1W2.addEventListener('touchend', e=>{
   else { playSoundFor(s1w2Letters[s1w2LIdx]); nextS1W2Letter(); }
 },{passive:true});
 
-let s1w2Words = shuffle(S1W2_WORDS.slice()), s1w2WIdx = 0;
+let s1w2Words = S1W2_WORDS.slice(), s1w2WIdx = 0;
 const bigWordS1W2   = qs('#bigWordS1W2');
 const blendAreaS1W2 = qs('#blendSeqAreaS1W2');
 function renderS1W2Word(){ bigWordS1W2.textContent = s1w2Words[s1w2WIdx]; }
@@ -811,7 +811,7 @@ qs('#tabBlendS1W2').addEventListener('click',   ()=>activateS1W2Tab('blend'));
 
 
 /* ===== Spring 1 – Week 3 ===== */
-let s1w3Letters = shuffle(S1W3_LETTERS.slice()), s1w3LIdx = 0;
+let s1w3Letters = S1W3_LETTERS.slice(), s1w3LIdx = 0;
 const bigLetterS1W3  = qs('#bigLetterS1W3');
 const letterAreaS1W3 = qs('#letterAreaS1W3');
 function renderS1W3Letter(){ bigLetterS1W3.textContent = displayKey(s1w3Letters[s1w3LIdx]); }
@@ -828,7 +828,7 @@ letterAreaS1W3.addEventListener('touchend', e=>{
   else { playSoundFor(s1w3Letters[s1w3LIdx]); nextS1W3Letter(); }
 },{passive:true});
 
-let s1w3Words = shuffle(S1W3_WORDS.slice()), s1w3WIdx = 0;
+let s1w3Words = S1W3_WORDS.slice(), s1w3WIdx = 0;
 const bigWordS1W3   = qs('#bigWordS1W3');
 const blendAreaS1W3 = qs('#blendSeqAreaS1W3');
 function renderS1W3Word(){ bigWordS1W3.textContent = s1w3Words[s1w3WIdx]; }
@@ -864,7 +864,7 @@ qs('#tabBlendS1W3').addEventListener('click',   ()=>activateS1W3Tab('blend'));
 
 
 /* ===== Spring 1 – Week 4 ===== */
-let s1w4Letters = shuffle(S1W4_LETTERS.slice()), s1w4LIdx = 0;
+let s1w4Letters = S1W4_LETTERS.slice(), s1w4LIdx = 0;
 const bigLetterS1W4  = qs('#bigLetterS1W4');
 const letterAreaS1W4 = qs('#letterAreaS1W4');
 function renderS1W4Letter(){ bigLetterS1W4.textContent = displayKey(s1w4Letters[s1w4LIdx]); }
@@ -881,7 +881,7 @@ letterAreaS1W4.addEventListener('touchend', e=>{
   else { playSoundFor(s1w4Letters[s1w4LIdx]); nextS1W4Letter(); }
 },{passive:true});
 
-let s1w4Words = shuffle(S1W4_WORDS.slice()), s1w4WIdx = 0;
+let s1w4Words = S1W4_WORDS.slice(), s1w4WIdx = 0;
 const bigWordS1W4   = qs('#bigWordS1W4');
 const blendAreaS1W4 = qs('#blendSeqAreaS1W4');
 function renderS1W4Word(){ bigWordS1W4.textContent = s1w4Words[s1w4WIdx]; }
@@ -917,7 +917,7 @@ qs('#tabBlendS1W4').addEventListener('click',   ()=>activateS1W4Tab('blend'));
 
 
 /* ===== Spring 1 – Week 5 ===== */
-let s1w5Letters = shuffle(S1W5_LETTERS.slice()), s1w5LIdx = 0;
+let s1w5Letters = S1W5_LETTERS.slice(), s1w5LIdx = 0;
 const bigLetterS1W5  = qs('#bigLetterS1W5');
 const letterAreaS1W5 = qs('#letterAreaS1W5');
 function renderS1W5Letter(){ bigLetterS1W5.textContent = displayKey(s1w5Letters[s1w5LIdx]); }
@@ -934,7 +934,7 @@ letterAreaS1W5.addEventListener('touchend', e=>{
   else { playSoundFor(s1w5Letters[s1w5LIdx]); nextS1W5Letter(); }
 },{passive:true});
 
-let s1w5Words = shuffle(S1W5_WORDS.slice()), s1w5WIdx = 0;
+let s1w5Words = S1W5_WORDS.slice(), s1w5WIdx = 0;
 const bigWordS1W5   = qs('#bigWordS1W5');
 const blendAreaS1W5 = qs('#blendSeqAreaS1W5');
 function renderS1W5Word(){ bigWordS1W5.textContent = s1w5Words[s1w5WIdx]; }
