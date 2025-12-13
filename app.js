@@ -55,9 +55,58 @@ const S1W4_WORDS   = ['hair','boxer','letter','rubber','chair','summer','rubbish
 const S1W5_LETTERS = ['ai','ee','ur','ow','igh','oa','oi','ear','oo-long','oo-short','air','er','ar','or'];
 const S1W5_WORDS   = ['laptop','popcorn','market','raincoat','sunset','starfish','ticket','melon'];
 
-// Spring 2 – Week 1 (from PDF)
+// ===== Added Spring 2 / Summer 1 / Summer 2 =====
 const S2W1_LETTERS = ['ai','ee','igh','oa','oo-long','ar','or','ur','oo-short','ow','oi','ear'];
+
 const S2W1_WORDS   = ['tail','deep','fight','load','food','hard','born','surf','foot','town','boil','hear'];
+
+const S2W2_LETTERS = ['air', 'er', 'dd', 'mm', 'tt', 'bb', 'rr', 'gg', 'pp', 'ff'];
+
+const S2W2_WORDS = ['bigger', 'chair', 'fair', 'rubber', 'shimmer', 'butter', 'supper', 'chatter', 'muffin', 'mutter', 'buzzer', 'cannot', 'laptop', 'seven', 'fantastic', 'comic'];
+
+const S2W3_LETTERS = ['ai', 'ee', 'ur', 'ow', 'igh', 'oa', 'oi', 'ear', 'oo-long', 'oo-short', 'air', 'er', 'ar', 'or'];
+
+const S2W3_WORDS = ['sharp', 'shark', 'sheep', 'cheep', 'queen', 'tooth', 'short', 'thinker', 'powder', 'church', 'corner', 'farmer', 'torch', 'chain', 'shower', 'march'];
+
+const S2W4_LETTERS = ['ai', 'ee', 'ur', 'ow', 'igh', 'oa', 'oi', 'ear', 'oo-long', 'oo-short', 'air', 'er', 'ar', 'or'];
+
+const S2W4_WORDS = ['lightning', 'mammoth', 'earring', 'poison', 'queens', 'chains', 'chairs', 'cars', 'boots', 'surfs', 'cooks', 'cheeps', 'torches', 'boxes', 'fizzes', 'fishes'];
+
+const SU1W1_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
+
+const SU1W1_WORDS = ['hand', 'jump', 'lift', 'soft', 'tent', 'wind', 'hump', 'nest', 'lost', 'thump', 'belt', 'pond'];
+
+const SU1W2_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
+
+const SU1W2_WORDS = ['thank', 'champ', 'bench', 'shift', 'cost', 'shrink', 'crack', 'smell', 'dress', 'bring', 'truck', 'milk'];
+
+const SU1W3_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
+
+const SU1W3_WORDS = ['farming', 'forest', 'blanket', 'children', 'freshness', 'present', 'windmill', 'lunchbox', 'shampoo', 'wooden', 'finger', 'printer'];
+
+const SU1W4_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
+
+const SU1W4_WORDS = ['bumping', 'snapping', 'jumping', 'swimming', 'helped', 'cracked', 'grunted', 'printed', 'melted', 'plumpest', 'freshest', 'softest'];
+
+const SU2W1_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
+
+const SU2W1_WORDS = ['bleed', 'growl', 'bright', 'sport', 'steep', 'train', 'flight', 'green', 'spoon', 'storm', 'speech', 'smart'];
+
+const SU2W2_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
+
+const SU2W2_WORDS = ['street', 'screen', 'stair', 'strong', 'three', 'scoop', 'free', 'clear', 'slight', 'smear', 'spoil', 'clown'];
+
+const SU2W3_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
+
+const SU2W3_WORDS = ['sports', 'floats', 'crowds', 'spears', 'dresses', 'splashes', 'speeches', 'balloon', 'appear', 'portrait', 'scrunches', 'spoons'];
+
+const SU2W4_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
+
+const SU2W4_WORDS = ['cloaked', 'scooped', 'sleeping', 'creeping', 'crowned', 'started', 'toasted', 'smeared', 'floated', 'printed', 'painting', 'blinked'];
+
+const SU2W5_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
+
+const SU2W5_WORDS = ['greenest', 'smartest', 'brighter', 'brightest', 'painter', 'boaster', 'brownest', 'trainer', 'swiftest', 'freshest', 'helper', 'hunter'];
 
 
 
@@ -77,7 +126,7 @@ function show(name){
   const screens = [
     'home','letters','week2','week3','week4','week5',
     'a2w1','weekA2W2','weekA2W3','weekA2W4','weekA2W5',
-    'spring1w1','spring1w2','spring1w3','spring1w4','spring1w5','spring2w1'
+    'spring1w1','spring1w2','spring1w3','spring1w4','spring1w5'
   ];
 
   for (const id of screens){
@@ -92,6 +141,23 @@ function show(name){
       el.style.display = (name === id) ? 'block' : 'none';
     }
   }
+
+  qs('#spring2w1').style.display = name==='spring2w1' ? 'block':'none';
+  qs('#spring2w2').style.display = name==='spring2w2' ? 'block':'none';
+  qs('#spring2w3').style.display = name==='spring2w3' ? 'block':'none';
+  qs('#spring2w4').style.display = name==='spring2w4' ? 'block':'none';
+
+  qs('#summer1w1').style.display = name==='summer1w1' ? 'block':'none';
+  qs('#summer1w2').style.display = name==='summer1w2' ? 'block':'none';
+  qs('#summer1w3').style.display = name==='summer1w3' ? 'block':'none';
+  qs('#summer1w4').style.display = name==='summer1w4' ? 'block':'none';
+
+  qs('#summer2w1').style.display = name==='summer2w1' ? 'block':'none';
+  qs('#summer2w2').style.display = name==='summer2w2' ? 'block':'none';
+  qs('#summer2w3').style.display = name==='summer2w3' ? 'block':'none';
+  qs('#summer2w4').style.display = name==='summer2w4' ? 'block':'none';
+  qs('#summer2w5').style.display = name==='summer2w5' ? 'block':'none';
+
 }
 
 function playSoundFor(key){
@@ -100,11 +166,6 @@ function playSoundFor(key){
   audio = new Audio(`sounds/${key}.mp3`);
   audio.currentTime = 0;
   audio.play().catch(()=>{});
-}
-
-// Display-friendly label for letter keys (e.g. oo-long -> oo)
-function displayLabel(key){
-  return (key === 'oo-long' || key === 'oo-short') ? 'oo' : key;
 }
 
 // Phonics clusters that should be treated as a single sound
@@ -348,7 +409,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const s1w3 = setupWeek({ screenId:'spring1w3', letters: S1W3_LETTERS, words: S1W3_WORDS, prefix:'S1W3' });
   const s1w4 = setupWeek({ screenId:'spring1w4', letters: S1W4_LETTERS, words: S1W4_WORDS, prefix:'S1W4' });
   const s1w5 = setupWeek({ screenId:'spring1w5', letters: S1W5_LETTERS, words: S1W5_WORDS, prefix:'S1W5' });
-  const s2w1 = setupWeek({ screenId:'spring2w1', letters: S2W1_LETTERS, words: S2W1_WORDS, prefix:'S2W1', lettersLabel:'Letters (ai, ee, igh, oa, oo, ar, or, ur, ow, oi, ear)' });
 
   // Home navigation
   safeOn('#btn-practise','click', ()=>startPractice(ALPHABET));
@@ -370,7 +430,22 @@ document.addEventListener('DOMContentLoaded', () => {
   safeOn('#btn-s1w3','click', ()=>{ show('spring1w3'); s1w3.initLetters(); });
   safeOn('#btn-s1w4','click', ()=>{ show('spring1w4'); s1w4.initLetters(); });
   safeOn('#btn-s1w5','click', ()=>{ show('spring1w5'); s1w5.initLetters(); });
+
   safeOn('#btn-s2w1','click', ()=>{ show('spring2w1'); s2w1.initLetters(); });
+  safeOn('#btn-s2w2','click', ()=>{ show('spring2w2'); s2w2.initLetters(); });
+  safeOn('#btn-s2w3','click', ()=>{ show('spring2w3'); s2w3.initLetters(); });
+  safeOn('#btn-s2w4','click', ()=>{ show('spring2w4'); s2w4.initLetters(); });
+
+  safeOn('#btn-su1w1','click', ()=>{ show('summer1w1'); su1w1.initLetters(); });
+  safeOn('#btn-su1w2','click', ()=>{ show('summer1w2'); su1w2.initLetters(); });
+  safeOn('#btn-su1w3','click', ()=>{ show('summer1w3'); su1w3.initLetters(); });
+  safeOn('#btn-su1w4','click', ()=>{ show('summer1w4'); su1w4.initLetters(); });
+
+  safeOn('#btn-su2w1','click', ()=>{ show('summer2w1'); su2w1.initLetters(); });
+  safeOn('#btn-su2w2','click', ()=>{ show('summer2w2'); su2w2.initLetters(); });
+  safeOn('#btn-su2w3','click', ()=>{ show('summer2w3'); su2w3.initLetters(); });
+  safeOn('#btn-su2w4','click', ()=>{ show('summer2w4'); su2w4.initLetters(); });
+  safeOn('#btn-su2w5','click', ()=>{ show('summer2w5'); su2w5.initLetters(); });
 
   // Back buttons
   safeOn('#backLetters','click', ()=>show('home'));
@@ -390,8 +465,41 @@ document.addEventListener('DOMContentLoaded', () => {
   safeOn('#backS1W3','click', ()=>show('home'));
   safeOn('#backS1W4','click', ()=>show('home'));
   safeOn('#backS1W5','click', ()=>show('home'));
+
   safeOn('#backS2W1','click', ()=>show('home'));
+  safeOn('#backS2W2','click', ()=>show('home'));
+  safeOn('#backS2W3','click', ()=>show('home'));
+  safeOn('#backS2W4','click', ()=>show('home'));
+
+  safeOn('#backSU1W1','click', ()=>show('home'));
+  safeOn('#backSU1W2','click', ()=>show('home'));
+  safeOn('#backSU1W3','click', ()=>show('home'));
+  safeOn('#backSU1W4','click', ()=>show('home'));
+
+  safeOn('#backSU2W1','click', ()=>show('home'));
+  safeOn('#backSU2W2','click', ()=>show('home'));
+  safeOn('#backSU2W3','click', ()=>show('home'));
+  safeOn('#backSU2W4','click', ()=>show('home'));
+  safeOn('#backSU2W5','click', ()=>show('home'));
 
   // Init
-  show('home');
+  show('home')
+  // ===== Spring 2 / Summer 1 / Summer 2 =====
+  const s2w1 = setupWeek({ screenId: 'spring2w1', letters: S2W1_LETTERS, words: S2W1_WORDS, prefix: 'S2W1' });
+  const s2w2 = setupWeek({ screenId: 'spring2w2', letters: S2W2_LETTERS, words: S2W2_WORDS, prefix: 'S2W2' });
+  const s2w3 = setupWeek({ screenId: 'spring2w3', letters: S2W3_LETTERS, words: S2W3_WORDS, prefix: 'S2W3' });
+  const s2w4 = setupWeek({ screenId: 'spring2w4', letters: S2W4_LETTERS, words: S2W4_WORDS, prefix: 'S2W4' });
+
+  const su1w1 = setupWeek({ screenId: 'summer1w1', letters: SU1W1_LETTERS, words: SU1W1_WORDS, prefix: 'SU1W1' });
+  const su1w2 = setupWeek({ screenId: 'summer1w2', letters: SU1W2_LETTERS, words: SU1W2_WORDS, prefix: 'SU1W2' });
+  const su1w3 = setupWeek({ screenId: 'summer1w3', letters: SU1W3_LETTERS, words: SU1W3_WORDS, prefix: 'SU1W3' });
+  const su1w4 = setupWeek({ screenId: 'summer1w4', letters: SU1W4_LETTERS, words: SU1W4_WORDS, prefix: 'SU1W4' });
+
+  const su2w1 = setupWeek({ screenId: 'summer2w1', letters: SU2W1_LETTERS, words: SU2W1_WORDS, prefix: 'SU2W1' });
+  const su2w2 = setupWeek({ screenId: 'summer2w2', letters: SU2W2_LETTERS, words: SU2W2_WORDS, prefix: 'SU2W2' });
+  const su2w3 = setupWeek({ screenId: 'summer2w3', letters: SU2W3_LETTERS, words: SU2W3_WORDS, prefix: 'SU2W3' });
+  const su2w4 = setupWeek({ screenId: 'summer2w4', letters: SU2W4_LETTERS, words: SU2W4_WORDS, prefix: 'SU2W4' });
+  const su2w5 = setupWeek({ screenId: 'summer2w5', letters: SU2W5_LETTERS, words: SU2W5_WORDS, prefix: 'SU2W5' });
+
+;
 });
