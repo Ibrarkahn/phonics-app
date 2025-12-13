@@ -55,6 +55,11 @@ const S1W4_WORDS   = ['hair','boxer','letter','rubber','chair','summer','rubbish
 const S1W5_LETTERS = ['ai','ee','ur','ow','igh','oa','oi','ear','oo-long','oo-short','air','er','ar','or'];
 const S1W5_WORDS   = ['laptop','popcorn','market','raincoat','sunset','starfish','ticket','melon'];
 
+// Spring 2 – Week 1 (from PDF)
+const S2W1_LETTERS = ['ai','ee','igh','oa','oo-long','ar','or','ur','oo-short','ow','oi','ear'];
+const S2W1_WORDS   = ['tail','deep','fight','load','food','hard','born','surf','foot','town','boil','hear'];
+
+
 
 /* ===================== Utils ===================== */
 let audio;
@@ -72,7 +77,7 @@ function show(name){
   const screens = [
     'home','letters','week2','week3','week4','week5',
     'a2w1','weekA2W2','weekA2W3','weekA2W4','weekA2W5',
-    'spring1w1','spring1w2','spring1w3','spring1w4','spring1w5'
+    'spring1w1','spring1w2','spring1w3','spring1w4','spring1w5','spring2w1'
   ];
 
   for (const id of screens){
@@ -95,6 +100,11 @@ function playSoundFor(key){
   audio = new Audio(`sounds/${key}.mp3`);
   audio.currentTime = 0;
   audio.play().catch(()=>{});
+}
+
+// Display-friendly label for letter keys (e.g. oo-long -> oo)
+function displayLabel(key){
+  return (key === 'oo-long' || key === 'oo-short') ? 'oo' : key;
 }
 
 // Phonics clusters that should be treated as a single sound
@@ -338,6 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const s1w3 = setupWeek({ screenId:'spring1w3', letters: S1W3_LETTERS, words: S1W3_WORDS, prefix:'S1W3' });
   const s1w4 = setupWeek({ screenId:'spring1w4', letters: S1W4_LETTERS, words: S1W4_WORDS, prefix:'S1W4' });
   const s1w5 = setupWeek({ screenId:'spring1w5', letters: S1W5_LETTERS, words: S1W5_WORDS, prefix:'S1W5' });
+  const s2w1 = setupWeek({ screenId:'spring2w1', letters: S2W1_LETTERS, words: S2W1_WORDS, prefix:'S2W1', lettersLabel:'Letters (ai, ee, igh, oa, oo, ar, or, ur, ow, oi, ear)' });
 
   // Home navigation
   safeOn('#btn-practise','click', ()=>startPractice(ALPHABET));
@@ -359,6 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
   safeOn('#btn-s1w3','click', ()=>{ show('spring1w3'); s1w3.initLetters(); });
   safeOn('#btn-s1w4','click', ()=>{ show('spring1w4'); s1w4.initLetters(); });
   safeOn('#btn-s1w5','click', ()=>{ show('spring1w5'); s1w5.initLetters(); });
+  safeOn('#btn-s2w1','click', ()=>{ show('spring2w1'); s2w1.initLetters(); });
 
   // Back buttons
   safeOn('#backLetters','click', ()=>show('home'));
@@ -378,6 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
   safeOn('#backS1W3','click', ()=>show('home'));
   safeOn('#backS1W4','click', ()=>show('home'));
   safeOn('#backS1W5','click', ()=>show('home'));
+  safeOn('#backS2W1','click', ()=>show('home'));
 
   // Init
   show('home');
