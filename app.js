@@ -1,505 +1,457 @@
-/* ===================== Data ===================== */
-const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'.split('');
+/* =========================
+   Phonics App (Complete)
+   ========================= */
 
-// Phase 2 (general letters)
-const PHASE_SETS = {
-  phase1: ['s','a','t','p'],
-  phase4: ['ck','e','u','r'],
-  phase5: ['h','b','f','l'],
-  phase6: ['f','ff','s','ss','l','ll','v','vv'],
+/**
+ * AUDIO SETUP
+ * Put your audio files in: /audio/
+ * Naming convention used here:
+ *   - sounds: /audio/sound_<token>.mp3   (e.g., sound_ai.mp3)
+ *   - words:  /audio/word_<token>.mp3    (e.g., word_chair.mp3)
+ *
+ * If you don't have audio for something yet, it will still work (shows a toast).
+ */
+
+// ---------- DATA (edit this to match your curriculum) ----------
+const CURRICULUM = {
+  "Spring 2": {
+    1: {
+      sounds: ["", "", ""], // <-- replace with your actual Spring2 Week1 sounds
+      words: [""] // <-- replace with your actual Spring2 Week1 words
+    },
+    2: {
+      sounds: ["air", "er", "dd", "mm", "tt", "bb", "rr", "gg", "pp", "ff"],
+      words: ["bigger", "chair", "fair", "rubber", "shimmer", "butter", "supper", "chatter", "muffin", "mutter", "buzzer", "cannot", "laptop", "seven", "fantastic", "comic"]
+    },
+    3: {
+      sounds: ["ai", "ee", "ur", "ow", "igh", "oa", "oi", "ear", "oo", "oo", "air", "er", "ar", "or"],
+      words: ["sharp", "shark", "sheep", "cheep", "queen", "tooth", "short", "thinker", "powder", "church", "corner", "farmer", "torch", "chain", "shower", "march"]
+    },
+    4: {
+      sounds: ["ai", "ee", "ur", "ow", "igh", "oa", "oi", "ear", "oo", "oo", "air", "er", "ar", "or"],
+      words: ["lightning", "mammoth", "earring", "poison", "queens", "chains", "chairs", "cars", "boots", "surfs", "cooks", "cheeps", "torches", "boxes", "fizzes", "fishes"]
+    }
+  }
 };
 
-// Autumn 1
-const WEEK2_LETTERS = ['i','n','m','d'];
-const WEEK2_WORDS   = ['sit','nap','man','dip','pat','sad','nip','mat'];
-
-const WEEK3_LETTERS = ['g','o','c','k'];
-const WEEK3_WORDS   = ['man','tap','dog','kit','cap','dig','kid','cog'];
-
-const WEEK4_LETTERS = ['ck','e','u','r'];
-const WEEK4_WORDS   = ['mum','duck','pet','pick','set','red','sock','run'];
-
-const WEEK5_LETTERS = ['h','b','f','l'];
-const WEEK5_WORDS   = ['hug','big','fat','luck','bed','muck','kid','rub'];
-
-// Autumn 2
-const A2W1_LETTERS = ['f','ff','s','ss','l','ll','v','vv'];
-const A2W1_WORDS   = ['huff','off','puff','bell','hill','tell','mess','hiss','fuss','jug','jam','jet'];
-
-const A2W2_LETTERS = ['v','w','x','y'];
-const A2W2_WORDS   = ['van','vet','wet','wig','fox','six','yes','yum'];
-
-const A2W3_LETTERS = ['z','qu','ch'];
-const A2W3_WORDS   = ['zip','zap','buzz','fizz','quick','quit','chips','rich'];
-
-const A2W4_LETTERS = ['sh','th','ng','nk'];
-const A2W4_WORDS   = ['shell','dish','this','moth','ring','thing','pink','sink'];
-
-const A2W5_LETTERS = ['f','l','s','j','v','w','x','y','z','qu','ch','sh','ng','th','nk'];
-const A2W5_WORDS   = ['zips','ships','chips','rings','pins','dogs','sings','ducks'];
-
-// Spring 1
-const S1W1_LETTERS = ['ai','ee','igh','oa'];
-const S1W1_WORDS   = ['pain','see','sight','coat','hail','jeep','high','road'];
-
-// Use distinct sound keys for long/short oo (so your sound files can be different)
-const S1W2_LETTERS = ['oo-long','oo-short','ar','or'];
-const S1W2_WORDS   = ['zoo','good','bark','pork','room','hook','yard','born'];
-
-const S1W3_LETTERS = ['ur','ow','oi','ear'];
-const S1W3_WORDS   = ['surf','howl','oil','hear','turn','down','join','tear'];
-
-const S1W4_LETTERS = ['air','er'];
-const S1W4_WORDS   = ['hair','boxer','letter','rubber','chair','summer','rubbish','coffee'];
-
-const S1W5_LETTERS = ['ai','ee','ur','ow','igh','oa','oi','ear','oo-long','oo-short','air','er','ar','or'];
-const S1W5_WORDS   = ['laptop','popcorn','market','raincoat','sunset','starfish','ticket','melon'];
-
-// ===== Added Spring 2 / Summer 1 / Summer 2 =====
-const S2W1_LETTERS = ['ai','ee','igh','oa','oo-long','ar','or','ur','oo-short','ow','oi','ear'];
-
-const S2W1_WORDS   = ['tail','deep','fight','load','food','hard','born','surf','foot','town','boil','hear'];
-
-const S2W2_LETTERS = ['air', 'er', 'dd', 'mm', 'tt', 'bb', 'rr', 'gg', 'pp', 'ff'];
-
-const S2W2_WORDS = ['bigger', 'chair', 'fair', 'rubber', 'shimmer', 'butter', 'supper', 'chatter', 'muffin', 'mutter', 'buzzer', 'cannot', 'laptop', 'seven', 'fantastic', 'comic'];
-
-const S2W3_LETTERS = ['ai', 'ee', 'ur', 'ow', 'igh', 'oa', 'oi', 'ear', 'oo-long', 'oo-short', 'air', 'er', 'ar', 'or'];
-
-const S2W3_WORDS = ['sharp', 'shark', 'sheep', 'cheep', 'queen', 'tooth', 'short', 'thinker', 'powder', 'church', 'corner', 'farmer', 'torch', 'chain', 'shower', 'march'];
-
-const S2W4_LETTERS = ['ai', 'ee', 'ur', 'ow', 'igh', 'oa', 'oi', 'ear', 'oo-long', 'oo-short', 'air', 'er', 'ar', 'or'];
-
-const S2W4_WORDS = ['lightning', 'mammoth', 'earring', 'poison', 'queens', 'chains', 'chairs', 'cars', 'boots', 'surfs', 'cooks', 'cheeps', 'torches', 'boxes', 'fizzes', 'fishes'];
-
-const SU1W1_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
-
-const SU1W1_WORDS = ['hand', 'jump', 'lift', 'soft', 'tent', 'wind', 'hump', 'nest', 'lost', 'thump', 'belt', 'pond'];
-
-const SU1W2_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
-
-const SU1W2_WORDS = ['thank', 'champ', 'bench', 'shift', 'cost', 'shrink', 'crack', 'smell', 'dress', 'bring', 'truck', 'milk'];
-
-const SU1W3_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
-
-const SU1W3_WORDS = ['farming', 'forest', 'blanket', 'children', 'freshness', 'present', 'windmill', 'lunchbox', 'shampoo', 'wooden', 'finger', 'printer'];
-
-const SU1W4_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
-
-const SU1W4_WORDS = ['bumping', 'snapping', 'jumping', 'swimming', 'helped', 'cracked', 'grunted', 'printed', 'melted', 'plumpest', 'freshest', 'softest'];
-
-const SU2W1_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
-
-const SU2W1_WORDS = ['bleed', 'growl', 'bright', 'sport', 'steep', 'train', 'flight', 'green', 'spoon', 'storm', 'speech', 'smart'];
-
-const SU2W2_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
-
-const SU2W2_WORDS = ['street', 'screen', 'stair', 'strong', 'three', 'scoop', 'free', 'clear', 'slight', 'smear', 'spoil', 'clown'];
-
-const SU2W3_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
-
-const SU2W3_WORDS = ['sports', 'floats', 'crowds', 'spears', 'dresses', 'splashes', 'speeches', 'balloon', 'appear', 'portrait', 'scrunches', 'spoons'];
-
-const SU2W4_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
-
-const SU2W4_WORDS = ['cloaked', 'scooped', 'sleeping', 'creeping', 'crowned', 'started', 'toasted', 'smeared', 'floated', 'printed', 'painting', 'blinked'];
-
-const SU2W5_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
-
-const SU2W5_WORDS = ['greenest', 'smartest', 'brighter', 'brightest', 'painter', 'boaster', 'brownest', 'trainer', 'swiftest', 'freshest', 'helper', 'hunter'];
-
-
-
-/* ===================== Utils ===================== */
-let audio;
-let currentBlend = null; // controller to cancel ongoing blends
-
-const qs = (s) => document.querySelector(s);
-
-function safeOn(selector, event, handler){
-  const el = qs(selector);
-  if (!el) return;
-  el.addEventListener(event, handler);
-}
-
-function show(name){
-  const screens = [
-    'home','letters','week2','week3','week4','week5',
-    'a2w1','weekA2W2','weekA2W3','weekA2W4','weekA2W5',
-    'spring1w1','spring1w2','spring1w3','spring1w4','spring1w5'
-  ];
-
-  for (const id of screens){
-    const el = qs('#' + id);
-    if (!el) continue;
-
-    if (id === 'home') {
-      el.style.display = (name === 'home') ? 'flex' : 'none';
-    } else if (id === 'letters') {
-      el.style.display = (name === 'letters') ? 'block' : 'none';
-    } else {
-      el.style.display = (name === id) ? 'block' : 'none';
-    }
-  }
-
-  qs('#spring2w1').style.display = name==='spring2w1' ? 'block':'none';
-  qs('#spring2w2').style.display = name==='spring2w2' ? 'block':'none';
-  qs('#spring2w3').style.display = name==='spring2w3' ? 'block':'none';
-  qs('#spring2w4').style.display = name==='spring2w4' ? 'block':'none';
-
-  qs('#summer1w1').style.display = name==='summer1w1' ? 'block':'none';
-  qs('#summer1w2').style.display = name==='summer1w2' ? 'block':'none';
-  qs('#summer1w3').style.display = name==='summer1w3' ? 'block':'none';
-  qs('#summer1w4').style.display = name==='summer1w4' ? 'block':'none';
-
-  qs('#summer2w1').style.display = name==='summer2w1' ? 'block':'none';
-  qs('#summer2w2').style.display = name==='summer2w2' ? 'block':'none';
-  qs('#summer2w3').style.display = name==='summer2w3' ? 'block':'none';
-  qs('#summer2w4').style.display = name==='summer2w4' ? 'block':'none';
-  qs('#summer2w5').style.display = name==='summer2w5' ? 'block':'none';
-
-}
-
-function playSoundFor(key){
-  if (!key) return;
-  if (audio && !audio.paused) audio.pause();
-  audio = new Audio(`sounds/${key}.mp3`);
-  audio.currentTime = 0;
-  audio.play().catch(()=>{});
-}
-
-// Phonics clusters that should be treated as a single sound
-const PHONICS_CLUSTERS = [
-  // double consonants
-  'ff','ss','ll','vv',
-  // digraphs
-  'ck','sh','ch','th','ng','nk',
-  // other
-  'qu','zz',
-  // special sound keys
-  'oo-long','oo-short',
-];
-
-function splitForPhonics(word){
-  const parts = [];
-  let i = 0;
-  while (i < word.length){
-    let matched = false;
-
-    // longest match first
-    const clusters = PHONICS_CLUSTERS.slice().sort((a,b)=>b.length-a.length);
-    for (const cluster of clusters){
-      if (word.startsWith(cluster, i)){
-        parts.push(cluster);
-        i += cluster.length;
-        matched = true;
-        break;
-      }
-    }
-
-    if (!matched){
-      parts.push(word[i]);
-      i++;
-    }
-  }
-  return parts;
-}
-
-// Play sound for each phonics part (NO final full-word sound)
-function playBlend(word){
-  if (!word) return;
-
-  // cancel previous blend
-  if (currentBlend && currentBlend.audio){
-    currentBlend.cancelled = true;
-    try { currentBlend.audio.pause(); } catch {}
-  }
-
-  const controller = { cancelled:false, audio:null };
-  currentBlend = controller;
-
-  const parts = splitForPhonics(word);
-  let i = 0;
-
-  const step = () => {
-    if (controller.cancelled) return;
-    if (i >= parts.length){
-      controller.audio = null;
-      return;
-    }
-
-    const key = parts[i];
-    const a = new Audio(`sounds/${key}.mp3`);
-    controller.audio = a;
-    a.play().catch(()=>{});
-    a.onended = () => {
-      if (controller.cancelled) return;
-      i++;
-      step();
-    };
-  };
-
-  step();
-}
-
-
-/* ===================== General letter practice ===================== */
-let CURRENT_SET = [], idx = 0;
-
-function startPractice(letters){
-  CURRENT_SET = letters.slice(); // ✅ NO randomisation
-  idx = 0;
-  show('letters');
-  renderLetter();
-  setTimeout(()=>qs('#letterArea')?.focus(),50);
-}
-
-function renderLetter(){
-  const el = qs('#bigLetter');
-  if (el) el.textContent = CURRENT_SET[idx] ?? '';
-}
-
-function nextLetter(){
-  idx = (idx + 1) % CURRENT_SET.length;
-  renderLetter();
-  playSoundFor(CURRENT_SET[idx]);
-}
-
-function prevLetter(){
-  idx = (idx - 1 + CURRENT_SET.length) % CURRENT_SET.length;
-  renderLetter();
-  playSoundFor(CURRENT_SET[idx]);
-}
-
-// ✅ Tap to play ONLY (no auto-advance)
-safeOn('#letterArea','click', ()=> playSoundFor(CURRENT_SET[idx]));
-
-// buttons
-safeOn('#prevBtn','click', prevLetter);
-safeOn('#nextBtn','click', nextLetter);
-
-// swipe
-let touchStartX = 0;
-safeOn('#letterArea','touchstart', e => { touchStartX = e.changedTouches[0].clientX; }, {passive:true});
-safeOn('#letterArea','touchend', e => {
-  const dx = e.changedTouches[0].clientX - touchStartX;
-  if (Math.abs(dx) > 40) dx < 0 ? nextLetter() : prevLetter();
-  else playSoundFor(CURRENT_SET[idx]);
-}, {passive:true});
-
-
-/* ===================== Generic Week Setup ===================== */
-function setupWeek({
-  screenId,
-  headerTitleId, // optional
-  letters,
-  words,
-  prefix,
-}){
-  const letterArea = qs(`#letterArea${prefix}`);
-  const bigLetter  = qs(`#bigLetter${prefix}`);
-  const prevBtn    = qs(`#prevBtn${prefix}`);
-  const nextBtn    = qs(`#nextBtn${prefix}`);
-
-  const blendArea  = qs(`#blendSeqArea${prefix}`);
-  const bigWord    = qs(`#bigWord${prefix}`);
-  const prevWord   = qs(`#prevWordBtn${prefix}`);
-  const nextWord   = qs(`#nextWordBtn${prefix}`);
-
-  const tabLetters = qs(`#tabLetters${prefix}`);
-  const tabBlend   = qs(`#tabBlend${prefix}`);
-  const paneLetters= qs(`#paneLetters${prefix}`);
-  const paneBlend  = qs(`#paneBlend${prefix}`);
-
-  if (headerTitleId){
-    const h = qs(headerTitleId);
-    if (h) h.textContent = h.textContent; // no-op, placeholder
-  }
-
-  // state
-  let lIdx = 0;
-  let wIdx = 0;
-
-  function renderLetter(){ if (bigLetter) bigLetter.textContent = letters[lIdx] ?? ''; }
-  function renderWord(){ if (bigWord) bigWord.textContent = words[wIdx] ?? ''; }
-
-  function nextL(){ lIdx = (lIdx + 1) % letters.length; renderLetter(); playSoundFor(letters[lIdx]); }
-  function prevL(){ lIdx = (lIdx - 1 + letters.length) % letters.length; renderLetter(); playSoundFor(letters[lIdx]); }
-
-  // ✅ Tap letters = play ONLY
-  if (letterArea){
-    letterArea.addEventListener('click', ()=> playSoundFor(letters[lIdx]));
-    let sx=0;
-    letterArea.addEventListener('touchstart',e=>{sx=e.changedTouches[0].clientX;},{passive:true});
-    letterArea.addEventListener('touchend',e=>{
-      const dx=e.changedTouches[0].clientX - sx;
-      if (Math.abs(dx) > 40) dx < 0 ? nextL() : prevL();
-      else playSoundFor(letters[lIdx]);
-    },{passive:true});
-  }
-
-  if (prevBtn) prevBtn.addEventListener('click', prevL);
-  if (nextBtn) nextBtn.addEventListener('click', nextL);
-
-  function nextW(){ wIdx = (wIdx + 1) % words.length; renderWord(); playBlend(words[wIdx]); }
-  function prevW(){ wIdx = (wIdx - 1 + words.length) % words.length; renderWord(); playBlend(words[wIdx]); }
-
-  // Tap word = replay ONLY
-  if (blendArea){
-    blendArea.addEventListener('click', ()=> playBlend(words[wIdx]));
-    let sx=0;
-    blendArea.addEventListener('touchstart',e=>{sx=e.changedTouches[0].clientX;},{passive:true});
-    blendArea.addEventListener('touchend',e=>{
-      const dx=e.changedTouches[0].clientX - sx;
-      if (Math.abs(dx) > 40) dx < 0 ? nextW() : prevW();
-      else playBlend(words[wIdx]);
-    },{passive:true});
-  }
-
-  if (prevWord) prevWord.addEventListener('click', prevW);
-  if (nextWord) nextWord.addEventListener('click', nextW);
-
-  function activate(which){
-    if (!tabLetters || !tabBlend || !paneLetters || !paneBlend) return;
-
-    if (which === 'letters'){
-      tabLetters.classList.add('active');
-      tabBlend.classList.remove('active');
-      paneLetters.classList.add('active');
-      paneBlend.classList.remove('active');
-      renderLetter();
-      setTimeout(()=>letterArea?.focus(),50);
-    } else {
-      tabBlend.classList.add('active');
-      tabLetters.classList.remove('active');
-      paneBlend.classList.add('active');
-      paneLetters.classList.remove('active');
-      renderWord();
-      setTimeout(()=>blendArea?.focus(),50);
-    }
-  }
-
-  if (tabLetters) tabLetters.addEventListener('click', ()=>activate('letters'));
-  if (tabBlend)   tabBlend.addEventListener('click',   ()=>activate('blend'));
-
-  // expose init
-  return {
-    initLetters(){ lIdx = 0; wIdx = 0; activate('letters'); },
-    initBlend(){ lIdx = 0; wIdx = 0; activate('blend'); },
-  };
-}
-
-
-/* ===================== Boot (after DOM loaded) ===================== */
-document.addEventListener('DOMContentLoaded', () => {
-  // Setup weeks
-  const week2 = setupWeek({ screenId:'week2', letters: WEEK2_LETTERS, words: WEEK2_WORDS, prefix:'W2' });
-  const week3 = setupWeek({ screenId:'week3', letters: WEEK3_LETTERS, words: WEEK3_WORDS, prefix:'W3' });
-  const week4 = setupWeek({ screenId:'week4', letters: WEEK4_LETTERS, words: WEEK4_WORDS, prefix:'W4' });
-  const week5 = setupWeek({ screenId:'week5', letters: WEEK5_LETTERS, words: WEEK5_WORDS, prefix:'W5' });
-
-  const a2w1 = setupWeek({ screenId:'a2w1', letters: A2W1_LETTERS, words: A2W1_WORDS, prefix:'A2' });
-  const a2w2 = setupWeek({ screenId:'weekA2W2', letters: A2W2_LETTERS, words: A2W2_WORDS, prefix:'A2W2' });
-  const a2w3 = setupWeek({ screenId:'weekA2W3', letters: A2W3_LETTERS, words: A2W3_WORDS, prefix:'A2W3' });
-  const a2w4 = setupWeek({ screenId:'weekA2W4', letters: A2W4_LETTERS, words: A2W4_WORDS, prefix:'A2W4' });
-  const a2w5 = setupWeek({ screenId:'weekA2W5', letters: A2W5_LETTERS, words: A2W5_WORDS, prefix:'A2W5' });
-
-  const s1w1 = setupWeek({ screenId:'spring1w1', letters: S1W1_LETTERS, words: S1W1_WORDS, prefix:'S1W1' });
-  const s1w2 = setupWeek({ screenId:'spring1w2', letters: S1W2_LETTERS, words: S1W2_WORDS, prefix:'S1W2' });
-  const s1w3 = setupWeek({ screenId:'spring1w3', letters: S1W3_LETTERS, words: S1W3_WORDS, prefix:'S1W3' });
-  const s1w4 = setupWeek({ screenId:'spring1w4', letters: S1W4_LETTERS, words: S1W4_WORDS, prefix:'S1W4' });
-  const s1w5 = setupWeek({ screenId:'spring1w5', letters: S1W5_LETTERS, words: S1W5_WORDS, prefix:'S1W5' });
-
-  // Home navigation
-  safeOn('#btn-practise','click', ()=>startPractice(ALPHABET));
-  safeOn('#btn-phase-1','click',  ()=>startPractice(PHASE_SETS.phase1));
-
-  safeOn('#btn-phase-2','click', ()=>{ show('week2'); week2.initLetters(); });
-  safeOn('#btn-phase-3','click', ()=>{ show('week3'); week3.initLetters(); });
-  safeOn('#btn-phase-4','click', ()=>{ show('week4'); week4.initLetters(); });
-  safeOn('#btn-phase-5','click', ()=>{ show('week5'); week5.initLetters(); });
-
-  safeOn('#btn-phase-6','click', ()=>{ show('a2w1'); a2w1.initLetters(); });
-  safeOn('#btn-phase-7','click', ()=>{ show('weekA2W2'); a2w2.initLetters(); });
-  safeOn('#btn-phase-8','click', ()=>{ show('weekA2W3'); a2w3.initLetters(); });
-  safeOn('#btn-phase-9','click', ()=>{ show('weekA2W4'); a2w4.initLetters(); });
-  safeOn('#btn-phase-10','click',()=>{ show('weekA2W5'); a2w5.initLetters(); });
-
-  safeOn('#btn-s1w1','click', ()=>{ show('spring1w1'); s1w1.initLetters(); });
-  safeOn('#btn-s1w2','click', ()=>{ show('spring1w2'); s1w2.initLetters(); });
-  safeOn('#btn-s1w3','click', ()=>{ show('spring1w3'); s1w3.initLetters(); });
-  safeOn('#btn-s1w4','click', ()=>{ show('spring1w4'); s1w4.initLetters(); });
-  safeOn('#btn-s1w5','click', ()=>{ show('spring1w5'); s1w5.initLetters(); });
-
-  safeOn('#btn-s2w1','click', ()=>{ show('spring2w1'); s2w1.initLetters(); });
-  safeOn('#btn-s2w2','click', ()=>{ show('spring2w2'); s2w2.initLetters(); });
-  safeOn('#btn-s2w3','click', ()=>{ show('spring2w3'); s2w3.initLetters(); });
-  safeOn('#btn-s2w4','click', ()=>{ show('spring2w4'); s2w4.initLetters(); });
-
-  safeOn('#btn-su1w1','click', ()=>{ show('summer1w1'); su1w1.initLetters(); });
-  safeOn('#btn-su1w2','click', ()=>{ show('summer1w2'); su1w2.initLetters(); });
-  safeOn('#btn-su1w3','click', ()=>{ show('summer1w3'); su1w3.initLetters(); });
-  safeOn('#btn-su1w4','click', ()=>{ show('summer1w4'); su1w4.initLetters(); });
-
-  safeOn('#btn-su2w1','click', ()=>{ show('summer2w1'); su2w1.initLetters(); });
-  safeOn('#btn-su2w2','click', ()=>{ show('summer2w2'); su2w2.initLetters(); });
-  safeOn('#btn-su2w3','click', ()=>{ show('summer2w3'); su2w3.initLetters(); });
-  safeOn('#btn-su2w4','click', ()=>{ show('summer2w4'); su2w4.initLetters(); });
-  safeOn('#btn-su2w5','click', ()=>{ show('summer2w5'); su2w5.initLetters(); });
-
-  // Back buttons
-  safeOn('#backLetters','click', ()=>show('home'));
-  safeOn('#backWeek2','click',  ()=>show('home'));
-  safeOn('#backWeek3','click',  ()=>show('home'));
-  safeOn('#backWeek4','click',  ()=>show('home'));
-  safeOn('#backWeek5','click',  ()=>show('home'));
-
-  safeOn('#backA2','click',    ()=>show('home'));
-  safeOn('#backA2W2','click',  ()=>show('home'));
-  safeOn('#backA2W3','click',  ()=>show('home'));
-  safeOn('#backA2W4','click',  ()=>show('home'));
-  safeOn('#backA2W5','click',  ()=>show('home'));
-
-  safeOn('#backS1W1','click', ()=>show('home'));
-  safeOn('#backS1W2','click', ()=>show('home'));
-  safeOn('#backS1W3','click', ()=>show('home'));
-  safeOn('#backS1W4','click', ()=>show('home'));
-  safeOn('#backS1W5','click', ()=>show('home'));
-
-  safeOn('#backS2W1','click', ()=>show('home'));
-  safeOn('#backS2W2','click', ()=>show('home'));
-  safeOn('#backS2W3','click', ()=>show('home'));
-  safeOn('#backS2W4','click', ()=>show('home'));
-
-  safeOn('#backSU1W1','click', ()=>show('home'));
-  safeOn('#backSU1W2','click', ()=>show('home'));
-  safeOn('#backSU1W3','click', ()=>show('home'));
-  safeOn('#backSU1W4','click', ()=>show('home'));
-
-  safeOn('#backSU2W1','click', ()=>show('home'));
-  safeOn('#backSU2W2','click', ()=>show('home'));
-  safeOn('#backSU2W3','click', ()=>show('home'));
-  safeOn('#backSU2W4','click', ()=>show('home'));
-  safeOn('#backSU2W5','click', ()=>show('home'));
-
-  // Init
-  show('home')
-  // ===== Spring 2 / Summer 1 / Summer 2 =====
-  const s2w1 = setupWeek({ screenId: 'spring2w1', letters: S2W1_LETTERS, words: S2W1_WORDS, prefix: 'S2W1' });
-  const s2w2 = setupWeek({ screenId: 'spring2w2', letters: S2W2_LETTERS, words: S2W2_WORDS, prefix: 'S2W2' });
-  const s2w3 = setupWeek({ screenId: 'spring2w3', letters: S2W3_LETTERS, words: S2W3_WORDS, prefix: 'S2W3' });
-  const s2w4 = setupWeek({ screenId: 'spring2w4', letters: S2W4_LETTERS, words: S2W4_WORDS, prefix: 'S2W4' });
-
-  const su1w1 = setupWeek({ screenId: 'summer1w1', letters: SU1W1_LETTERS, words: SU1W1_WORDS, prefix: 'SU1W1' });
-  const su1w2 = setupWeek({ screenId: 'summer1w2', letters: SU1W2_LETTERS, words: SU1W2_WORDS, prefix: 'SU1W2' });
-  const su1w3 = setupWeek({ screenId: 'summer1w3', letters: SU1W3_LETTERS, words: SU1W3_WORDS, prefix: 'SU1W3' });
-  const su1w4 = setupWeek({ screenId: 'summer1w4', letters: SU1W4_LETTERS, words: SU1W4_WORDS, prefix: 'SU1W4' });
-
-  const su2w1 = setupWeek({ screenId: 'summer2w1', letters: SU2W1_LETTERS, words: SU2W1_WORDS, prefix: 'SU2W1' });
-  const su2w2 = setupWeek({ screenId: 'summer2w2', letters: SU2W2_LETTERS, words: SU2W2_WORDS, prefix: 'SU2W2' });
-  const su2w3 = setupWeek({ screenId: 'summer2w3', letters: SU2W3_LETTERS, words: SU2W3_WORDS, prefix: 'SU2W3' });
-  const su2w4 = setupWeek({ screenId: 'summer2w4', letters: SU2W4_LETTERS, words: SU2W4_WORDS, prefix: 'SU2W4' });
-  const su2w5 = setupWeek({ screenId: 'summer2w5', letters: SU2W5_LETTERS, words: SU2W5_WORDS, prefix: 'SU2W5' });
-
-;
+// ---------- STORAGE KEYS ----------
+const STORAGE_KEY = "phonics_app_state_v2";
+
+// ---------- DEFAULT STATE ----------
+const defaultState = () => ({
+  mode: "child", // "child" | "parent"
+  term: Object.keys(CURRICULUM)[0] || "Spring 2",
+  week: 1,
+  // completion: { "<term>|<week>": { soundsPlayed: [], wordsPlayed: [] } }
+  completion: {},
+  // unlocks: { "<term>": <highestUnlockedWeekNumber> }
+  unlocks: {}
 });
+
+let state = loadState();
+
+// ---------- DOM ----------
+const termSelect = document.getElementById("termSelect");
+const weeksEl = document.getElementById("weeks");
+const continueBtn = document.getElementById("continueBtn");
+const modeToggle = document.getElementById("modeToggle");
+const modePill = document.getElementById("modePill");
+const weekTitle = document.getElementById("weekTitle");
+const soundsGrid = document.getElementById("soundsGrid");
+const wordsGrid = document.getElementById("wordsGrid");
+const statusLine = document.getElementById("statusLine");
+
+const rewardModal = document.getElementById("rewardModal");
+const modalBackdrop = document.getElementById("modalBackdrop");
+const modalClose = document.getElementById("modalClose");
+const modalEmoji = document.getElementById("modalEmoji");
+const modalTitle = document.getElementById("modalTitle");
+const modalText = document.getElementById("modalText");
+
+const toast = document.getElementById("toast");
+
+// ---------- INIT ----------
+bootstrap();
+
+// ---------- FUNCTIONS ----------
+function bootstrap() {
+  ensureUnlocks();
+  mountTerms();
+  wireEvents();
+
+  // If stored week not present in term, fallback
+  if (!CURRICULUM[state.term]) {
+    state.term = Object.keys(CURRICULUM)[0];
+    state.week = 1;
+    saveState();
+  }
+  if (!CURRICULUM[state.term][state.week]) {
+    state.week = getFirstWeek(state.term);
+    saveState();
+  }
+
+  renderAll();
+}
+
+function wireEvents() {
+  continueBtn.addEventListener("click", () => {
+    loadWeek(state.term, state.week);
+  });
+
+  modeToggle.addEventListener("click", () => {
+    state.mode = state.mode === "child" ? "parent" : "child";
+    saveState();
+    renderAll();
+  });
+
+  termSelect.addEventListener("change", (e) => {
+    state.term = e.target.value;
+    // In child mode, keep them on current progress week (or first unlocked)
+    const maxUnlocked = getMaxUnlocked(state.term);
+    state.week = Math.min(state.week, maxUnlocked);
+    if (!CURRICULUM[state.term][state.week]) state.week = getFirstWeek(state.term);
+    saveState();
+    renderAll();
+  });
+
+  modalBackdrop.addEventListener("click", closeModal);
+  modalClose.addEventListener("click", closeModal);
+}
+
+function mountTerms() {
+  termSelect.innerHTML = "";
+  Object.keys(CURRICULUM).forEach((term) => {
+    const opt = document.createElement("option");
+    opt.value = term;
+    opt.textContent = term;
+    termSelect.appendChild(opt);
+  });
+}
+
+function renderAll() {
+  termSelect.value = state.term;
+
+  modePill.textContent = state.mode === "child" ? "👶 Child Mode" : "👨‍👩‍👦 Parent Mode";
+  modeToggle.textContent = state.mode === "child" ? "👨‍👩‍👦 Parent Mode" : "👶 Child Mode";
+
+  renderWeeks();
+  renderWeekContent();
+  renderStatus();
+}
+
+function renderStatus() {
+  const maxUnlocked = getMaxUnlocked(state.term);
+  statusLine.textContent = `${state.term} • Week ${state.week} • Unlocked: Week 1–${maxUnlocked}`;
+}
+
+function renderWeeks() {
+  weeksEl.innerHTML = "";
+
+  const termData = CURRICULUM[state.term];
+  const allWeeks = Object.keys(termData).map(Number).sort((a,b)=>a-b);
+  const maxUnlocked = getMaxUnlocked(state.term);
+
+  allWeeks.forEach((wk) => {
+    const btn = document.createElement("button");
+    btn.className = "btn week-btn";
+    const isUnlocked = wk <= maxUnlocked;
+    const isCurrent = wk === state.week;
+
+    if (!isUnlocked) {
+      btn.classList.add("locked");
+      btn.disabled = true;
+      btn.textContent = `🔒 Week ${wk}`;
+    } else {
+      btn.textContent = `Week ${wk}`;
+      btn.addEventListener("click", () => loadWeek(state.term, wk));
+    }
+
+    if (isCurrent) btn.classList.add("current");
+
+    // Progressive disclosure: Child mode shows only current week button
+    if (state.mode === "child" && wk !== state.week) {
+      btn.style.display = "none";
+    }
+
+    weeksEl.appendChild(btn);
+  });
+}
+
+function renderWeekContent() {
+  const weekData = CURRICULUM[state.term][state.week];
+  weekTitle.textContent = `${state.term} — Week ${state.week}`;
+
+  const key = weekKey(state.term, state.week);
+  if (!state.completion[key]) {
+    state.completion[key] = { soundsPlayed: [], wordsPlayed: [] };
+    saveState();
+  }
+
+  // Make big buttons in child mode (less clutter)
+  document.body.classList.toggle("child-mode", state.mode === "child");
+
+  soundsGrid.innerHTML = "";
+  wordsGrid.innerHTML = "";
+
+  const playedSounds = new Set(state.completion[key].soundsPlayed);
+  const playedWords = new Set(state.completion[key].wordsPlayed);
+
+  // SOUNDS
+  (weekData.sounds || []).filter(Boolean).forEach((s) => {
+    const btn = document.createElement("button");
+    btn.className = "btn sound-btn";
+    btn.textContent = s;
+    if (playedSounds.has(s)) btn.classList.add("done");
+
+    btn.addEventListener("click", async () => {
+      await playAudioWithFeedback(btn, audioPathForSound(s));
+      markPlayed("sound", s);
+      btn.classList.add("done");
+      maybeWeekComplete();
+      maybeSetComplete(); // sounds+words set complete
+    });
+
+    soundsGrid.appendChild(btn);
+  });
+
+  // WORDS
+  (weekData.words || []).filter(Boolean).forEach((w) => {
+    const btn = document.createElement("button");
+    btn.className = "btn word-btn";
+    btn.textContent = w;
+
+    btn.addEventListener("click", async () => {
+      await playAudioWithFeedback(btn, audioPathForWord(w));
+      markPlayed("word", w);
+      maybeWeekComplete();
+      maybeSetComplete();
+    });
+
+    wordsGrid.appendChild(btn);
+  });
+}
+
+function loadWeek(term, week) {
+  const maxUnlocked = getMaxUnlocked(term);
+  if (week > maxUnlocked && state.mode !== "parent") {
+    // child mode can't jump ahead
+    return;
+  }
+  state.term = term;
+  state.week = week;
+  saveState();
+  renderAll();
+}
+
+function markPlayed(type, token) {
+  const key = weekKey(state.term, state.week);
+  const completion = state.completion[key] || { soundsPlayed: [], wordsPlayed: [] };
+
+  if (type === "sound") {
+    if (!completion.soundsPlayed.includes(token)) completion.soundsPlayed.push(token);
+  } else {
+    if (!completion.wordsPlayed.includes(token)) completion.wordsPlayed.push(token);
+  }
+
+  state.completion[key] = completion;
+  saveState();
+}
+
+/**
+ * ⭐ Week complete:
+ * Trigger when ALL sounds are played at least once (simple definition of "week complete").
+ * Then unlock next week.
+ */
+function maybeWeekComplete() {
+  const weekData = CURRICULUM[state.term][state.week];
+  const key = weekKey(state.term, state.week);
+  const completion = state.completion[key];
+
+  const sounds = (weekData.sounds || []).filter(Boolean);
+  if (sounds.length === 0) return;
+
+  const played = new Set(completion.soundsPlayed);
+  const allPlayed = sounds.every((s) => played.has(s));
+
+  const weekCompleteFlag = `${key}|weekComplete`;
+  if (allPlayed && !state.completion[weekCompleteFlag]) {
+    state.completion[weekCompleteFlag] = true;
+    saveState();
+
+    showReward({
+      emoji: "⭐",
+      title: "Week complete!",
+      text: `Nice work — you completed Week ${state.week}.`
+    });
+
+    unlockNextWeek();
+    renderAll();
+  }
+}
+
+/**
+ * 🎉 Set complete:
+ * Trigger when ALL sounds + ALL words are played at least once.
+ */
+function maybeSetComplete() {
+  const weekData = CURRICULUM[state.term][state.week];
+  const key = weekKey(state.term, state.week);
+  const completion = state.completion[key];
+
+  const sounds = (weekData.sounds || []).filter(Boolean);
+  const words = (weekData.words || []).filter(Boolean);
+  if (sounds.length === 0 && words.length === 0) return;
+
+  const playedSounds = new Set(completion.soundsPlayed);
+  const playedWords = new Set(completion.wordsPlayed);
+
+  const allSoundsPlayed = sounds.every((s) => playedSounds.has(s));
+  const allWordsPlayed = words.every((w) => playedWords.has(w));
+
+  const setCompleteFlag = `${key}|setComplete`;
+  if (allSoundsPlayed && allWordsPlayed && !state.completion[setCompleteFlag]) {
+    state.completion[setCompleteFlag] = true;
+    saveState();
+
+    // Confetti
+    try {
+      if (typeof confetti === "function") {
+        confetti({ particleCount: 140, spread: 70, origin: { y: 0.65 } });
+      }
+    } catch (_) {}
+
+    showReward({
+      emoji: "🎉",
+      title: "Set complete!",
+      text: "You finished all sounds and words in this set!"
+    });
+  }
+}
+
+function unlockNextWeek() {
+  const termWeeks = Object.keys(CURRICULUM[state.term]).map(Number).sort((a,b)=>a-b);
+  const maxUnlocked = getMaxUnlocked(state.term);
+  const currentIndex = termWeeks.indexOf(state.week);
+  if (currentIndex === -1) return;
+
+  const nextWeek = termWeeks[currentIndex + 1];
+  if (!nextWeek) return; // last week
+
+  // If next is locked, unlock it
+  if (nextWeek > maxUnlocked) {
+    state.unlocks[state.term] = nextWeek;
+    saveState();
+  }
+}
+
+function ensureUnlocks() {
+  // Initialize unlocks: default unlock week 1 for each term
+  const terms = Object.keys(CURRICULUM);
+  terms.forEach((t) => {
+    if (!state.unlocks[t]) {
+      state.unlocks[t] = getFirstWeek(t);
+    }
+  });
+
+  // Ensure current term unlock exists
+  if (!state.unlocks[state.term]) state.unlocks[state.term] = getFirstWeek(state.term);
+
+  saveState();
+}
+
+function getFirstWeek(term) {
+  const weeks = Object.keys(CURRICULUM[term] || {}).map(Number).sort((a,b)=>a-b);
+  return weeks[0] || 1;
+}
+
+function getMaxUnlocked(term) {
+  return state.unlocks[term] || getFirstWeek(term);
+}
+
+function weekKey(term, week) {
+  return `${term}|${week}`;
+}
+
+// ---------- AUDIO ----------
+function audioPathForSound(token) {
+  return `audio/sound_${sanitizeToken(token)}.mp3`;
+}
+
+function audioPathForWord(token) {
+  return `audio/word_${sanitizeToken(token)}.mp3`;
+}
+
+function sanitizeToken(token) {
+  return String(token)
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "_")
+    .replace(/[^a-z0-9_]/g, "");
+}
+
+async function playAudioWithFeedback(buttonEl, src) {
+  buttonEl.classList.add("playing");
+
+  try {
+    const audio = new Audio(src);
+    const playPromise = audio.play();
+
+    if (playPromise && typeof playPromise.then === "function") {
+      await playPromise;
+    }
+
+    // Remove "playing" when finished
+    await new Promise((resolve) => {
+      audio.onended = resolve;
+      audio.onerror = () => resolve(); // treat as complete
+    });
+
+    // If error likely due to missing file
+    if (audio.error) {
+      showToast(`No audio found: ${src}`);
+    }
+  } catch (e) {
+    showToast(`Audio couldn’t play: ${src}`);
+  } finally {
+    // ensure pop/glow ends even if audio fails
+    setTimeout(() => buttonEl.classList.remove("playing"), 50);
+  }
+}
+
+// ---------- MODAL / TOAST ----------
+function showReward({ emoji, title, text }) {
+  modalEmoji.textContent = emoji;
+  modalTitle.textContent = title;
+  modalText.textContent = text;
+  rewardModal.classList.remove("hidden");
+}
+
+function closeModal() {
+  rewardModal.classList.add("hidden");
+}
+
+let toastTimer = null;
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.remove("hidden");
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.add("hidden"), 2200);
+}
+
+// ---------- STORAGE ----------
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return defaultState();
+    const parsed = JSON.parse(raw);
+    return { ...defaultState(), ...parsed };
+  } catch {
+    return defaultState();
+  }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {}
+}
