@@ -1,3 +1,28 @@
+.app-header {
+  text-align: center;
+  padding: 24px 16px 12px;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.welcome-title {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 6px 0;
+}
+
+.welcome-subtitle {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+
+
 :root{
   --pink:#f9b3b3;
   --red:#ff4b3a;
@@ -65,3 +90,4 @@ html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Robo
   letter-spacing: 2px;
   text-transform: lowercase;
 }
+
