@@ -6,7 +6,8 @@
 .logo-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 12px;
+  margin-top: 12px;   /* moves logo down */
+  margin-bottom: 16px;
 }
 
 .welcome-title {
@@ -90,4 +91,5 @@ html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Robo
   letter-spacing: 2px;
   text-transform: lowercase;
 }
+
 
