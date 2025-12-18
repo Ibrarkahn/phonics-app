@@ -42,10 +42,24 @@
     .pane{display:none}
     .pane.active{display:block}
   </style>
+
+.app-header { text-align:center; padding: 8px 16px 12px; }
+.logo-container { display:flex; justify-content:center; margin-top:12px; margin-bottom:16px; }
+.welcome-title { font-size:26px; font-weight:800; margin:0; line-height:1.2; }
+.welcome-title span { display:block; }
+.welcome-title .brand-name { color: var(--primary); }
+.welcome-subtitle { font-size:16px; color:#555; margin-top:8px; margin-bottom:12px; }
+
+
+
 </head>
 <body>
 
-<header class="app-header">
+
+
+ 
+  <!-- HOME -->
+ <header class="app-header">
 
   <!-- LOGO -->
   <div class="logo-container">
@@ -60,16 +74,17 @@
     </svg>
   </div>
 
-  <!-- WELCOME TEXT -->
-  <h1 class="welcome-title">Welcome to Phonics Fun 👋</h1>
-  <p class="welcome-subtitle">Let’s practise sounds together!</p>
+ <h1 class="welcome-title">
+  <span>Welcome</span>
+  <span>to</span>
+  <span class="brand-name">Phonics Fun</span>
+</h1>
+
 
 </header>
 
-
  
-  <!-- HOME -->
-  <section id="home" class="screen screen--pink">
+ <section id="home" class="screen screen--pink">
     <h1>Choose a set to practise</h1>
 
     <button class="pill" id="btn-practise">Practise single letter sounds</button>
