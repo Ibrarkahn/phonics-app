@@ -1,67 +1,197 @@
 <!doctype html>
 <html lang="en">
 <head>
- <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400&family=Poppins:wght@500&display=swap" rel="stylesheet">
-<style>
-.big-letter, .big-word {
-  font-family: 'Comic Neue', 'Poppins', sans-serif;
-  font-weight: 500;
-  letter-spacing: 2px;
-}
-
-
-  :root { --primary:#ff4b3a; --gold:#ff9f1a; --pill:#ffd7c7; }
-  ...
-  
-  /* Header styles */
-  .app-header { text-align:center; padding: 8px 16px 12px; }
-  .logo-container { display:flex; justify-content:center; margin-top:12px; margin-bottom:16px; }
-  .welcome-title { font-size:26px; font-weight:800; margin:0; line-height:1.2; }
-  .welcome-title span { display:block; }
-  .welcome-title .brand-name { color: var(--primary); }
-  .welcome-subtitle { font-size:16px; color:#555; margin-top:8px; margin-bottom:12px; }
-</style>
-
-
-
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Phonics App Test</title>
+  <title>Phonics Fun</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400&family=Poppins:wght@500&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
   <style>
-    :root { --primary:#ff4b3a; --gold:#ff9f1a; --pill:#ffd7c7; }
-    * { box-sizing:border-box; }
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; text-align: center; color:#111; }
-    .screen { display: none; min-height: 100vh; }
-    .screen--pink { display:flex; flex-direction:column; align-items:center; background:#ffe7e3; padding:2rem 1rem 4rem; }
-    .topbar{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1rem;background:var(--primary);color:#fff}
-    .back{background:none;border:none;color:#fff;font-size:1.6rem;cursor:pointer}
-    h1{margin:.25rem 0 1rem 0; font-size:2rem}
-    .pill{
-      background:var(--primary);color:#fff;border:none;border-radius:999px;
-      padding:1rem 2rem;font-size:1.15rem;margin:.5rem 0;cursor:pointer;
-      width:min(92%,720px); box-shadow:0 6px 16px rgba(0,0,0,.12);
+    :root {
+      --primary:#ff4b3a;
+      --gold:#ff9f1a;
+      --pill:#ffd7c7;
     }
-    .pill--gold{background:var(--gold)}
-    .group-title{margin:1.2rem 0 .4rem 0; font-weight:700}
-    .letter-area { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:65vh; padding:1rem; }
-    .big-letter{font-size:34vh; line-height:1; user-select:none}
-    .big-word{font-size:10vh; line-height:1.05; user-select:none}
-    .nav-buttons button{margin:.45rem;font-size:1.1rem;padding:.65rem 1.15rem;border-radius:12px;border:none;background:var(--primary);color:white;cursor:pointer}
-    .tap-hint{color:var(--primary);font-weight:600;margin-top:.5rem}
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin: 0;
+      text-align: center;
+      color: #111;
+    }
+
+    /* Header */
+    .app-header {
+      text-align: center;
+      padding: 8px 16px 12px;
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 12px;
+      margin-bottom: 16px;
+    }
+
+    .welcome-title {
+      font-size: 26px;
+      font-weight: 800;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .welcome-title span {
+      display: block;
+    }
+
+    .welcome-title .brand-name {
+      color: var(--primary);
+    }
+
+    .welcome-subtitle {
+      font-size: 16px;
+      color: #555;
+      margin-top: 8px;
+      margin-bottom: 12px;
+    }
+
+    /* Screens */
+    .screen {
+      display: none;
+      min-height: 100vh;
+    }
+
+    .screen--pink {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #ffe7e3;
+      padding: 2rem 1rem 4rem;
+    }
+
+    /* Buttons */
+    .pill {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 1rem 2rem;
+      font-size: 1.15rem;
+      margin: .5rem 0;
+      cursor: pointer;
+      width: min(92%, 720px);
+      box-shadow: 0 6px 16px rgba(0,0,0,.12);
+    }
+
+    .pill--gold {
+      background: var(--gold);
+    }
+
+    .group-title {
+      margin: 1.2rem 0 .4rem 0;
+      font-weight: 700;
+    }
+
+    /* Letter area */
+    .letter-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 65vh;
+      padding: 1rem;
+    }
+
+    .big-letter {
+      font-size: 34vh;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .big-word {
+      font-size: 10vh;
+      line-height: 1.05;
+      user-select: none;
+    }
+
+    .big-letter,
+    .big-word {
+      font-family: 'Comic Neue', 'Poppins', sans-serif;
+      font-weight: 500;
+      letter-spacing: 2px;
+    }
+
+    .nav-buttons button {
+      margin: .45rem;
+      font-size: 1.1rem;
+      padding: .65rem 1.15rem;
+      border-radius: 12px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+    }
+
+    .tap-hint {
+      color: var(--primary);
+      font-weight: 600;
+      margin-top: .5rem;
+    }
 
     /* Tabs */
-    .tabs{display:flex; justify-content:center; gap:12px; padding:16px}
-    .tab{border:none; padding:.6rem 1rem; border-radius:999px; background:var(--pill); cursor:pointer; font-weight:700}
-    .tab.active{background:var(--gold)}
-    .pane{display:none}
-    .pane.active{display:block}
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .tab {
+      border: none;
+      padding: .6rem 1rem;
+      border-radius: 999px;
+      background: var(--pill);
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .tab.active {
+      background: var(--gold);
+    }
+
+    .pane {
+      display: none;
+    }
+
+    .pane.active {
+      display: block;
+    }
+
+    /* Top bar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .9rem 1rem;
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .back {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.6rem;
+      cursor: pointer;
+    }
   </style>
-
-
-
-
-
 </head>
+
 <body>
 
 
