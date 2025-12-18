@@ -3,77 +3,77 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Phonics World</title>
+  <title>Phonics App</title>
+  <link rel="stylesheet" href="styles.css" />
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400&family=Poppins:wght@500&display=swap" rel="stylesheet">
-
-  <!-- Your CSS file -->
-  <link rel="stylesheet" href="styles.css">
+  <!-- Confetti -->
+  <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script defer src="app.js"></script>
 </head>
 
 <body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand__title">Phonics</div>
+      <div class="brand__subtitle" id="statusLine">Loading…</div>
+    </div>
 
-  <!-- HOME -->
-  <section id="home" class="screen screen--pink">
+    <button id="modeToggle" class="btn btn--ghost" aria-label="Toggle Parent/Child mode">
+      👨‍👩‍👦 Parent Mode
+    </button>
+  </header>
 
-    <!-- Header (Logo + Welcome) -->
-    <header class="app-header">
-      <div class="logo-container">
-        <svg width="90" height="90" viewBox="0 0 100 100" aria-label="Phonics World Logo">
-          <circle cx="50" cy="50" r="48" fill="#FF6B35"/>
-          <text x="50%" y="55%" text-anchor="middle" fill="#fff"
-                font-size="42" font-weight="800"
-                dominant-baseline="middle"
-                font-family="Arial, sans-serif">🔤</text>
-        </svg>
+  <main class="container">
+    <section class="panel">
+      <button id="continueBtn" class="btn btn--primary btn--big">
+        👉 Continue where I left off
+      </button>
+
+      <div class="row">
+        <div class="field">
+          <label for="termSelect">Term</label>
+          <select id="termSelect"></select>
+        </div>
+
+        <div class="field">
+          <label>Weeks</label>
+          <div id="weeks" class="weeks"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel__header">
+        <h2 id="weekTitle">Week</h2>
+        <div class="pill" id="modePill">👶 Child Mode</div>
       </div>
 
-      <h1 class="welcome-title">
-        <span>Welcome</span>
-        <span>to</span>
-        <span class="brand-name">Phonics World</span>
-      </h1>
+      <div class="split">
+        <div class="card">
+          <h3>Sounds / Letters</h3>
+          <div id="soundsGrid" class="grid"></div>
+        </div>
 
-      <p class="welcome-subtitle">Let’s practise sounds together!</p>
-    </header>
+        <div class="card">
+          <h3>Blending Words</h3>
+          <div id="wordsGrid" class="grid grid--words"></div>
+        </div>
+      </div>
+    </section>
 
-    <h1 class="home-title">Choose a set to practise</h1>
+    <!-- Reward Modal -->
+    <div id="rewardModal" class="modal hidden" role="dialog" aria-modal="true">
+      <div class="modal__backdrop" id="modalBackdrop"></div>
+      <div class="modal__content">
+        <div class="modal__emoji" id="modalEmoji">⭐</div>
+        <div class="modal__title" id="modalTitle">Well done!</div>
+        <div class="modal__text" id="modalText">You completed this week.</div>
+        <button id="modalClose" class="btn btn--primary">Nice!</button>
+      </div>
+    </div>
 
-    <button class="pill" id="btn-practise">Practise single letter sounds</button>
-
-    <div class="group-title">Phase 2</div>
-    <button class="pill pill--gold" id="btn-phase-1">Autumn 1 – Week 1</button>
-    <button class="pill pill--gold" id="btn-phase-2">Autumn 1 – Week 2</button>
-    <button class="pill pill--gold" id="btn-phase-3">Autumn 1 – Week 3</button>
-    <button class="pill pill--gold" id="btn-phase-4">Autumn 1 – Week 4</button>
-    <button class="pill pill--gold" id="btn-phase-5">Autumn 1 – Week 5</button>
-    <button class="pill pill--gold" id="btn-phase-6">Autumn 2 – Week 1</button>
-    <button class="pill pill--orange" id="btn-phase-7">Autumn 2 – Week 2</button>
-    <button class="pill pill--orange" id="btn-phase-8">Autumn 2 – Week 3</button>
-    <button class="pill pill--orange" id="btn-phase-9">Autumn 2 – Week 4</button>
-    <button class="pill pill--gold" id="btn-phase-10">Autumn 2 – Week 5</button>
-
-    <button class="pill" id="btn-s1w1">Spring 1 – Week 1</button>
-    <button class="pill" id="btn-s1w2">Spring 1 – Week 2</button>
-    <button class="pill" id="btn-s1w3">Spring 1 – Week 3</button>
-    <button class="pill" id="btn-s1w4">Spring 1 – Week 4</button>
-    <button class="pill" id="btn-s1w5">Spring 1 – Week 5</button>
-
-    <div class="divider"></div>
-    <div class="hint">Spring 2</div>
-    <button id="btn-s2w1" class="pill">Spring 2 – Week 1</button>
-    <button id="btn-s2w2" class="pill">Spring 2 – Week 2</button>
-    <button id="btn-s2w3" class="pill">Spring 2 – Week 3</button>
-    <button id="btn-s2w4" class="pill">Spring 2 – Week 4</button>
-
-    <div class="divider"></div>
-    <div class="hint">Summer 1</div>
-    <button id="btn-su1w1" class="pill">Summer 1 – Week 1</button>
-    <button id="btn-su1w2" class="pill">Summer 1 – Week 2</button>
-    <button id="btn-su1w3" class="pill">Summer 1 – Week 3</button>
-    <button id="btn-su1w4" class="pill">Summer 1 – Week 4</button>
-
-    <div class="divider"></div>
-    <div class="hint">Summer 2</div>
-    <button id="btn-su2w1" class="pi
+    <!-- Toast -->
+    <div id="toast" class="toast hidden"></div>
+  </main>
+</body>
+</html>
