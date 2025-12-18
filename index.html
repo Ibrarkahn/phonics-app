@@ -8,7 +8,21 @@
   font-weight: 500;
   letter-spacing: 2px;
 }
+
+
+  :root { --primary:#ff4b3a; --gold:#ff9f1a; --pill:#ffd7c7; }
+  ...
+  
+  /* Header styles */
+  .app-header { text-align:center; padding: 8px 16px 12px; }
+  .logo-container { display:flex; justify-content:center; margin-top:12px; margin-bottom:16px; }
+  .welcome-title { font-size:26px; font-weight:800; margin:0; line-height:1.2; }
+  .welcome-title span { display:block; }
+  .welcome-title .brand-name { color: var(--primary); }
+  .welcome-subtitle { font-size:16px; color:#555; margin-top:8px; margin-bottom:12px; }
 </style>
+
+
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -43,12 +57,7 @@
     .pane.active{display:block}
   </style>
 
-.app-header { text-align:center; padding: 8px 16px 12px; }
-.logo-container { display:flex; justify-content:center; margin-top:12px; margin-bottom:16px; }
-.welcome-title { font-size:26px; font-weight:800; margin:0; line-height:1.2; }
-.welcome-title span { display:block; }
-.welcome-title .brand-name { color: var(--primary); }
-.welcome-subtitle { font-size:16px; color:#555; margin-top:8px; margin-bottom:12px; }
+
 
 
 
