@@ -566,125 +566,120 @@ function setupWeek({
 
 /* ===================== Boot (after DOM loaded) ===================== */
 document.addEventListener('DOMContentLoaded', () => {
-  // Setup weeks
-  const week2 = setupWeek({ screenId:'week2', weekKey:'L1W2', letters: WEEK2_LETTERS, words: WEEK2_WORDS, prefix:'W2' });
-  const week3 = setupWeek({ screenId:'week3', weekKey:'L1W3', letters: WEEK3_LETTERS, words: WEEK3_WORDS, prefix:'W3' });
-  const week4 = setupWeek({ screenId:'week4', weekKey:'L1W4', letters: WEEK4_LETTERS, words: WEEK4_WORDS, prefix:'W4' });
-  const week5 = setupWeek({ screenId:'week5', weekKey:'L1W5', letters: WEEK5_LETTERS, words: WEEK5_WORDS, prefix:'W5' });
+  /* ========= 1) Create ALL week controllers first ========= */
 
-  const a2w1 = setupWeek({ screenId:'a2w1', weekKey:'L2W1', letters: A2W1_LETTERS, words: A2W1_WORDS, prefix:'A2' });
-  const a2w2 = setupWeek({ screenId:'weekA2W2', weekKey:'L2W2', letters: A2W2_LETTERS, words: A2W2_WORDS, prefix:'A2W2' });
-  const a2w3 = setupWeek({ screenId:'weekA2W3', weekKey:'L2W3', letters: A2W3_LETTERS, words: A2W3_WORDS, prefix:'A2W3' });
-  const a2w4 = setupWeek({ screenId:'weekA2W4', weekKey:'L2W4', letters: A2W4_LETTERS, words: A2W4_WORDS, prefix:'A2W4' });
-  const a2w5 = setupWeek({ screenId:'weekA2W5', weekKey:'L2W5', letters: A2W5_LETTERS, words: A2W5_WORDS, prefix:'A2W5' });
+  // Level 1 (Autumn 1)
+  const week2 = setupWeek({ screenId:'week2',  weekKey:'L1W2', letters: WEEK2_LETTERS, words: WEEK2_WORDS, prefix:'W2' });
+  const week3 = setupWeek({ screenId:'week3',  weekKey:'L1W3', letters: WEEK3_LETTERS, words: WEEK3_WORDS, prefix:'W3' });
+  const week4 = setupWeek({ screenId:'week4',  weekKey:'L1W4', letters: WEEK4_LETTERS, words: WEEK4_WORDS, prefix:'W4' });
+  const week5 = setupWeek({ screenId:'week5',  weekKey:'L1W5', letters: WEEK5_LETTERS, words: WEEK5_WORDS, prefix:'W5' });
 
+  // Level 2 (Autumn 2)
+  const a2w1 = setupWeek({ screenId:'a2w1',      weekKey:'L2W1', letters: A2W1_LETTERS, words: A2W1_WORDS, prefix:'A2' });
+  const a2w2 = setupWeek({ screenId:'weekA2W2',  weekKey:'L2W2', letters: A2W2_LETTERS, words: A2W2_WORDS, prefix:'A2W2' });
+  const a2w3 = setupWeek({ screenId:'weekA2W3',  weekKey:'L2W3', letters: A2W3_LETTERS, words: A2W3_WORDS, prefix:'A2W3' });
+  const a2w4 = setupWeek({ screenId:'weekA2W4',  weekKey:'L2W4', letters: A2W4_LETTERS, words: A2W4_WORDS, prefix:'A2W4' });
+  const a2w5 = setupWeek({ screenId:'weekA2W5',  weekKey:'L2W5', letters: A2W5_LETTERS, words: A2W5_WORDS, prefix:'A2W5' });
+
+  // Level 3 (Spring 1)
   const s1w1 = setupWeek({ screenId:'spring1w1', weekKey:'L3W1', letters: S1W1_LETTERS, words: S1W1_WORDS, prefix:'S1W1' });
   const s1w2 = setupWeek({ screenId:'spring1w2', weekKey:'L3W2', letters: S1W2_LETTERS, words: S1W2_WORDS, prefix:'S1W2' });
   const s1w3 = setupWeek({ screenId:'spring1w3', weekKey:'L3W3', letters: S1W3_LETTERS, words: S1W3_WORDS, prefix:'S1W3' });
   const s1w4 = setupWeek({ screenId:'spring1w4', weekKey:'L3W4', letters: S1W4_LETTERS, words: S1W4_WORDS, prefix:'S1W4' });
   const s1w5 = setupWeek({ screenId:'spring1w5', weekKey:'L3W5', letters: S1W5_LETTERS, words: S1W5_WORDS, prefix:'S1W5' });
 
-  // Home navigation
-  safeOn('#btn-practise','click', ()=>startPractice(ALPHABET));
-  safeOn('#btn-phase-1','click',  ()=>startPractice(PHASE_SETS.phase1,'L1W1'));
+  // Level 4 (Spring 2)
+  const s2w1 = setupWeek({ screenId:'spring2w1', weekKey:'L4W1', letters: S2W1_LETTERS, words: S2W1_WORDS, prefix:'S2W1' });
+  const s2w2 = setupWeek({ screenId:'spring2w2', weekKey:'L4W2', letters: S2W2_LETTERS, words: S2W2_WORDS, prefix:'S2W2' });
+  const s2w3 = setupWeek({ screenId:'spring2w3', weekKey:'L4W3', letters: S2W3_LETTERS, words: S2W3_WORDS, prefix:'S2W3' });
+  const s2w4 = setupWeek({ screenId:'spring2w4', weekKey:'L4W4', letters: S2W4_LETTERS, words: S2W4_WORDS, prefix:'S2W4' });
 
-  safeOn('#btn-phase-2','click', ()=>{ show('week2'); week2.initLetters(); });
-  safeOn('#btn-phase-3','click', ()=>{ show('week3'); week3.initLetters(); });
-  safeOn('#btn-phase-4','click', ()=>{ show('week4'); week4.initLetters(); });
-  safeOn('#btn-phase-5','click', ()=>{ show('week5'); week5.initLetters(); });
+  // Level 5 (Summer 1)
+  const su1w1 = setupWeek({ screenId:'summer1w1', weekKey:'L5W1', letters: SU1W1_LETTERS, words: SU1W1_WORDS, prefix:'SU1W1' });
+  const su1w2 = setupWeek({ screenId:'summer1w2', weekKey:'L5W2', letters: SU1W2_LETTERS, words: SU1W2_WORDS, prefix:'SU1W2' });
+  const su1w3 = setupWeek({ screenId:'summer1w3', weekKey:'L5W3', letters: SU1W3_LETTERS, words: SU1W3_WORDS, prefix:'SU1W3' });
+  const su1w4 = setupWeek({ screenId:'summer1w4', weekKey:'L5W4', letters: SU1W4_LETTERS, words: SU1W4_WORDS, prefix:'SU1W4' });
 
-  safeOn('#btn-phase-6','click', ()=>{ show('a2w1'); a2w1.initLetters(); });
-  safeOn('#btn-phase-7','click', ()=>{ show('weekA2W2'); a2w2.initLetters(); });
-  safeOn('#btn-phase-8','click', ()=>{ show('weekA2W3'); a2w3.initLetters(); });
-  safeOn('#btn-phase-9','click', ()=>{ show('weekA2W4'); a2w4.initLetters(); });
-  safeOn('#btn-phase-10','click',()=>{ show('weekA2W5'); a2w5.initLetters(); });
+  // Level 6 (Summer 2)
+  const su2w1 = setupWeek({ screenId:'summer2w1', weekKey:'L6W1', letters: SU2W1_LETTERS, words: SU2W1_WORDS, prefix:'SU2W1' });
+  const su2w2 = setupWeek({ screenId:'summer2w2', weekKey:'L6W2', letters: SU2W2_LETTERS, words: SU2W2_WORDS, prefix:'SU2W2' });
+  const su2w3 = setupWeek({ screenId:'summer2w3', weekKey:'L6W3', letters: SU2W3_LETTERS, words: SU2W3_WORDS, prefix:'SU2W3' });
+  const su2w4 = setupWeek({ screenId:'summer2w4', weekKey:'L6W4', letters: SU2W4_LETTERS, words: SU2W4_WORDS, prefix:'SU2W4' });
+  const su2w5 = setupWeek({ screenId:'summer2w5', weekKey:'L6W5', letters: SU2W5_LETTERS, words: SU2W5_WORDS, prefix:'SU2W5' });
 
-  safeOn('#btn-s1w1','click', ()=>{ show('spring1w1'); s1w1.initLetters(); });
-  safeOn('#btn-s1w2','click', ()=>{ show('spring1w2'); s1w2.initLetters(); });
-  safeOn('#btn-s1w3','click', ()=>{ show('spring1w3'); s1w3.initLetters(); });
-  safeOn('#btn-s1w4','click', ()=>{ show('spring1w4'); s1w4.initLetters(); });
-  safeOn('#btn-s1w5','click', ()=>{ show('spring1w5'); s1w5.initLetters(); });
+  /* ========= 2) Home navigation handlers ========= */
 
-  safeOn('#btn-s2w1','click', ()=>{ show('spring2w1'); s2w1.initLetters(); });
-  safeOn('#btn-s2w2','click', ()=>{ show('spring2w2'); s2w2.initLetters(); });
-  safeOn('#btn-s2w3','click', ()=>{ show('spring2w3'); s2w3.initLetters(); });
-  safeOn('#btn-s2w4','click', ()=>{ show('spring2w4'); s2w4.initLetters(); });
+  // Always unlocked
+  safeOn('#btn-practise','click', () => {
+    PRACTICE_KEY = null;
+    PRACTICE_SEEN_LAST = false;
+    startPractice(ALPHABET, null);
+  });
 
-  safeOn('#btn-su1w1','click', ()=>{ show('summer1w1'); su1w1.initLetters(); });
-  safeOn('#btn-su1w2','click', ()=>{ show('summer1w2'); su1w2.initLetters(); });
-  safeOn('#btn-su1w3','click', ()=>{ show('summer1w3'); su1w3.initLetters(); });
-  safeOn('#btn-su1w4','click', ()=>{ show('summer1w4'); su1w4.initLetters(); });
+  // Level 1 – Week 1 (phase1 set)
+  safeOn('#btn-phase-1','click', () => {
+    PRACTICE_KEY = 'L1W1';
+    PRACTICE_SEEN_LAST = false;
+    startPractice(PHASE_SETS.phase1, 'L1W1');
+  });
 
-  safeOn('#btn-su2w1','click', ()=>{ show('summer2w1'); su2w1.initLetters(); });
-  safeOn('#btn-su2w2','click', ()=>{ show('summer2w2'); su2w2.initLetters(); });
-  safeOn('#btn-su2w3','click', ()=>{ show('summer2w3'); su2w3.initLetters(); });
-  safeOn('#btn-su2w4','click', ()=>{ show('summer2w4'); su2w4.initLetters(); });
-  safeOn('#btn-su2w5','click', ()=>{ show('summer2w5'); su2w5.initLetters(); });
+  // Level 1
+  safeOn('#btn-phase-2','click', () => { show('week2'); week2.initLetters(); });
+  safeOn('#btn-phase-3','click', () => { show('week3'); week3.initLetters(); });
+  safeOn('#btn-phase-4','click', () => { show('week4'); week4.initLetters(); });
+  safeOn('#btn-phase-5','click', () => { show('week5'); week5.initLetters(); });
 
-  // Back buttons
-  safeOn('#backLetters','click', ()=>show('home'));
-  safeOn('#backWeek2','click',  ()=>show('home'));
-  safeOn('#backWeek3','click',  ()=>show('home'));
-  safeOn('#backWeek4','click',  ()=>show('home'));
-  safeOn('#backWeek5','click',  ()=>show('home'));
+  // Level 2
+  safeOn('#btn-phase-6','click',  () => { show('a2w1');      a2w1.initLetters(); });
+  safeOn('#btn-phase-7','click',  () => { show('weekA2W2');  a2w2.initLetters(); });
+  safeOn('#btn-phase-8','click',  () => { show('weekA2W3');  a2w3.initLetters(); });
+  safeOn('#btn-phase-9','click',  () => { show('weekA2W4');  a2w4.initLetters(); });
+  safeOn('#btn-phase-10','click', () => { show('weekA2W5');  a2w5.initLetters(); });
 
-  safeOn('#backA2','click',    ()=>show('home'));
-  safeOn('#backA2W2','click',  ()=>show('home'));
-  safeOn('#backA2W3','click',  ()=>show('home'));
-  safeOn('#backA2W4','click',  ()=>show('home'));
-  safeOn('#backA2W5','click',  ()=>show('home'));
+  // Level 3
+  safeOn('#btn-s1w1','click', () => { show('spring1w1'); s1w1.initLetters(); });
+  safeOn('#btn-s1w2','click', () => { show('spring1w2'); s1w2.initLetters(); });
+  safeOn('#btn-s1w3','click', () => { show('spring1w3'); s1w3.initLetters(); });
+  safeOn('#btn-s1w4','click', () => { show('spring1w4'); s1w4.initLetters(); });
+  safeOn('#btn-s1w5','click', () => { show('spring1w5'); s1w5.initLetters(); });
 
-  safeOn('#backS1W1','click', ()=>show('home'));
-  safeOn('#backS1W2','click', ()=>show('home'));
-  safeOn('#backS1W3','click', ()=>show('home'));
-  safeOn('#backS1W4','click', ()=>show('home'));
-  safeOn('#backS1W5','click', ()=>show('home'));
+  // Level 4
+  safeOn('#btn-s2w1','click', () => { show('spring2w1'); s2w1.initLetters(); });
+  safeOn('#btn-s2w2','click', () => { show('spring2w2'); s2w2.initLetters(); });
+  safeOn('#btn-s2w3','click', () => { show('spring2w3'); s2w3.initLetters(); });
+  safeOn('#btn-s2w4','click', () => { show('spring2w4'); s2w4.initLetters(); });
 
-  safeOn('#backS2W1','click', ()=>show('home'));
-  safeOn('#backS2W2','click', ()=>show('home'));
-  safeOn('#backS2W3','click', ()=>show('home'));
-  safeOn('#backS2W4','click', ()=>show('home'));
+  // Level 5
+  safeOn('#btn-su1w1','click', () => { show('summer1w1'); su1w1.initLetters(); });
+  safeOn('#btn-su1w2','click', () => { show('summer1w2'); su1w2.initLetters(); });
+  safeOn('#btn-su1w3','click', () => { show('summer1w3'); su1w3.initLetters(); });
+  safeOn('#btn-su1w4','click', () => { show('summer1w4'); su1w4.initLetters(); });
 
-  safeOn('#backSU1W1','click', ()=>show('home'));
-  safeOn('#backSU1W2','click', ()=>show('home'));
-  safeOn('#backSU1W3','click', ()=>show('home'));
-  safeOn('#backSU1W4','click', ()=>show('home'));
+  // Level 6
+  safeOn('#btn-su2w1','click', () => { show('summer2w1'); su2w1.initLetters(); });
+  safeOn('#btn-su2w2','click', () => { show('summer2w2'); su2w2.initLetters(); });
+  safeOn('#btn-su2w3','click', () => { show('summer2w3'); su2w3.initLetters(); });
+  safeOn('#btn-su2w4','click', () => { show('summer2w4'); su2w4.initLetters(); });
+  safeOn('#btn-su2w5','click', () => { show('summer2w5'); su2w5.initLetters(); });
 
-  safeOn('#backSU2W1','click', ()=>show('home'));
-  safeOn('#backSU2W2','click', ()=>show('home'));
-  safeOn('#backSU2W3','click', ()=>show('home'));
-  safeOn('#backSU2W4','click', ()=>show('home'));
-  safeOn('#backSU2W5','click', ()=>show('home'));
+  /* ========= 3) Back buttons ========= */
+  [
+    '#backLetters','#backWeek2','#backWeek3','#backWeek4','#backWeek5',
+    '#backA2','#backA2W2','#backA2W3','#backA2W4','#backA2W5',
+    '#backS1W1','#backS1W2','#backS1W3','#backS1W4','#backS1W5',
+    '#backS2W1','#backS2W2','#backS2W3','#backS2W4',
+    '#backSU1W1','#backSU1W2','#backSU1W3','#backSU1W4',
+    '#backSU2W1','#backSU2W2','#backSU2W3','#backSU2W4','#backSU2W5'
+  ].forEach(sel => safeOn(sel, 'click', () => show('home')));
 
-  // Init
-  show('home')
-  // ===== Spring 2 / Summer 1 / Summer 2 =====
-  const s2w1 = setupWeek({ screenId: 'spring2w1', weekKey:'L4W1', letters: S2W1_LETTERS, words: S2W1_WORDS, prefix: 'S2W1' });
-  const s2w2 = setupWeek({ screenId: 'spring2w2', weekKey:'L4W2', letters: S2W2_LETTERS, words: S2W2_WORDS, prefix: 'S2W2' });
-  const s2w3 = setupWeek({ screenId: 'spring2w3', weekKey:'L4W3', letters: S2W3_LETTERS, words: S2W3_WORDS, prefix: 'S2W3' });
-  const s2w4 = setupWeek({ screenId: 'spring2w4', weekKey:'L4W4', letters: S2W4_LETTERS, words: S2W4_WORDS, prefix: 'S2W4' });
-  const su1w1 = setupWeek({ screenId: 'summer1w1', weekKey:'L5W1', letters: SU1W1_LETTERS, words: SU1W1_WORDS, prefix: 'SU1W1' });
-  const su1w2 = setupWeek({ screenId: 'summer1w2', weekKey:'L5W2', letters: SU1W2_LETTERS, words: SU1W2_WORDS, prefix: 'SU1W2' });
-  const su1w3 = setupWeek({ screenId: 'summer1w3', weekKey:'L5W3', letters: SU1W3_LETTERS, words: SU1W3_WORDS, prefix: 'SU1W3' });
-  const su1w4 = setupWeek({ screenId: 'summer1w4', weekKey:'L5W4', letters: SU1W4_LETTERS, words: SU1W4_WORDS, prefix: 'SU1W4' });
-  const su2w1 = setupWeek({ screenId: 'summer2w1', weekKey:'L6W1', letters: SU2W1_LETTERS, words: SU2W1_WORDS, prefix: 'SU2W1' });
-  const su2w2 = setupWeek({ screenId: 'summer2w2', weekKey:'L6W2', letters: SU2W2_LETTERS, words: SU2W2_WORDS, prefix: 'SU2W2' });
-  const su2w3 = setupWeek({ screenId: 'summer2w3', weekKey:'L6W3', letters: SU2W3_LETTERS, words: SU2W3_WORDS, prefix: 'SU2W3' });
-  const su2w4 = setupWeek({ screenId: 'summer2w4', weekKey:'L6W4', letters: SU2W4_LETTERS, words: SU2W4_WORDS, prefix: 'SU2W4' });
-  const su2w5 = setupWeek({ screenId: 'summer2w5', weekKey:'L6W5', letters: SU2W5_LETTERS, words: SU2W5_WORDS, prefix: 'SU2W5' });
-;
+  /* ========= 4) Settings navigation + controls ========= */
+  safeOn('#openSettings', 'click', () => show('settings'));
+  safeOn('#backSettings', 'click', () => show('home'));
 
-
-// Settings navigation + controls
-safeOn('#openSettings', 'click', () => show('settings'));
-safeOn('#backSettings', 'click', () => show('home'));
-
-
-  const parentMode = qs('#parentMode');
+  const parentMode   = qs('#parentMode');
   const unlockAllBtn = qs('#unlockAllBtn');
-  const resetBtn = qs('#resetProgressBtn');
+  const resetBtn     = qs('#resetProgressBtn');
 
-  // Initialise settings UI from storage
   const p0 = getProgress();
   if (parentMode) parentMode.checked = !!p0.parentMode;
 
@@ -706,12 +701,13 @@ safeOn('#backSettings', 'click', () => show('home'));
   safeOn(resetBtn, 'click', () => {
     const ok = confirm("Reset progress? This will remove all stars and locks will return.");
     if (!ok) return;
-    setProgress({ completed: [], unlockAll: false, parentMode: getProgress().parentMode });
+    const keepParent = getProgress().parentMode;
+    setProgress({ completed: [], unlockAll: false, parentMode: keepParent });
     updateHomeLocks();
     showToast("Progress reset");
   });
 
-  // Initial lock/star state on Home
+  /* ========= 5) Start app ========= */
+  show('home');
   updateHomeLocks();
 });
-
