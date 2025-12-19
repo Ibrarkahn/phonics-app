@@ -10,7 +10,125 @@ const PHASE_SETS = {
 };
 
 // Autumn 1
-const WEEK2_LETTERS = ['i','n','m','d'];
+const WEEK2_LETTERS = ['i','n','m','d'];// ===== Progress (localStorage) =====
+const STORAGE_KEY = "phonics_progress_v1";
+function getProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return { completed: [], unlockAll: false, parentMode: false };
+    const obj = JSON.parse(raw);
+    return {
+      completed: Array.isArray(obj.completed) ? obj.completed : [],
+      unlockAll: !!obj.unlockAll,
+      parentMode: !!obj.parentMode
+    };
+  }catch(e){
+    return { completed: [], unlockAll: false, parentMode: false };
+  }
+}
+function setProgress(p){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
+}
+function isCompleted(key){
+  if(!key) return false;
+  return getProgress().completed.includes(key);
+}
+function markCompleted(key){
+  if(!key) return;
+  const p = getProgress();
+  if(!p.completed.includes(key)){
+    p.completed.push(key);
+    setProgress(p);
+  }
+}
+
+// Week ordering (for locks/unlocks on the Home screen)
+const WEEK_ORDER = [
+  'L1W1','L1W2','L1W3','L1W4','L1W5',
+  'L2W1','L2W2','L2W3','L2W4','L2W5',
+  'L3W1','L3W2','L3W3','L3W4','L3W5',
+  'L4W1','L4W2','L4W3','L4W4',
+  'L5W1','L5W2','L5W3','L5W4',
+  'L6W1','L6W2','L6W3','L6W4','L6W5',
+];
+
+const WEEK_BUTTONS = {
+  L1W1: '#btn-phase-1',
+  L1W2: '#btn-phase-2',
+  L1W3: '#btn-phase-3',
+  L1W4: '#btn-phase-4',
+  L1W5: '#btn-phase-5',
+
+  L2W1: '#btn-phase-6',
+  L2W2: '#btn-phase-7',
+  L2W3: '#btn-phase-8',
+  L2W4: '#btn-phase-9',
+  L2W5: '#btn-phase-10',
+
+  L3W1: '#btn-s1w1',
+  L3W2: '#btn-s1w2',
+  L3W3: '#btn-s1w3',
+  L3W4: '#btn-s1w4',
+  L3W5: '#btn-s1w5',
+
+  L4W1: '#btn-s2w1',
+  L4W2: '#btn-s2w2',
+  L4W3: '#btn-s2w3',
+  L4W4: '#btn-s2w4',
+
+  L5W1: '#btn-su1w1',
+  L5W2: '#btn-su1w2',
+  L5W3: '#btn-su1w3',
+  L5W4: '#btn-su1w4',
+
+  L6W1: '#btn-su2w1',
+  L6W2: '#btn-su2w2',
+  L6W3: '#btn-su2w3',
+  L6W4: '#btn-su2w4',
+  L6W5: '#btn-su2w5',
+};
+
+function updateHomeLocks(){
+  const p = getProgress();
+
+  const completed = new Set(p.completed || []);
+  const unlockAll = !!p.unlockAll;
+
+  // Determine the "next" week to unlock (sequential)
+  let firstIncompleteIdx = WEEK_ORDER.findIndex(k => !completed.has(k));
+  if (firstIncompleteIdx === -1) firstIncompleteIdx = WEEK_ORDER.length - 1;
+
+  const unlocked = new Set();
+  if (unlockAll){
+    WEEK_ORDER.forEach(k => unlocked.add(k));
+  }else{
+    WEEK_ORDER.forEach((k, i) => {
+      if (i <= firstIncompleteIdx) unlocked.add(k);
+      if (completed.has(k)) unlocked.add(k); // always keep completed unlocked
+    });
+  }
+
+  for (const key of WEEK_ORDER){
+    const sel = WEEK_BUTTONS[key];
+    const btn = sel ? document.querySelector(sel) : null;
+    if (!btn) continue;
+
+    if (completed.has(key)){
+      btn.dataset.status = 'done';
+      btn.disabled = false;
+      btn.setAttribute('aria-disabled', 'false');
+    }else if (unlocked.has(key)){
+      btn.dataset.status = 'open';
+      btn.disabled = false;
+      btn.setAttribute('aria-disabled', 'false');
+    }else{
+      btn.dataset.status = 'locked';
+      btn.disabled = true;
+      btn.setAttribute('aria-disabled', 'true');
+    }
+  }
+}
+
 const WEEK2_WORDS   = ['sit','nap','man','dip','pat','sad','nip','mat'];
 
 const WEEK3_LETTERS = ['g','o','c','k'];
@@ -122,6 +240,16 @@ function safeOn(selector, event, handler){
   el.addEventListener(event, handler);
 }
 
+function showToast(msg){
+  const el = document.getElementById("toast");
+  if(!el) return;
+  el.textContent = msg;
+  el.classList.remove("hidden");
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => el.classList.add("hidden"), 1800);
+}
+
+
 function show(name){
   const screens = [
     'home','letters','week2','week3','week4','week5',
@@ -158,6 +286,8 @@ function show(name){
   qs('#summer2w4').style.display = name==='summer2w4' ? 'block':'none';
   qs('#summer2w5').style.display = name==='summer2w5' ? 'block':'none';
 
+
+  if (name === 'home') updateHomeLocks();
 }
 
 function playSoundFor(key){
@@ -244,9 +374,11 @@ function playBlend(word){
 
 
 /* ===================== General letter practice ===================== */
+let PRACTICE_KEY = null;
+let PRACTICE_SEEN_LAST = false;
 let CURRENT_SET = [], idx = 0;
 
-function startPractice(letters){
+function startPractice(letters, progressKey = null){
   CURRENT_SET = letters.slice(); // ✅ NO randomisation
   idx = 0;
   show('letters');
@@ -257,6 +389,18 @@ function startPractice(letters){
 function renderLetter(){
   const el = qs('#bigLetter');
   if (el) el.textContent = CURRENT_SET[idx] ?? '';
+
+  // Mark practice set complete once the learner reaches the last item at least once
+  if (PRACTICE_KEY && !PRACTICE_SEEN_LAST && CURRENT_SET.length){
+    if (idx === CURRENT_SET.length - 1){
+      PRACTICE_SEEN_LAST = true;
+      markCompleted(PRACTICE_KEY);
+      showToast("⭐ Week completed!");
+      try{ if (window.confetti) window.confetti({ particleCount: 120, spread: 70, origin: { y: 0.7 } }); }catch(e){}
+      // Refresh home states if they go back
+      updateHomeLocks();
+    }
+  }
 }
 
 function nextLetter(){
@@ -295,6 +439,7 @@ function setupWeek({
   letters,
   words,
   prefix,
+  weekKey = null,
 }){
   const letterArea = qs(`#letterArea${prefix}`);
   const bigLetter  = qs(`#bigLetter${prefix}`);
@@ -305,6 +450,22 @@ function setupWeek({
   const bigWord    = qs(`#bigWord${prefix}`);
   const prevWord   = qs(`#prevWordBtn${prefix}`);
   const nextWord   = qs(`#nextWordBtn${prefix}`);
+// Completion tracking (mark week done when last letter + last word have been seen at least once)
+  let seenLastLetter = false;
+  let seenLastWord = false;
+  let didComplete = false;
+
+  function maybeComplete(){
+    if (!weekKey || didComplete) return;
+    if (seenLastLetter && seenLastWord){
+      didComplete = true;
+      markCompleted(weekKey);
+      showToast("⭐ Week completed!");
+      try{ if (window.confetti) window.confetti({ particleCount: 140, spread: 75, origin: { y: 0.7 } }); }catch(e){}
+      updateHomeLocks();
+    }
+  }
+
 
   const tabLetters = qs(`#tabLetters${prefix}`);
   const tabBlend   = qs(`#tabBlend${prefix}`);
@@ -320,8 +481,20 @@ function setupWeek({
   let lIdx = 0;
   let wIdx = 0;
 
-  function renderLetter(){ if (bigLetter) bigLetter.textContent = letters[lIdx] ?? ''; }
-  function renderWord(){ if (bigWord) bigWord.textContent = words[wIdx] ?? ''; }
+  function renderLetter(){
+    if (bigLetter) bigLetter.textContent = letters[lIdx] ?? '';
+    if (letters.length && lIdx === letters.length - 1){
+      seenLastLetter = true;
+      maybeComplete();
+    }
+  }
+  function renderWord(){
+    if (bigWord) bigWord.textContent = words[wIdx] ?? '';
+    if (words.length && wIdx === words.length - 1){
+      seenLastWord = true;
+      maybeComplete();
+    }
+  }
 
   function nextL(){ lIdx = (lIdx + 1) % letters.length; renderLetter(); playSoundFor(letters[lIdx]); }
   function prevL(){ lIdx = (lIdx - 1 + letters.length) % letters.length; renderLetter(); playSoundFor(letters[lIdx]); }
@@ -393,26 +566,26 @@ function setupWeek({
 /* ===================== Boot (after DOM loaded) ===================== */
 document.addEventListener('DOMContentLoaded', () => {
   // Setup weeks
-  const week2 = setupWeek({ screenId:'week2', letters: WEEK2_LETTERS, words: WEEK2_WORDS, prefix:'W2' });
-  const week3 = setupWeek({ screenId:'week3', letters: WEEK3_LETTERS, words: WEEK3_WORDS, prefix:'W3' });
-  const week4 = setupWeek({ screenId:'week4', letters: WEEK4_LETTERS, words: WEEK4_WORDS, prefix:'W4' });
-  const week5 = setupWeek({ screenId:'week5', letters: WEEK5_LETTERS, words: WEEK5_WORDS, prefix:'W5' });
+  const week2 = setupWeek({ screenId:'week2', weekKey:'L1W2', letters: WEEK2_LETTERS, words: WEEK2_WORDS, prefix:'W2' });
+  const week3 = setupWeek({ screenId:'week3', weekKey:'L1W3', letters: WEEK3_LETTERS, words: WEEK3_WORDS, prefix:'W3' });
+  const week4 = setupWeek({ screenId:'week4', weekKey:'L1W4', letters: WEEK4_LETTERS, words: WEEK4_WORDS, prefix:'W4' });
+  const week5 = setupWeek({ screenId:'week5', weekKey:'L1W5', letters: WEEK5_LETTERS, words: WEEK5_WORDS, prefix:'W5' });
 
-  const a2w1 = setupWeek({ screenId:'a2w1', letters: A2W1_LETTERS, words: A2W1_WORDS, prefix:'A2' });
-  const a2w2 = setupWeek({ screenId:'weekA2W2', letters: A2W2_LETTERS, words: A2W2_WORDS, prefix:'A2W2' });
-  const a2w3 = setupWeek({ screenId:'weekA2W3', letters: A2W3_LETTERS, words: A2W3_WORDS, prefix:'A2W3' });
-  const a2w4 = setupWeek({ screenId:'weekA2W4', letters: A2W4_LETTERS, words: A2W4_WORDS, prefix:'A2W4' });
-  const a2w5 = setupWeek({ screenId:'weekA2W5', letters: A2W5_LETTERS, words: A2W5_WORDS, prefix:'A2W5' });
+  const a2w1 = setupWeek({ screenId:'a2w1', weekKey:'L2W1', letters: A2W1_LETTERS, words: A2W1_WORDS, prefix:'A2' });
+  const a2w2 = setupWeek({ screenId:'weekA2W2', weekKey:'L2W2', letters: A2W2_LETTERS, words: A2W2_WORDS, prefix:'A2W2' });
+  const a2w3 = setupWeek({ screenId:'weekA2W3', weekKey:'L2W3', letters: A2W3_LETTERS, words: A2W3_WORDS, prefix:'A2W3' });
+  const a2w4 = setupWeek({ screenId:'weekA2W4', weekKey:'L2W4', letters: A2W4_LETTERS, words: A2W4_WORDS, prefix:'A2W4' });
+  const a2w5 = setupWeek({ screenId:'weekA2W5', weekKey:'L2W5', letters: A2W5_LETTERS, words: A2W5_WORDS, prefix:'A2W5' });
 
-  const s1w1 = setupWeek({ screenId:'spring1w1', letters: S1W1_LETTERS, words: S1W1_WORDS, prefix:'S1W1' });
-  const s1w2 = setupWeek({ screenId:'spring1w2', letters: S1W2_LETTERS, words: S1W2_WORDS, prefix:'S1W2' });
-  const s1w3 = setupWeek({ screenId:'spring1w3', letters: S1W3_LETTERS, words: S1W3_WORDS, prefix:'S1W3' });
-  const s1w4 = setupWeek({ screenId:'spring1w4', letters: S1W4_LETTERS, words: S1W4_WORDS, prefix:'S1W4' });
-  const s1w5 = setupWeek({ screenId:'spring1w5', letters: S1W5_LETTERS, words: S1W5_WORDS, prefix:'S1W5' });
+  const s1w1 = setupWeek({ screenId:'spring1w1', weekKey:'L3W1', letters: S1W1_LETTERS, words: S1W1_WORDS, prefix:'S1W1' });
+  const s1w2 = setupWeek({ screenId:'spring1w2', weekKey:'L3W2', letters: S1W2_LETTERS, words: S1W2_WORDS, prefix:'S1W2' });
+  const s1w3 = setupWeek({ screenId:'spring1w3', weekKey:'L3W3', letters: S1W3_LETTERS, words: S1W3_WORDS, prefix:'S1W3' });
+  const s1w4 = setupWeek({ screenId:'spring1w4', weekKey:'L3W4', letters: S1W4_LETTERS, words: S1W4_WORDS, prefix:'S1W4' });
+  const s1w5 = setupWeek({ screenId:'spring1w5', weekKey:'L3W5', letters: S1W5_LETTERS, words: S1W5_WORDS, prefix:'S1W5' });
 
   // Home navigation
   safeOn('#btn-practise','click', ()=>startPractice(ALPHABET));
-  safeOn('#btn-phase-1','click',  ()=>startPractice(PHASE_SETS.phase1));
+  safeOn('#btn-phase-1','click',  ()=>startPractice(PHASE_SETS.phase1,'L1W1'));
 
   safeOn('#btn-phase-2','click', ()=>{ show('week2'); week2.initLetters(); });
   safeOn('#btn-phase-3','click', ()=>{ show('week3'); week3.initLetters(); });
@@ -485,21 +658,59 @@ document.addEventListener('DOMContentLoaded', () => {
   // Init
   show('home')
   // ===== Spring 2 / Summer 1 / Summer 2 =====
-  const s2w1 = setupWeek({ screenId: 'spring2w1', letters: S2W1_LETTERS, words: S2W1_WORDS, prefix: 'S2W1' });
-  const s2w2 = setupWeek({ screenId: 'spring2w2', letters: S2W2_LETTERS, words: S2W2_WORDS, prefix: 'S2W2' });
-  const s2w3 = setupWeek({ screenId: 'spring2w3', letters: S2W3_LETTERS, words: S2W3_WORDS, prefix: 'S2W3' });
-  const s2w4 = setupWeek({ screenId: 'spring2w4', letters: S2W4_LETTERS, words: S2W4_WORDS, prefix: 'S2W4' });
-
-  const su1w1 = setupWeek({ screenId: 'summer1w1', letters: SU1W1_LETTERS, words: SU1W1_WORDS, prefix: 'SU1W1' });
-  const su1w2 = setupWeek({ screenId: 'summer1w2', letters: SU1W2_LETTERS, words: SU1W2_WORDS, prefix: 'SU1W2' });
-  const su1w3 = setupWeek({ screenId: 'summer1w3', letters: SU1W3_LETTERS, words: SU1W3_WORDS, prefix: 'SU1W3' });
-  const su1w4 = setupWeek({ screenId: 'summer1w4', letters: SU1W4_LETTERS, words: SU1W4_WORDS, prefix: 'SU1W4' });
-
-  const su2w1 = setupWeek({ screenId: 'summer2w1', letters: SU2W1_LETTERS, words: SU2W1_WORDS, prefix: 'SU2W1' });
-  const su2w2 = setupWeek({ screenId: 'summer2w2', letters: SU2W2_LETTERS, words: SU2W2_WORDS, prefix: 'SU2W2' });
-  const su2w3 = setupWeek({ screenId: 'summer2w3', letters: SU2W3_LETTERS, words: SU2W3_WORDS, prefix: 'SU2W3' });
-  const su2w4 = setupWeek({ screenId: 'summer2w4', letters: SU2W4_LETTERS, words: SU2W4_WORDS, prefix: 'SU2W4' });
-  const su2w5 = setupWeek({ screenId: 'summer2w5', letters: SU2W5_LETTERS, words: SU2W5_WORDS, prefix: 'SU2W5' });
-
+  const s2w1 = setupWeek({ screenId: 'spring2w1', weekKey:'L4W1', letters: S2W1_LETTERS, words: S2W1_WORDS, prefix: 'S2W1' });
+  const s2w2 = setupWeek({ screenId: 'spring2w2', weekKey:'L4W2', letters: S2W2_LETTERS, words: S2W2_WORDS, prefix: 'S2W2' });
+  const s2w3 = setupWeek({ screenId: 'spring2w3', weekKey:'L4W3', letters: S2W3_LETTERS, words: S2W3_WORDS, prefix: 'S2W3' });
+  const s2w4 = setupWeek({ screenId: 'spring2w4', weekKey:'L4W4', letters: S2W4_LETTERS, words: S2W4_WORDS, prefix: 'S2W4' });
+  const su1w1 = setupWeek({ screenId: 'summer1w1', weekKey:'L5W1', letters: SU1W1_LETTERS, words: SU1W1_WORDS, prefix: 'SU1W1' });
+  const su1w2 = setupWeek({ screenId: 'summer1w2', weekKey:'L5W2', letters: SU1W2_LETTERS, words: SU1W2_WORDS, prefix: 'SU1W2' });
+  const su1w3 = setupWeek({ screenId: 'summer1w3', weekKey:'L5W3', letters: SU1W3_LETTERS, words: SU1W3_WORDS, prefix: 'SU1W3' });
+  const su1w4 = setupWeek({ screenId: 'summer1w4', weekKey:'L5W4', letters: SU1W4_LETTERS, words: SU1W4_WORDS, prefix: 'SU1W4' });
+  const su2w1 = setupWeek({ screenId: 'summer2w1', weekKey:'L6W1', letters: SU2W1_LETTERS, words: SU2W1_WORDS, prefix: 'SU2W1' });
+  const su2w2 = setupWeek({ screenId: 'summer2w2', weekKey:'L6W2', letters: SU2W2_LETTERS, words: SU2W2_WORDS, prefix: 'SU2W2' });
+  const su2w3 = setupWeek({ screenId: 'summer2w3', weekKey:'L6W3', letters: SU2W3_LETTERS, words: SU2W3_WORDS, prefix: 'SU2W3' });
+  const su2w4 = setupWeek({ screenId: 'summer2w4', weekKey:'L6W4', letters: SU2W4_LETTERS, words: SU2W4_WORDS, prefix: 'SU2W4' });
+  const su2w5 = setupWeek({ screenId: 'summer2w5', weekKey:'L6W5', letters: SU2W5_LETTERS, words: SU2W5_WORDS, prefix: 'SU2W5' });
 ;
+
+
+// Settings navigation + controls
+  const openSettings = qs('#openSettings');
+  const backSettings = qs('#backSettings');
+  safeOn(openSettings, 'click', () => show('settings'));
+  safeOn(backSettings, 'click', () => show('home'));
+
+  const parentMode = qs('#parentMode');
+  const unlockAllBtn = qs('#unlockAllBtn');
+  const resetBtn = qs('#resetProgressBtn');
+
+  // Initialise settings UI from storage
+  const p0 = getProgress();
+  if (parentMode) parentMode.checked = !!p0.parentMode;
+
+  safeOn(parentMode, 'change', () => {
+    const p = getProgress();
+    p.parentMode = !!parentMode.checked;
+    setProgress(p);
+    showToast(p.parentMode ? "Parent mode on" : "Parent mode off");
+  });
+
+  safeOn(unlockAllBtn, 'click', () => {
+    const p = getProgress();
+    p.unlockAll = true;
+    setProgress(p);
+    updateHomeLocks();
+    showToast("All levels unlocked");
+  });
+
+  safeOn(resetBtn, 'click', () => {
+    const ok = confirm("Reset progress? This will remove all stars and locks will return.");
+    if (!ok) return;
+    setProgress({ completed: [], unlockAll: false, parentMode: getProgress().parentMode });
+    updateHomeLocks();
+    showToast("Progress reset");
+  });
+
+  // Initial lock/star state on Home
+  updateHomeLocks();
 });
