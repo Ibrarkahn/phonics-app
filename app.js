@@ -240,31 +240,6 @@ function safeOn(selector, event, handler){
   el.addEventListener(event, handler);
 }
 
-// Settings navigation
-const openSettingsBtn = qs('#openSettings');
-safeOn(openSettingsBtn, 'click', () => show('settings'));
-
-const backSettingsBtn = qs('#backSettings');
-safeOn(backSettingsBtn, 'click', () => show('home'));
-
-// Settings controls (unlock all + reset)
-const unlockAllBtn = qs('#unlockAllBtn');
-safeOn(unlockAllBtn, 'click', () => { setUnlockAll(true); showToast('All levels unlocked'); });
-
-const parentModeChk = qs('#parentMode');
-if(parentModeChk){
-  parentModeChk.checked = !!progress.unlockAll;
-  safeOn(parentModeChk, 'change', () => setUnlockAll(parentModeChk.checked));
-}
-const resetProgressBtn = qs('#resetProgressBtn');
-safeOn(resetProgressBtn, 'click', () => {
-  progress = { done:{}, unlockAll:false };
-  saveProgress(progress);
-  if(parentModeChk) parentModeChk.checked = false;
-  applyLocks();
-  showToast('Progress reset');
-});
-
 function showToast(msg){
   const el = document.getElementById("toast");
   if(!el) return;
@@ -276,14 +251,43 @@ function showToast(msg){
 
 
 function show(name){
-  // Hide all screens, then show the requested one.
-  document.querySelectorAll('.screen').forEach(el => { el.style.display = 'none'; });
-  const el = document.getElementById(name);
-  if(!el) return;
-  // Use flex layout for the pink home screen, otherwise block.
-  el.style.display = el.classList.contains('screen--pink') ? 'flex' : 'block';
-  // Scroll to top when navigating
-  window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  const screens = [
+    'home','letters','week2','week3','week4','week5',
+    'a2w1','weekA2W2','weekA2W3','weekA2W4','weekA2W5',
+    'spring1w1','spring1w2','spring1w3','spring1w4','spring1w5'
+  ];
+
+  for (const id of screens){
+    const el = qs('#' + id);
+    if (!el) continue;
+
+    if (id === 'home') {
+      el.style.display = (name === 'home') ? 'flex' : 'none';
+    } else if (id === 'letters') {
+      el.style.display = (name === 'letters') ? 'block' : 'none';
+    } else {
+      el.style.display = (name === id) ? 'block' : 'none';
+    }
+  }
+
+  qs('#spring2w1').style.display = name==='spring2w1' ? 'block':'none';
+  qs('#spring2w2').style.display = name==='spring2w2' ? 'block':'none';
+  qs('#spring2w3').style.display = name==='spring2w3' ? 'block':'none';
+  qs('#spring2w4').style.display = name==='spring2w4' ? 'block':'none';
+
+  qs('#summer1w1').style.display = name==='summer1w1' ? 'block':'none';
+  qs('#summer1w2').style.display = name==='summer1w2' ? 'block':'none';
+  qs('#summer1w3').style.display = name==='summer1w3' ? 'block':'none';
+  qs('#summer1w4').style.display = name==='summer1w4' ? 'block':'none';
+
+  qs('#summer2w1').style.display = name==='summer2w1' ? 'block':'none';
+  qs('#summer2w2').style.display = name==='summer2w2' ? 'block':'none';
+  qs('#summer2w3').style.display = name==='summer2w3' ? 'block':'none';
+  qs('#summer2w4').style.display = name==='summer2w4' ? 'block':'none';
+  qs('#summer2w5').style.display = name==='summer2w5' ? 'block':'none';
+
+
+  if (name === 'home') updateHomeLocks();
 }
 
 function playSoundFor(key){
@@ -617,98 +621,7 @@ document.addEventListener('DOMContentLoaded', () => {
   safeOn('#btn-su2w5','click', ()=>{ show('summer2w5'); su2w5.initLetters(); });
 
   // Back buttons
-  safeOn('#backLetters','click', ()=>
-// ---------- Progress (localStorage) ----------
-const STORAGE_KEY = 'phonics_fun_progress_v1';
-function loadProgress(){
-  try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if(!raw) return { done: {}, unlockAll:false };
-    const p = JSON.parse(raw);
-    return { done: p.done || {}, unlockAll: !!p.unlockAll };
-  }catch(e){
-    return { done: {}, unlockAll:false };
-  }
-}
-function saveProgress(p){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
-}
-let progress = loadProgress();
-
-function markDone(weekKey){
-  if(!progress.done[weekKey]){
-    progress.done[weekKey] = true;
-    saveProgress(progress);
-    applyLocks();
-  }
-}
-function setUnlockAll(v){
-  progress.unlockAll = !!v;
-  saveProgress(progress);
-  applyLocks();
-}
-
-// Home week order (controls locking). Practise CTA is always unlocked.
-const HOME_WEEKS = [
-  { key:'L1W1', btn:'#btn-phase-1' },
-  { key:'L1W2', btn:'#btn-phase-2' },
-  { key:'L1W3', btn:'#btn-phase-3' },
-  { key:'L1W4', btn:'#btn-phase-4' },
-  { key:'L1W5', btn:'#btn-phase-5' },
-  { key:'L2W1', btn:'#btn-phase-6' },
-  { key:'L2W2', btn:'#btn-phase-7' },
-  { key:'L2W3', btn:'#btn-phase-8' },
-  { key:'L2W4', btn:'#btn-phase-9' },
-  { key:'L2W5', btn:'#btn-phase-10' },
-  { key:'L3W1', btn:'#btn-s1w1' },
-  { key:'L3W2', btn:'#btn-s1w2' },
-  { key:'L3W3', btn:'#btn-s1w3' },
-  { key:'L3W4', btn:'#btn-s1w4' },
-  { key:'L3W5', btn:'#btn-s1w5' },
-  { key:'L4W1', btn:'#btn-s2w1' },
-  { key:'L4W2', btn:'#btn-s2w2' },
-  { key:'L4W3', btn:'#btn-s2w3' },
-  { key:'L4W4', btn:'#btn-s2w4' },
-  { key:'L5W1', btn:'#btn-su1w1' },
-  { key:'L5W2', btn:'#btn-su1w2' },
-  { key:'L5W3', btn:'#btn-su1w3' },
-  { key:'L5W4', btn:'#btn-su1w4' },
-  { key:'L6W1', btn:'#btn-su2w1' },
-  { key:'L6W2', btn:'#btn-su2w2' },
-  { key:'L6W3', btn:'#btn-su2w3' },
-  { key:'L6W4', btn:'#btn-su2w4' },
-  { key:'L6W5', btn:'#btn-su2w5' },
-];
-
-function applyLocks(){
-  // Find the first not-done week; that one is the next unlocked.
-  let nextIndex = HOME_WEEKS.findIndex(w => !progress.done[w.key]);
-  if(nextIndex === -1) nextIndex = HOME_WEEKS.length; // everything done
-  HOME_WEEKS.forEach((w, i) => {
-    const el = qs(w.btn);
-    if(!el) return;
-    const done = !!progress.done[w.key];
-    const locked = !progress.unlockAll && !done && i > nextIndex;
-    // Week 1 should never be locked
-    const isFirst = i === 0;
-    const finalLocked = locked && !isFirst;
-
-    if(done){
-      el.dataset.status = 'done';
-      el.disabled = false;
-      el.setAttribute('aria-disabled','false');
-    }else if(finalLocked){
-      el.dataset.status = 'locked';
-      el.disabled = true;
-      el.setAttribute('aria-disabled','true');
-    }else{
-      delete el.dataset.status;
-      el.disabled = false;
-      el.setAttribute('aria-disabled','false');
-    }
-  });
-}
-show('home'));
+  safeOn('#backLetters','click', ()=>show('home'));
   safeOn('#backWeek2','click',  ()=>show('home'));
   safeOn('#backWeek3','click',  ()=>show('home'));
   safeOn('#backWeek4','click',  ()=>show('home'));
