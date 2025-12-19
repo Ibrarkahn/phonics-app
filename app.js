@@ -1,716 +1,427 @@
-/* ===================== Data ===================== */
-const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'.split('');
+// Phonics Fun — app.js (updated)
 
-// Phase 2 (general letters)
-const PHASE_SETS = {
-  phase1: ['s','a','t','p'],
-  phase4: ['ck','e','u','r'],
-  phase5: ['h','b','f','l'],
-  phase6: ['f','ff','s','ss','l','ll','v','vv'],
-};
+/* ---------- helpers ---------- */
+const qs = (sel, root=document) => root.querySelector(sel);
+const qsAll = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 
-// Autumn 1
-const WEEK2_LETTERS = ['i','n','m','d'];// ===== Progress (localStorage) =====
-const STORAGE_KEY = "phonics_progress_v1";
-function getProgress(){
-  try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if(!raw) return { completed: [], unlockAll: false, parentMode: false };
-    const obj = JSON.parse(raw);
-    return {
-      completed: Array.isArray(obj.completed) ? obj.completed : [],
-      unlockAll: !!obj.unlockAll,
-      parentMode: !!obj.parentMode
-    };
-  }catch(e){
-    return { completed: [], unlockAll: false, parentMode: false };
-  }
-}
-function setProgress(p){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
-}
-function isCompleted(key){
-  if(!key) return false;
-  return getProgress().completed.includes(key);
-}
-function markCompleted(key){
-  if(!key) return;
-  const p = getProgress();
-  if(!p.completed.includes(key)){
-    p.completed.push(key);
-    setProgress(p);
-  }
-}
-
-// Week ordering (for locks/unlocks on the Home screen)
-const WEEK_ORDER = [
-  'L1W1','L1W2','L1W3','L1W4','L1W5',
-  'L2W1','L2W2','L2W3','L2W4','L2W5',
-  'L3W1','L3W2','L3W3','L3W4','L3W5',
-  'L4W1','L4W2','L4W3','L4W4',
-  'L5W1','L5W2','L5W3','L5W4',
-  'L6W1','L6W2','L6W3','L6W4','L6W5',
-];
-
-const WEEK_BUTTONS = {
-  L1W1: '#btn-phase-1',
-  L1W2: '#btn-phase-2',
-  L1W3: '#btn-phase-3',
-  L1W4: '#btn-phase-4',
-  L1W5: '#btn-phase-5',
-
-  L2W1: '#btn-phase-6',
-  L2W2: '#btn-phase-7',
-  L2W3: '#btn-phase-8',
-  L2W4: '#btn-phase-9',
-  L2W5: '#btn-phase-10',
-
-  L3W1: '#btn-s1w1',
-  L3W2: '#btn-s1w2',
-  L3W3: '#btn-s1w3',
-  L3W4: '#btn-s1w4',
-  L3W5: '#btn-s1w5',
-
-  L4W1: '#btn-s2w1',
-  L4W2: '#btn-s2w2',
-  L4W3: '#btn-s2w3',
-  L4W4: '#btn-s2w4',
-
-  L5W1: '#btn-su1w1',
-  L5W2: '#btn-su1w2',
-  L5W3: '#btn-su1w3',
-  L5W4: '#btn-su1w4',
-
-  L6W1: '#btn-su2w1',
-  L6W2: '#btn-su2w2',
-  L6W3: '#btn-su2w3',
-  L6W4: '#btn-su2w4',
-  L6W5: '#btn-su2w5',
-};
-
-function updateHomeLocks(){
-  const p = getProgress();
-
-  const completed = new Set(p.completed || []);
-  const unlockAll = !!p.unlockAll;
-
-  // Determine the "next" week to unlock (sequential)
-  let firstIncompleteIdx = WEEK_ORDER.findIndex(k => !completed.has(k));
-  if (firstIncompleteIdx === -1) firstIncompleteIdx = WEEK_ORDER.length - 1;
-
-  const unlocked = new Set();
-  if (unlockAll){
-    WEEK_ORDER.forEach(k => unlocked.add(k));
-  }else{
-    WEEK_ORDER.forEach((k, i) => {
-      if (i <= firstIncompleteIdx) unlocked.add(k);
-      if (completed.has(k)) unlocked.add(k); // always keep completed unlocked
-    });
-  }
-
-  for (const key of WEEK_ORDER){
-    const sel = WEEK_BUTTONS[key];
-    const btn = sel ? document.querySelector(sel) : null;
-    if (!btn) continue;
-
-    if (completed.has(key)){
-      btn.dataset.status = 'done';
-      btn.disabled = false;
-      btn.setAttribute('aria-disabled', 'false');
-    }else if (unlocked.has(key)){
-      btn.dataset.status = 'open';
-      btn.disabled = false;
-      btn.setAttribute('aria-disabled', 'false');
-    }else{
-      btn.dataset.status = 'locked';
-      btn.disabled = true;
-      btn.setAttribute('aria-disabled', 'true');
-    }
-  }
-}
-
-const WEEK2_WORDS   = ['sit','nap','man','dip','pat','sad','nip','mat'];
-
-const WEEK3_LETTERS = ['g','o','c','k'];
-const WEEK3_WORDS   = ['man','tap','dog','kit','cap','dig','kid','cog'];
-
-const WEEK4_LETTERS = ['ck','e','u','r'];
-const WEEK4_WORDS   = ['mum','duck','pet','pick','set','red','sock','run'];
-
-const WEEK5_LETTERS = ['h','b','f','l'];
-const WEEK5_WORDS   = ['hug','big','fat','luck','bed','muck','kid','rub'];
-
-// Autumn 2
-const A2W1_LETTERS = ['f','ff','s','ss','l','ll','v','vv'];
-const A2W1_WORDS   = ['huff','off','puff','bell','hill','tell','mess','hiss','fuss','jug','jam','jet'];
-
-const A2W2_LETTERS = ['v','w','x','y'];
-const A2W2_WORDS   = ['van','vet','wet','wig','fox','six','yes','yum'];
-
-const A2W3_LETTERS = ['z','qu','ch'];
-const A2W3_WORDS   = ['zip','zap','buzz','fizz','quick','quit','chips','rich'];
-
-const A2W4_LETTERS = ['sh','th','ng','nk'];
-const A2W4_WORDS   = ['shell','dish','this','moth','ring','thing','pink','sink'];
-
-const A2W5_LETTERS = ['f','l','s','j','v','w','x','y','z','qu','ch','sh','ng','th','nk'];
-const A2W5_WORDS   = ['zips','ships','chips','rings','pins','dogs','sings','ducks'];
-
-// Spring 1
-const S1W1_LETTERS = ['ai','ee','igh','oa'];
-const S1W1_WORDS   = ['pain','see','sight','coat','hail','jeep','high','road'];
-
-// Use distinct sound keys for long/short oo (so your sound files can be different)
-const S1W2_LETTERS = ['oo-long','oo-short','ar','or'];
-const S1W2_WORDS   = ['zoo','good','bark','pork','room','hook','yard','born'];
-
-const S1W3_LETTERS = ['ur','ow','oi','ear'];
-const S1W3_WORDS   = ['surf','howl','oil','hear','turn','down','join','tear'];
-
-const S1W4_LETTERS = ['air','er'];
-const S1W4_WORDS   = ['hair','boxer','letter','rubber','chair','summer','rubbish','coffee'];
-
-const S1W5_LETTERS = ['ai','ee','ur','ow','igh','oa','oi','ear','oo-long','oo-short','air','er','ar','or'];
-const S1W5_WORDS   = ['laptop','popcorn','market','raincoat','sunset','starfish','ticket','melon'];
-
-// ===== Added Spring 2 / Summer 1 / Summer 2 =====
-const S2W1_LETTERS = ['ai','ee','igh','oa','oo-long','ar','or','ur','oo-short','ow','oi','ear'];
-
-const S2W1_WORDS   = ['tail','deep','fight','load','food','hard','born','surf','foot','town','boil','hear'];
-
-const S2W2_LETTERS = ['air', 'er', 'dd', 'mm', 'tt', 'bb', 'rr', 'gg', 'pp', 'ff'];
-
-const S2W2_WORDS = ['bigger', 'chair', 'fair', 'rubber', 'shimmer', 'butter', 'supper', 'chatter', 'muffin', 'mutter', 'buzzer', 'cannot', 'laptop', 'seven', 'fantastic', 'comic'];
-
-const S2W3_LETTERS = ['ai', 'ee', 'ur', 'ow', 'igh', 'oa', 'oi', 'ear', 'oo-long', 'oo-short', 'air', 'er', 'ar', 'or'];
-
-const S2W3_WORDS = ['sharp', 'shark', 'sheep', 'cheep', 'queen', 'tooth', 'short', 'thinker', 'powder', 'church', 'corner', 'farmer', 'torch', 'chain', 'shower', 'march'];
-
-const S2W4_LETTERS = ['ai', 'ee', 'ur', 'ow', 'igh', 'oa', 'oi', 'ear', 'oo-long', 'oo-short', 'air', 'er', 'ar', 'or'];
-
-const S2W4_WORDS = ['lightning', 'mammoth', 'earring', 'poison', 'queens', 'chains', 'chairs', 'cars', 'boots', 'surfs', 'cooks', 'cheeps', 'torches', 'boxes', 'fizzes', 'fishes'];
-
-const SU1W1_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
-
-const SU1W1_WORDS = ['hand', 'jump', 'lift', 'soft', 'tent', 'wind', 'hump', 'nest', 'lost', 'thump', 'belt', 'pond'];
-
-const SU1W2_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
-
-const SU1W2_WORDS = ['thank', 'champ', 'bench', 'shift', 'cost', 'shrink', 'crack', 'smell', 'dress', 'bring', 'truck', 'milk'];
-
-const SU1W3_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
-
-const SU1W3_WORDS = ['farming', 'forest', 'blanket', 'children', 'freshness', 'present', 'windmill', 'lunchbox', 'shampoo', 'wooden', 'finger', 'printer'];
-
-const SU1W4_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
-
-const SU1W4_WORDS = ['bumping', 'snapping', 'jumping', 'swimming', 'helped', 'cracked', 'grunted', 'printed', 'melted', 'plumpest', 'freshest', 'softest'];
-
-const SU2W1_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
-
-const SU2W1_WORDS = ['bleed', 'growl', 'bright', 'sport', 'steep', 'train', 'flight', 'green', 'spoon', 'storm', 'speech', 'smart'];
-
-const SU2W2_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
-
-const SU2W2_WORDS = ['street', 'screen', 'stair', 'strong', 'three', 'scoop', 'free', 'clear', 'slight', 'smear', 'spoil', 'clown'];
-
-const SU2W3_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
-
-const SU2W3_WORDS = ['sports', 'floats', 'crowds', 'spears', 'dresses', 'splashes', 'speeches', 'balloon', 'appear', 'portrait', 'scrunches', 'spoons'];
-
-const SU2W4_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
-
-const SU2W4_WORDS = ['cloaked', 'scooped', 'sleeping', 'creeping', 'crowned', 'started', 'toasted', 'smeared', 'floated', 'printed', 'painting', 'blinked'];
-
-const SU2W5_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
-
-const SU2W5_WORDS = ['greenest', 'smartest', 'brighter', 'brightest', 'painter', 'boaster', 'brownest', 'trainer', 'swiftest', 'freshest', 'helper', 'hunter'];
-
-
-
-/* ===================== Utils ===================== */
-let audio;
-let currentBlend = null; // controller to cancel ongoing blends
-
-const qs = (s) => document.querySelector(s);
-
-function safeOn(selector, event, handler){
-  const el = qs(selector);
+function safeOn(target, event, handler){
+  const el = (typeof target === 'string') ? qs(target) : target;
   if (!el) return;
   el.addEventListener(event, handler);
 }
 
-function showToast(msg){
-  const el = document.getElementById("toast");
-  if(!el) return;
-  el.textContent = msg;
-  el.classList.remove("hidden");
-  clearTimeout(showToast._t);
-  showToast._t = setTimeout(() => el.classList.add("hidden"), 1800);
-}
+/* ---------- localStorage keys ---------- */
+const LS_PROGRESS = 'phonics_progress_v1';   // completed weeks
+const LS_LAST = 'phonics_last_screen_v1';    // last screen id
+const LS_CHILD_MODE = 'phonics_child_mode_v1'; // settings toggle
 
+/* ---------- state ---------- */
+let progress = loadProgress(); // Set of week ids (e.g. "lvl1w1")
 
-function show(name){
-  const screens = [
-    'home','letters','week2','week3','week4','week5',
-    'a2w1','weekA2W2','weekA2W3','weekA2W4','weekA2W5',
-    'spring1w1','spring1w2','spring1w3','spring1w4','spring1w5'
-  ];
+/* ---------- boot ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+  // Default screen
+  show('home');
+  updateHomeLocks();
 
-  for (const id of screens){
-    const el = qs('#' + id);
-    if (!el) continue;
+  // Settings button (⚙️)
+  const openSettings = qs('#openSettings');
+  safeOn(openSettings, 'click', () => show('settings'));
 
-    if (id === 'home') {
-      el.style.display = (name === 'home') ? 'flex' : 'none';
-    } else if (id === 'letters') {
-      el.style.display = (name === 'letters') ? 'block' : 'none';
-    } else {
-      el.style.display = (name === id) ? 'block' : 'none';
-    }
+  // Back from settings
+  safeOn('#backSettings', 'click', () => show('home'));
+
+  // Reset progress
+  safeOn('#resetProgress', 'click', () => {
+    if (!confirm('Reset progress? This will lock later weeks again.')) return;
+    progress = new Set();
+    saveProgress(progress);
+    toast('Progress reset ✅');
+    updateHomeLocks();
+  });
+
+  // Child mode toggle
+  const childToggle = qs('#childModeToggle');
+  if (childToggle) {
+    childToggle.checked = loadChildMode();
+    applyChildMode(childToggle.checked);
+    safeOn(childToggle, 'change', () => {
+      setChildMode(childToggle.checked);
+      applyChildMode(childToggle.checked);
+      toast(childToggle.checked ? 'Child Mode ON 👶' : 'Child Mode OFF');
+    });
   }
 
-  qs('#spring2w1').style.display = name==='spring2w1' ? 'block':'none';
-  qs('#spring2w2').style.display = name==='spring2w2' ? 'block':'none';
-  qs('#spring2w3').style.display = name==='spring2w3' ? 'block':'none';
-  qs('#spring2w4').style.display = name==='spring2w4' ? 'block':'none';
+  // Continue button
+  safeOn('#continueBtn', 'click', () => {
+    const last = localStorage.getItem(LS_LAST) || 'home';
+    show(last);
+  });
 
-  qs('#summer1w1').style.display = name==='summer1w1' ? 'block':'none';
-  qs('#summer1w2').style.display = name==='summer1w2' ? 'block':'none';
-  qs('#summer1w3').style.display = name==='summer1w3' ? 'block':'none';
-  qs('#summer1w4').style.display = name==='summer1w4' ? 'block':'none';
+  // Practise single letter sounds (always unlocked)
+  safeOn('#btn-practise', 'click', () => {
+    setLast('letters');
+    show('letters');
+  });
 
-  qs('#summer2w1').style.display = name==='summer2w1' ? 'block':'none';
-  qs('#summer2w2').style.display = name==='summer2w2' ? 'block':'none';
-  qs('#summer2w3').style.display = name==='summer2w3' ? 'block':'none';
-  qs('#summer2w4').style.display = name==='summer2w4' ? 'block':'none';
-  qs('#summer2w5').style.display = name==='summer2w5' ? 'block':'none';
+  // Home week buttons (Level 1 style)
+  // IMPORTANT: these ids must match your HTML button ids
+  // Example mapping below — adjust if your ids differ.
+  const weekMap = [
+    { btn:'#btn-lvl1w1', screen:'week2',  key:'lvl1w1' }, // Level 1 - Week 1
+    { btn:'#btn-lvl1w2', screen:'week3',  key:'lvl1w2' },
+    { btn:'#btn-lvl1w3', screen:'week4',  key:'lvl1w3' },
+    { btn:'#btn-lvl1w4', screen:'week5',  key:'lvl1w4' },
 
+    // Add the rest of your mapping here
+    // { btn:'#btn-lvl2w1', screen:'a2w1', key:'lvl2w1' },
+  ];
+
+  weekMap.forEach(({btn, screen, key}) => {
+    safeOn(btn, 'click', () => {
+      if (isLocked(key)) return; // locked = do nothing
+      setLast(screen);
+      show(screen);
+    });
+  });
+
+  /* ---------- letter practice ---------- */
+  initSimpleSequence({
+    screenId: 'letters',
+    backBtn: '#backLetters',
+    backTarget: 'home',
+    areaId: '#letterArea',
+    bigId: '#bigLetter',
+    prevBtn: '#prevBtn',
+    nextBtn: '#nextBtn',
+    items: 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split(''),
+    onFinish: null
+  });
+
+  /* ---------- week sequences (examples already in your HTML) ---------- */
+  // Each week has:
+  // - letters area (bigLetter)
+  // - blending word area (bigWord)
+  // We mark week complete when user reaches the last sound/word at least once.
+
+  // Autumn 1 – Week 2 (example)
+  initTabbedWeek({
+    weekKey: 'lvl1w1',
+    screenId: 'week2',
+    backBtn: '#backWeek2',
+    backTarget: 'home',
+
+    // tabs
+    tabLetters: '#tabLettersW2',
+    tabBlend: '#tabBlendW2',
+    paneLetters: '#paneLettersW2',
+    paneBlend: '#paneBlendW2',
+
+    // letters
+    lettersArea: '#letterAreaW2',
+    lettersBig: '#bigLetterW2',
+    lettersPrev: '#prevBtnW2',
+    lettersNext: '#nextBtnW2',
+    letters: ['i','n','m','d'].map(x => x.toUpperCase()),
+
+    // words
+    wordsArea: '#blendSeqAreaW2',
+    wordsBig: '#bigWordW2',
+    wordsPrev: '#prevWordBtnW2',
+    wordsNext: '#nextWordBtnW2',
+    words: ['sit','pin','man','dip']
+  });
+
+  // Autumn 1 – Week 3
+  initTabbedWeek({
+    weekKey: 'lvl1w2',
+    screenId: 'week3',
+    backBtn: '#backWeek3',
+    backTarget: 'home',
+
+    tabLetters: '#tabLettersW3',
+    tabBlend: '#tabBlendW3',
+    paneLetters: '#paneLettersW3',
+    paneBlend: '#paneBlendW3',
+
+    lettersArea: '#letterAreaW3',
+    lettersBig: '#bigLetterW3',
+    lettersPrev: '#prevBtnW3',
+    lettersNext: '#nextBtnW3',
+    letters: ['g','o','c','k'].map(x => x.toUpperCase()),
+
+    wordsArea: '#blendSeqAreaW3',
+    wordsBig: '#bigWordW3',
+    wordsPrev: '#prevWordBtnW3',
+    wordsNext: '#nextWordBtnW3',
+    words: ['man','can','dog','cat']
+  });
+
+  // Autumn 1 – Week 4
+  initTabbedWeek({
+    weekKey: 'lvl1w3',
+    screenId: 'week4',
+    backBtn: '#backWeek4',
+    backTarget: 'home',
+
+    tabLetters: '#tabLettersW4',
+    tabBlend: '#tabBlendW4',
+    paneLetters: '#paneLettersW4',
+    paneBlend: '#paneBlendW4',
+
+    lettersArea: '#letterAreaW4',
+    lettersBig: '#bigLetterW4',
+    lettersPrev: '#prevBtnW4',
+    lettersNext: '#nextBtnW4',
+    letters: ['ck','e','u','r'].map(x => x.toUpperCase()),
+
+    wordsArea: '#blendSeqAreaW4',
+    wordsBig: '#bigWordW4',
+    wordsPrev: '#prevWordBtnW4',
+    wordsNext: '#nextWordBtnW4',
+    words: ['mum','rug','duck','sock']
+  });
+
+  // Autumn 1 – Week 5
+  initTabbedWeek({
+    weekKey: 'lvl1w4',
+    screenId: 'week5',
+    backBtn: '#backWeek5',
+    backTarget: 'home',
+
+    tabLetters: '#tabLettersW5',
+    tabBlend: '#tabBlendW5',
+    paneLetters: '#paneLettersW5',
+    paneBlend: '#paneBlendW5',
+
+    lettersArea: '#letterAreaW5',
+    lettersBig: '#bigLetterW5',
+    lettersPrev: '#prevBtnW5',
+    lettersNext: '#nextBtnW5',
+    letters: ['h','b','f','l'].map(x => x.toUpperCase()),
+
+    wordsArea: '#blendSeqAreaW5',
+    wordsBig: '#bigWordW5',
+    wordsPrev: '#prevWordBtnW5',
+    wordsNext: '#nextWordBtnW5',
+    words: ['hug','bag','fun','lip']
+  });
+
+  // Add the rest of your weeks the same way (A2, Spring, Summer etc.)
+});
+
+/* ---------- navigation / screens ---------- */
+function show(name){
+  // Hide all screens first
+  document.querySelectorAll('.screen').forEach(el => { el.style.display = 'none'; });
+
+  const target = qs('#' + name);
+  if (!target) return;
+
+  target.style.display = (name === 'home') ? 'flex' : 'block';
 
   if (name === 'home') updateHomeLocks();
 }
 
-function playSoundFor(key){
-  if (!key) return;
-  if (audio && !audio.paused) audio.pause();
-  audio = new Audio(`sounds/${key}.mp3`);
-  audio.currentTime = 0;
-  audio.play().catch(()=>{});
+function setLast(screenId){
+  localStorage.setItem(LS_LAST, screenId);
 }
 
-// Phonics clusters that should be treated as a single sound
-const PHONICS_CLUSTERS = [
-  // double consonants
-  'ff','ss','ll','vv',
-  // digraphs
-  'ck','sh','ch','th','ng','nk',
-  // other
-  'qu','zz',
-  // special sound keys
-  'oo-long','oo-short',
-];
-
-function splitForPhonics(word){
-  const parts = [];
-  let i = 0;
-  while (i < word.length){
-    let matched = false;
-
-    // longest match first
-    const clusters = PHONICS_CLUSTERS.slice().sort((a,b)=>b.length-a.length);
-    for (const cluster of clusters){
-      if (word.startsWith(cluster, i)){
-        parts.push(cluster);
-        i += cluster.length;
-        matched = true;
-        break;
-      }
-    }
-
-    if (!matched){
-      parts.push(word[i]);
-      i++;
-    }
+/* ---------- progress / locking ---------- */
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(LS_PROGRESS);
+    const arr = raw ? JSON.parse(raw) : [];
+    return new Set(arr);
+  }catch{
+    return new Set();
   }
-  return parts;
+}
+function saveProgress(set){
+  localStorage.setItem(LS_PROGRESS, JSON.stringify(Array.from(set)));
 }
 
-// Play sound for each phonics part (NO final full-word sound)
-function playBlend(word){
-  if (!word) return;
-
-  // cancel previous blend
-  if (currentBlend && currentBlend.audio){
-    currentBlend.cancelled = true;
-    try { currentBlend.audio.pause(); } catch {}
+function markDone(weekKey){
+  if (!weekKey) return;
+  if (!progress.has(weekKey)){
+    progress.add(weekKey);
+    saveProgress(progress);
+    updateHomeLocks();
+    toast('Week completed ⭐');
   }
+}
 
-  const controller = { cancelled:false, audio:null };
-  currentBlend = controller;
+function isLocked(weekKey){
+  // Week 1 is never locked
+  if (weekKey === 'lvl1w1') return false;
 
-  const parts = splitForPhonics(word);
-  let i = 0;
+  // Lock rule: you must complete the immediately previous week.
+  // Example: lvl1w2 requires lvl1w1 done, etc.
+  const order = ['lvl1w1','lvl1w2','lvl1w3','lvl1w4']; // extend this list for all weeks
+  const idx = order.indexOf(weekKey);
+  if (idx <= 0) return false;
 
-  const step = () => {
-    if (controller.cancelled) return;
-    if (i >= parts.length){
-      controller.audio = null;
+  const prev = order[idx-1];
+  return !progress.has(prev);
+}
+
+function updateHomeLocks(){
+  // Buttons should use data-week="lvl1w1" etc in HTML
+  // and have class="pill"
+  const buttons = qsAll('.pill[data-week]');
+  buttons.forEach(btn => {
+    const key = btn.getAttribute('data-week');
+
+    if (!key) return;
+
+    // Special: practise button always unlocked
+    if (key === 'practice') {
+      btn.dataset.status = 'open';
+      btn.removeAttribute('aria-disabled');
       return;
     }
 
-    const key = parts[i];
-    const a = new Audio(`sounds/${key}.mp3`);
-    controller.audio = a;
-    a.play().catch(()=>{});
-    a.onended = () => {
-      if (controller.cancelled) return;
-      i++;
-      step();
-    };
-  };
-
-  step();
-}
-
-
-/* ===================== General letter practice ===================== */
-let PRACTICE_KEY = null;
-let PRACTICE_SEEN_LAST = false;
-let CURRENT_SET = [], idx = 0;
-
-function startPractice(letters, progressKey = null){
-  CURRENT_SET = letters.slice(); // ✅ NO randomisation
-  idx = 0;
-  show('letters');
-  renderLetter();
-  setTimeout(()=>qs('#letterArea')?.focus(),50);
-}
-
-function renderLetter(){
-  const el = qs('#bigLetter');
-  if (el) el.textContent = CURRENT_SET[idx] ?? '';
-
-  // Mark practice set complete once the learner reaches the last item at least once
-  if (PRACTICE_KEY && !PRACTICE_SEEN_LAST && CURRENT_SET.length){
-    if (idx === CURRENT_SET.length - 1){
-      PRACTICE_SEEN_LAST = true;
-      markCompleted(PRACTICE_KEY);
-      showToast("⭐ Week completed!");
-      try{ if (window.confetti) window.confetti({ particleCount: 120, spread: 70, origin: { y: 0.7 } }); }catch(e){}
-      // Refresh home states if they go back
-      updateHomeLocks();
-    }
-  }
-}
-
-function nextLetter(){
-  idx = (idx + 1) % CURRENT_SET.length;
-  renderLetter();
-  playSoundFor(CURRENT_SET[idx]);
-}
-
-function prevLetter(){
-  idx = (idx - 1 + CURRENT_SET.length) % CURRENT_SET.length;
-  renderLetter();
-  playSoundFor(CURRENT_SET[idx]);
-}
-
-// ✅ Tap to play ONLY (no auto-advance)
-safeOn('#letterArea','click', ()=> playSoundFor(CURRENT_SET[idx]));
-
-// buttons
-safeOn('#prevBtn','click', prevLetter);
-safeOn('#nextBtn','click', nextLetter);
-
-// swipe
-let touchStartX = 0;
-safeOn('#letterArea','touchstart', e => { touchStartX = e.changedTouches[0].clientX; }, {passive:true});
-safeOn('#letterArea','touchend', e => {
-  const dx = e.changedTouches[0].clientX - touchStartX;
-  if (Math.abs(dx) > 40) dx < 0 ? nextLetter() : prevLetter();
-  else playSoundFor(CURRENT_SET[idx]);
-}, {passive:true});
-
-
-/* ===================== Generic Week Setup ===================== */
-function setupWeek({
-  screenId,
-  headerTitleId, // optional
-  letters,
-  words,
-  prefix,
-  weekKey = null,
-}){
-  const letterArea = qs(`#letterArea${prefix}`);
-  const bigLetter  = qs(`#bigLetter${prefix}`);
-  const prevBtn    = qs(`#prevBtn${prefix}`);
-  const nextBtn    = qs(`#nextBtn${prefix}`);
-
-  const blendArea  = qs(`#blendSeqArea${prefix}`);
-  const bigWord    = qs(`#bigWord${prefix}`);
-  const prevWord   = qs(`#prevWordBtn${prefix}`);
-  const nextWord   = qs(`#nextWordBtn${prefix}`);
-// Completion tracking (mark week done when last letter + last word have been seen at least once)
-  let seenLastLetter = false;
-  let seenLastWord = false;
-  let didComplete = false;
-
-  function maybeComplete(){
-    if (!weekKey || didComplete) return;
-    if (seenLastLetter && seenLastWord){
-      didComplete = true;
-      markCompleted(weekKey);
-      showToast("⭐ Week completed!");
-      try{ if (window.confetti) window.confetti({ particleCount: 140, spread: 75, origin: { y: 0.7 } }); }catch(e){}
-      updateHomeLocks();
-    }
-  }
-
-
-  const tabLetters = qs(`#tabLetters${prefix}`);
-  const tabBlend   = qs(`#tabBlend${prefix}`);
-  const paneLetters= qs(`#paneLetters${prefix}`);
-  const paneBlend  = qs(`#paneBlend${prefix}`);
-
-  if (headerTitleId){
-    const h = qs(headerTitleId);
-    if (h) h.textContent = h.textContent; // no-op, placeholder
-  }
-
-  // state
-  let lIdx = 0;
-  let wIdx = 0;
-
-  function renderLetter(){
-    if (bigLetter) bigLetter.textContent = letters[lIdx] ?? '';
-    if (letters.length && lIdx === letters.length - 1){
-      seenLastLetter = true;
-      maybeComplete();
-    }
-  }
-  function renderWord(){
-    if (bigWord) bigWord.textContent = words[wIdx] ?? '';
-    if (words.length && wIdx === words.length - 1){
-      seenLastWord = true;
-      maybeComplete();
-    }
-  }
-
-  function nextL(){ lIdx = (lIdx + 1) % letters.length; renderLetter(); playSoundFor(letters[lIdx]); }
-  function prevL(){ lIdx = (lIdx - 1 + letters.length) % letters.length; renderLetter(); playSoundFor(letters[lIdx]); }
-
-  // ✅ Tap letters = play ONLY
-  if (letterArea){
-    letterArea.addEventListener('click', ()=> playSoundFor(letters[lIdx]));
-    let sx=0;
-    letterArea.addEventListener('touchstart',e=>{sx=e.changedTouches[0].clientX;},{passive:true});
-    letterArea.addEventListener('touchend',e=>{
-      const dx=e.changedTouches[0].clientX - sx;
-      if (Math.abs(dx) > 40) dx < 0 ? nextL() : prevL();
-      else playSoundFor(letters[lIdx]);
-    },{passive:true});
-  }
-
-  if (prevBtn) prevBtn.addEventListener('click', prevL);
-  if (nextBtn) nextBtn.addEventListener('click', nextL);
-
-  function nextW(){ wIdx = (wIdx + 1) % words.length; renderWord(); playBlend(words[wIdx]); }
-  function prevW(){ wIdx = (wIdx - 1 + words.length) % words.length; renderWord(); playBlend(words[wIdx]); }
-
-  // Tap word = replay ONLY
-  if (blendArea){
-    blendArea.addEventListener('click', ()=> playBlend(words[wIdx]));
-    let sx=0;
-    blendArea.addEventListener('touchstart',e=>{sx=e.changedTouches[0].clientX;},{passive:true});
-    blendArea.addEventListener('touchend',e=>{
-      const dx=e.changedTouches[0].clientX - sx;
-      if (Math.abs(dx) > 40) dx < 0 ? nextW() : prevW();
-      else playBlend(words[wIdx]);
-    },{passive:true});
-  }
-
-  if (prevWord) prevWord.addEventListener('click', prevW);
-  if (nextWord) nextWord.addEventListener('click', nextW);
-
-  function activate(which){
-    if (!tabLetters || !tabBlend || !paneLetters || !paneBlend) return;
-
-    if (which === 'letters'){
-      tabLetters.classList.add('active');
-      tabBlend.classList.remove('active');
-      paneLetters.classList.add('active');
-      paneBlend.classList.remove('active');
-      renderLetter();
-      setTimeout(()=>letterArea?.focus(),50);
+    if (progress.has(key)){
+      btn.dataset.status = 'done';
+      btn.removeAttribute('aria-disabled');
+    } else if (isLocked(key)){
+      btn.dataset.status = 'locked';
+      btn.setAttribute('aria-disabled','true');
     } else {
-      tabBlend.classList.add('active');
-      tabLetters.classList.remove('active');
-      paneBlend.classList.add('active');
-      paneLetters.classList.remove('active');
-      renderWord();
-      setTimeout(()=>blendArea?.focus(),50);
+      btn.dataset.status = 'open';
+      btn.removeAttribute('aria-disabled');
     }
-  }
-
-  if (tabLetters) tabLetters.addEventListener('click', ()=>activate('letters'));
-  if (tabBlend)   tabBlend.addEventListener('click',   ()=>activate('blend'));
-
-  // expose init
-  return {
-    initLetters(){ lIdx = 0; wIdx = 0; activate('letters'); },
-    initBlend(){ lIdx = 0; wIdx = 0; activate('blend'); },
-  };
+  });
 }
 
+/* ---------- sequences ---------- */
+function initSimpleSequence({screenId, backBtn, backTarget, areaId, bigId, prevBtn, nextBtn, items, onFinish}){
+  const big = qs(bigId);
+  const area = qs(areaId);
+  let i = 0;
 
-/* ===================== Boot (after DOM loaded) ===================== */
-document.addEventListener('DOMContentLoaded', () => {
-  // Setup weeks
-  const week2 = setupWeek({ screenId:'week2', weekKey:'L1W2', letters: WEEK2_LETTERS, words: WEEK2_WORDS, prefix:'W2' });
-  const week3 = setupWeek({ screenId:'week3', weekKey:'L1W3', letters: WEEK3_LETTERS, words: WEEK3_WORDS, prefix:'W3' });
-  const week4 = setupWeek({ screenId:'week4', weekKey:'L1W4', letters: WEEK4_LETTERS, words: WEEK4_WORDS, prefix:'W4' });
-  const week5 = setupWeek({ screenId:'week5', weekKey:'L1W5', letters: WEEK5_LETTERS, words: WEEK5_WORDS, prefix:'W5' });
+  const render = () => { if (big) big.textContent = items[i]; };
+  const next = () => { i = (i + 1) % items.length; render(); if (i === items.length - 1 && onFinish) onFinish(); };
+  const prev = () => { i = (i - 1 + items.length) % items.length; render(); };
 
-  const a2w1 = setupWeek({ screenId:'a2w1', weekKey:'L2W1', letters: A2W1_LETTERS, words: A2W1_WORDS, prefix:'A2' });
-  const a2w2 = setupWeek({ screenId:'weekA2W2', weekKey:'L2W2', letters: A2W2_LETTERS, words: A2W2_WORDS, prefix:'A2W2' });
-  const a2w3 = setupWeek({ screenId:'weekA2W3', weekKey:'L2W3', letters: A2W3_LETTERS, words: A2W3_WORDS, prefix:'A2W3' });
-  const a2w4 = setupWeek({ screenId:'weekA2W4', weekKey:'L2W4', letters: A2W4_LETTERS, words: A2W4_WORDS, prefix:'A2W4' });
-  const a2w5 = setupWeek({ screenId:'weekA2W5', weekKey:'L2W5', letters: A2W5_LETTERS, words: A2W5_WORDS, prefix:'A2W5' });
+  safeOn(prevBtn, 'click', prev);
+  safeOn(nextBtn, 'click', next);
+  safeOn(area, 'click', next);
 
-  const s1w1 = setupWeek({ screenId:'spring1w1', weekKey:'L3W1', letters: S1W1_LETTERS, words: S1W1_WORDS, prefix:'S1W1' });
-  const s1w2 = setupWeek({ screenId:'spring1w2', weekKey:'L3W2', letters: S1W2_LETTERS, words: S1W2_WORDS, prefix:'S1W2' });
-  const s1w3 = setupWeek({ screenId:'spring1w3', weekKey:'L3W3', letters: S1W3_LETTERS, words: S1W3_WORDS, prefix:'S1W3' });
-  const s1w4 = setupWeek({ screenId:'spring1w4', weekKey:'L3W4', letters: S1W4_LETTERS, words: S1W4_WORDS, prefix:'S1W4' });
-  const s1w5 = setupWeek({ screenId:'spring1w5', weekKey:'L3W5', letters: S1W5_LETTERS, words: S1W5_WORDS, prefix:'S1W5' });
+  // basic swipe
+  if (area){
+    let startX = 0;
+    area.addEventListener('touchstart', e => startX = e.touches[0].clientX, {passive:true});
+    area.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 40) (dx < 0 ? next() : prev());
+    }, {passive:true});
+  }
 
-  // Home navigation
-  safeOn('#btn-practise','click', ()=>startPractice(ALPHABET));
-  safeOn('#btn-phase-1','click',  ()=>startPractice(PHASE_SETS.phase1,'L1W1'));
+  safeOn(backBtn, 'click', () => { setLast(backTarget); show(backTarget); });
 
-  safeOn('#btn-phase-2','click', ()=>{ show('week2'); week2.initLetters(); });
-  safeOn('#btn-phase-3','click', ()=>{ show('week3'); week3.initLetters(); });
-  safeOn('#btn-phase-4','click', ()=>{ show('week4'); week4.initLetters(); });
-  safeOn('#btn-phase-5','click', ()=>{ show('week5'); week5.initLetters(); });
+  render();
+}
 
-  safeOn('#btn-phase-6','click', ()=>{ show('a2w1'); a2w1.initLetters(); });
-  safeOn('#btn-phase-7','click', ()=>{ show('weekA2W2'); a2w2.initLetters(); });
-  safeOn('#btn-phase-8','click', ()=>{ show('weekA2W3'); a2w3.initLetters(); });
-  safeOn('#btn-phase-9','click', ()=>{ show('weekA2W4'); a2w4.initLetters(); });
-  safeOn('#btn-phase-10','click',()=>{ show('weekA2W5'); a2w5.initLetters(); });
+function initTabbedWeek(cfg){
+  // back
+  safeOn(cfg.backBtn, 'click', () => { setLast(cfg.backTarget); show(cfg.backTarget); });
 
-  safeOn('#btn-s1w1','click', ()=>{ show('spring1w1'); s1w1.initLetters(); });
-  safeOn('#btn-s1w2','click', ()=>{ show('spring1w2'); s1w2.initLetters(); });
-  safeOn('#btn-s1w3','click', ()=>{ show('spring1w3'); s1w3.initLetters(); });
-  safeOn('#btn-s1w4','click', ()=>{ show('spring1w4'); s1w4.initLetters(); });
-  safeOn('#btn-s1w5','click', ()=>{ show('spring1w5'); s1w5.initLetters(); });
+  // tabs
+  const tabLetters = qs(cfg.tabLetters);
+  const tabBlend = qs(cfg.tabBlend);
+  const paneLetters = qs(cfg.paneLetters);
+  const paneBlend = qs(cfg.paneBlend);
 
-  safeOn('#btn-s2w1','click', ()=>{ show('spring2w1'); s2w1.initLetters(); });
-  safeOn('#btn-s2w2','click', ()=>{ show('spring2w2'); s2w2.initLetters(); });
-  safeOn('#btn-s2w3','click', ()=>{ show('spring2w3'); s2w3.initLetters(); });
-  safeOn('#btn-s2w4','click', ()=>{ show('spring2w4'); s2w4.initLetters(); });
+  const setTab = (which) => {
+    if (!tabLetters || !tabBlend || !paneLetters || !paneBlend) return;
+    const lettersActive = which === 'letters';
+    tabLetters.classList.toggle('active', lettersActive);
+    tabBlend.classList.toggle('active', !lettersActive);
+    paneLetters.classList.toggle('active', lettersActive);
+    paneBlend.classList.toggle('active', !lettersActive);
+  };
 
-  safeOn('#btn-su1w1','click', ()=>{ show('summer1w1'); su1w1.initLetters(); });
-  safeOn('#btn-su1w2','click', ()=>{ show('summer1w2'); su1w2.initLetters(); });
-  safeOn('#btn-su1w3','click', ()=>{ show('summer1w3'); su1w3.initLetters(); });
-  safeOn('#btn-su1w4','click', ()=>{ show('summer1w4'); su1w4.initLetters(); });
+  safeOn(tabLetters, 'click', () => setTab('letters'));
+  safeOn(tabBlend, 'click', () => setTab('blend'));
 
-  safeOn('#btn-su2w1','click', ()=>{ show('summer2w1'); su2w1.initLetters(); });
-  safeOn('#btn-su2w2','click', ()=>{ show('summer2w2'); su2w2.initLetters(); });
-  safeOn('#btn-su2w3','click', ()=>{ show('summer2w3'); su2w3.initLetters(); });
-  safeOn('#btn-su2w4','click', ()=>{ show('summer2w4'); su2w4.initLetters(); });
-  safeOn('#btn-su2w5','click', ()=>{ show('summer2w5'); su2w5.initLetters(); });
+  // letters sequence (mark complete when user hits last item at least once)
+  let li = 0;
+  const lettersBig = qs(cfg.lettersBig);
+  const lettersArea = qs(cfg.lettersArea);
 
-  // Back buttons
-  safeOn('#backLetters','click', ()=>show('home'));
-  safeOn('#backWeek2','click',  ()=>show('home'));
-  safeOn('#backWeek3','click',  ()=>show('home'));
-  safeOn('#backWeek4','click',  ()=>show('home'));
-  safeOn('#backWeek5','click',  ()=>show('home'));
+  const renderLetters = () => { if (lettersBig) lettersBig.textContent = cfg.letters[li]; };
+  const nextL = () => {
+    li = (li + 1) % cfg.letters.length;
+    renderLetters();
+    if (li === cfg.letters.length - 1) markDone(cfg.weekKey);
+  };
+  const prevL = () => { li = (li - 1 + cfg.letters.length) % cfg.letters.length; renderLetters(); };
 
-  safeOn('#backA2','click',    ()=>show('home'));
-  safeOn('#backA2W2','click',  ()=>show('home'));
-  safeOn('#backA2W3','click',  ()=>show('home'));
-  safeOn('#backA2W4','click',  ()=>show('home'));
-  safeOn('#backA2W5','click',  ()=>show('home'));
+  safeOn(cfg.lettersPrev, 'click', prevL);
+  safeOn(cfg.lettersNext, 'click', nextL);
+  safeOn(lettersArea, 'click', nextL);
 
-  safeOn('#backS1W1','click', ()=>show('home'));
-  safeOn('#backS1W2','click', ()=>show('home'));
-  safeOn('#backS1W3','click', ()=>show('home'));
-  safeOn('#backS1W4','click', ()=>show('home'));
-  safeOn('#backS1W5','click', ()=>show('home'));
+  if (lettersArea){
+    let sx = 0;
+    lettersArea.addEventListener('touchstart', e => sx = e.touches[0].clientX, {passive:true});
+    lettersArea.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - sx;
+      if (Math.abs(dx) > 40) (dx < 0 ? nextL() : prevL());
+    }, {passive:true});
+  }
 
-  safeOn('#backS2W1','click', ()=>show('home'));
-  safeOn('#backS2W2','click', ()=>show('home'));
-  safeOn('#backS2W3','click', ()=>show('home'));
-  safeOn('#backS2W4','click', ()=>show('home'));
+  // words sequence (also counts towards completion)
+  let wi = 0;
+  const wordsBig = qs(cfg.wordsBig);
+  const wordsArea = qs(cfg.wordsArea);
 
-  safeOn('#backSU1W1','click', ()=>show('home'));
-  safeOn('#backSU1W2','click', ()=>show('home'));
-  safeOn('#backSU1W3','click', ()=>show('home'));
-  safeOn('#backSU1W4','click', ()=>show('home'));
+  const renderWords = () => { if (wordsBig) wordsBig.textContent = cfg.words[wi]; };
+  const nextW = () => {
+    wi = (wi + 1) % cfg.words.length;
+    renderWords();
+    if (wi === cfg.words.length - 1) markDone(cfg.weekKey);
+  };
+  const prevW = () => { wi = (wi - 1 + cfg.words.length) % cfg.words.length; renderWords(); };
 
-  safeOn('#backSU2W1','click', ()=>show('home'));
-  safeOn('#backSU2W2','click', ()=>show('home'));
-  safeOn('#backSU2W3','click', ()=>show('home'));
-  safeOn('#backSU2W4','click', ()=>show('home'));
-  safeOn('#backSU2W5','click', ()=>show('home'));
+  safeOn(cfg.wordsPrev, 'click', prevW);
+  safeOn(cfg.wordsNext, 'click', nextW);
+  safeOn(wordsArea, 'click', nextW);
 
-  // Init
-  show('home')
-  // ===== Spring 2 / Summer 1 / Summer 2 =====
-  const s2w1 = setupWeek({ screenId: 'spring2w1', weekKey:'L4W1', letters: S2W1_LETTERS, words: S2W1_WORDS, prefix: 'S2W1' });
-  const s2w2 = setupWeek({ screenId: 'spring2w2', weekKey:'L4W2', letters: S2W2_LETTERS, words: S2W2_WORDS, prefix: 'S2W2' });
-  const s2w3 = setupWeek({ screenId: 'spring2w3', weekKey:'L4W3', letters: S2W3_LETTERS, words: S2W3_WORDS, prefix: 'S2W3' });
-  const s2w4 = setupWeek({ screenId: 'spring2w4', weekKey:'L4W4', letters: S2W4_LETTERS, words: S2W4_WORDS, prefix: 'S2W4' });
-  const su1w1 = setupWeek({ screenId: 'summer1w1', weekKey:'L5W1', letters: SU1W1_LETTERS, words: SU1W1_WORDS, prefix: 'SU1W1' });
-  const su1w2 = setupWeek({ screenId: 'summer1w2', weekKey:'L5W2', letters: SU1W2_LETTERS, words: SU1W2_WORDS, prefix: 'SU1W2' });
-  const su1w3 = setupWeek({ screenId: 'summer1w3', weekKey:'L5W3', letters: SU1W3_LETTERS, words: SU1W3_WORDS, prefix: 'SU1W3' });
-  const su1w4 = setupWeek({ screenId: 'summer1w4', weekKey:'L5W4', letters: SU1W4_LETTERS, words: SU1W4_WORDS, prefix: 'SU1W4' });
-  const su2w1 = setupWeek({ screenId: 'summer2w1', weekKey:'L6W1', letters: SU2W1_LETTERS, words: SU2W1_WORDS, prefix: 'SU2W1' });
-  const su2w2 = setupWeek({ screenId: 'summer2w2', weekKey:'L6W2', letters: SU2W2_LETTERS, words: SU2W2_WORDS, prefix: 'SU2W2' });
-  const su2w3 = setupWeek({ screenId: 'summer2w3', weekKey:'L6W3', letters: SU2W3_LETTERS, words: SU2W3_WORDS, prefix: 'SU2W3' });
-  const su2w4 = setupWeek({ screenId: 'summer2w4', weekKey:'L6W4', letters: SU2W4_LETTERS, words: SU2W4_WORDS, prefix: 'SU2W4' });
-  const su2w5 = setupWeek({ screenId: 'summer2w5', weekKey:'L6W5', letters: SU2W5_LETTERS, words: SU2W5_WORDS, prefix: 'SU2W5' });
-;
+  if (wordsArea){
+    let sx2 = 0;
+    wordsArea.addEventListener('touchstart', e => sx2 = e.touches[0].clientX, {passive:true});
+    wordsArea.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - sx2;
+      if (Math.abs(dx) > 40) (dx < 0 ? nextW() : prevW());
+    }, {passive:true});
+  }
 
+  // initial
+  setTab('letters');
+  renderLetters();
+  renderWords();
+}
 
-// Settings navigation + controls
-  const openSettings = qs('#openSettings');
-  const backSettings = qs('#backSettings');
-  safeOn(openSettings, 'click', () => show('settings'));
-  safeOn(backSettings, 'click', () => show('home'));
+/* ---------- child mode ---------- */
+function loadChildMode(){
+  return localStorage.getItem(LS_CHILD_MODE) === '1';
+}
+function setChildMode(v){
+  localStorage.setItem(LS_CHILD_MODE, v ? '1' : '0');
+}
+function applyChildMode(isChild){
+  document.body.classList.toggle('child-mode', isChild);
+}
 
-  const parentMode = qs('#parentMode');
-  const unlockAllBtn = qs('#unlockAllBtn');
-  const resetBtn = qs('#resetProgressBtn');
+/* ---------- toast ---------- */
+let toastTimer = null;
+function toast(msg){
+  const el = qs('#toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.remove('hidden');
 
-  // Initialise settings UI from storage
-  const p0 = getProgress();
-  if (parentMode) parentMode.checked = !!p0.parentMode;
-
-  safeOn(parentMode, 'change', () => {
-    const p = getProgress();
-    p.parentMode = !!parentMode.checked;
-    setProgress(p);
-    showToast(p.parentMode ? "Parent mode on" : "Parent mode off");
-  });
-
-  safeOn(unlockAllBtn, 'click', () => {
-    const p = getProgress();
-    p.unlockAll = true;
-    setProgress(p);
-    updateHomeLocks();
-    showToast("All levels unlocked");
-  });
-
-  safeOn(resetBtn, 'click', () => {
-    const ok = confirm("Reset progress? This will remove all stars and locks will return.");
-    if (!ok) return;
-    setProgress({ completed: [], unlockAll: false, parentMode: getProgress().parentMode });
-    updateHomeLocks();
-    showToast("Progress reset");
-  });
-
-  // Initial lock/star state on Home
-  updateHomeLocks();
-});
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.add('hidden'), 2200);
+}
