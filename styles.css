@@ -1,207 +1,274 @@
-:root{
-  --pink:#f9b3b3;
-  --red:#ff4b3a;
-  --orange:#ff9800;
-  --cream:#ffe0a3;
-  --text:#222;
+:root {
+  --primary:#ff4b3a;
+  --gold:#ff9f1a;
+  --pill:#ffd7c7;
+  --bg:#ffe7e3;
+  --text:#111;
+  --muted:#555;
 }
 
-*{box-sizing:border-box}
-html,body{
-  height:100%;
+* { box-sizing: border-box; }
+
+body{
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-  color:var(--text)
-}
-
-/* ---------- Header (Logo + Welcome) ---------- */
-.app-header{
   text-align:center;
-  padding:24px 16px 12px;
+  color:var(--text);
+  background:var(--bg);
 }
 
-.logo-container{
-  display:flex;
-  justify-content:center;
-  margin-top:12px;      /* moves logo down */
-  margin-bottom:16px;
-}
-
-.welcome-title{
-  font-size:26px;
-  font-weight:800;
-  margin:0;
-  line-height:1.2;
-}
-
-.welcome-title span{
-  display:block;        /* forces new line */
-}
-
-.welcome-title .brand-name{
-  color:var(--red);     /* matches app accent */
-}
-
-.welcome-subtitle{
-  font-size:16px;
-  color:#555;
-  margin-top:8px;
-  margin-bottom:12px;
-}
-
-/* ---------- Screens ---------- */
-.screen{display:none;min-height:100%;width:100%}
+/* Screens */
+.screen{ display:none; min-height:100vh; }
 .screen--pink{
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content:flex-start;
-  background:linear-gradient(var(--pink) 0%, var(--pink) 65%, var(--cream) 65%)
+  background:var(--bg);
+  padding:1.25rem 1rem 2.75rem;
 }
 
-.spacer{height:2rem}
-.icon{font-size:2rem;margin:1rem auto}
-
-.pill{
-  background:var(--red);
-  color:white;
-  border:none;
-  border-radius:999px;
-  padding:1.25rem 2rem;
-  font-size:1.35rem;
-  width:min(90%,700px);
-  box-shadow:0 6px 16px rgba(0,0,0,.12);
-  cursor:pointer;
-  margin:1rem auto;
-}
-.pill--orange{background:var(--orange)}
-
-.hint{opacity:.8;margin:1rem 0 .25rem 0;font-size:1.2rem}
-.divider{height:2rem}
-
-/* ---------- Letters screen ---------- */
+/* Top bars */
 .topbar{
-  position:sticky;
-  top:0;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  background:var(--red);
-  color:white;
-  padding:.9rem 1rem
+  padding:.9rem 1rem;
+  background:var(--primary);
+  color:#fff;
+  position:sticky;
+  top:0;
+  z-index:20;
 }
-.topbar h1{font-size:1.2rem;margin:0}
-
 .back{
-  background:transparent;
+  background:none;
   border:none;
-  color:white;
-  font-size:1.4rem;
-  cursor:pointer
+  color:#fff;
+  font-size:1.6rem;
+  cursor:pointer;
 }
 
-#letters{display:none;background:white;min-height:100vh}
+/* Home header card */
+.home-top{
+  width:min(92%,720px);
+  display:flex;
+  justify-content:flex-end;
+  margin-top:.25rem;
+}
+.icon-btn{
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:14px;
+  background:rgba(255,255,255,.85);
+  box-shadow:0 6px 16px rgba(0,0,0,.10);
+  cursor:pointer;
+  font-size:1.25rem;
+}
 
+.welcome-card{
+  width:min(92%,720px);
+  background:#fff;
+  border-radius:22px;
+  box-shadow:0 10px 26px rgba(0,0,0,.12);
+  padding:18px 16px 16px;
+  margin-top:.65rem;
+  margin-bottom:1rem;
+}
+.logo-container{
+  display:flex;
+  justify-content:center;
+  margin-top:10px;
+  margin-bottom:12px;
+}
+.welcome-title{
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size:28px;
+  font-weight:800;
+  margin:0;
+  line-height:1.15;
+}
+.welcome-title span{ display:block; }
+.welcome-title .brand-name{ color:var(--primary); }
+
+/* Home headings */
+.choose-title{
+  margin:.25rem 0 .65rem 0;
+  font-size:1.65rem; /* slightly smaller */
+  font-weight:800;
+}
+
+/* Pills */
+.pill{
+  background:var(--primary);
+  color:#fff;
+  border:none;
+  border-radius:999px;
+  padding:1rem 1.15rem;
+  font-size:1.05rem;
+  margin:.45rem 0;
+  cursor:pointer;
+  width:min(92%,720px);
+  box-shadow:0 6px 16px rgba(0,0,0,.12);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:.55rem;
+  position:relative;
+}
+.pill--gold{ background:var(--gold); }
+.pill--orange{ background:#ff7a3a; }
+
+.pill--cta{
+  background:linear-gradient(180deg, #ff5a4c, #ff3e31);
+  box-shadow:0 10px 22px rgba(0,0,0,.16);
+}
+.pill__icon{ font-size:1.1rem; }
+
+/* Sticky CTA */
+.sticky-cta{
+  position:sticky;
+  top:76px; /* below settings icon area */
+  z-index:15;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  padding-bottom:.35rem;
+}
+
+/* Groups */
+.section-chip{
+  width:min(92%,720px);
+  margin:1.1rem 0 .4rem;
+  font-weight:800;
+  color:var(--muted);
+  text-align:left;
+}
+.level-group{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-top:.35rem;
+}
+.level-chip{
+  width:min(92%,720px);
+  display:inline-flex;
+  align-items:center;
+  justify-content:flex-start;
+  padding:.55rem .85rem;
+  border-radius:999px;
+  background:rgba(255,255,255,.65);
+  color:var(--text);
+  font-weight:800;
+  margin:.7rem 0 .25rem;
+}
+
+/* Locked + done states via data-status */
+.pill[data-status="locked"]{
+  background:#e5e5e5;
+  color:#7a7a7a;
+  box-shadow:none;
+  cursor:not-allowed;
+}
+.pill[data-status="locked"]::before{
+  content:"🔒";
+  margin-right:.35rem;
+}
+.pill[data-status="done"]{
+  filter:none;
+}
+.pill[data-status="done"]::after{
+  content:"⭐";
+  position:absolute;
+  right:18px;
+  font-size:1.1rem;
+}
+
+/* Letter/word screens */
 .letter-area{
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  min-height:calc(100vh - 56px);
-  outline:none;
+  min-height:65vh;
+  padding:1rem;
 }
-
-.big-letter{
-  font-size:30vh;
-  line-height:1;
+.big-letter, .big-word{
+  font-family: 'Comic Neue', 'Poppins', sans-serif;
+  font-weight:500;
+  letter-spacing:2px;
   user-select:none;
 }
+.big-letter{ font-size:34vh; line-height:1; }
+.big-word{ font-size:10vh; line-height:1.05; }
 
-.tap-hint{
-  color:#e44737;
-  font-weight:600;
-  margin-top:1rem
+.nav-buttons button{
+  margin:.45rem;
+  font-size:1.1rem;
+  padding:.65rem 1.15rem;
+  border-radius:12px;
+  border:none;
+  background:var(--primary);
+  color:white;
+  cursor:pointer;
 }
+.tap-hint{ color:var(--primary); font-weight:700; margin-top:.5rem; }
 
-/* 👶 Child-friendly font style for phonics letters and words */
-.big-letter,
-.big-word{
-  font-family:'Comic Neue','Poppins',sans-serif;
-  font-weight:400;
-  letter-spacing:2px;
-  text-transform:lowercase;
+/* Tabs */
+.tabs{ display:flex; justify-content:center; gap:12px; padding:16px }
+.tab{
+  border:none;
+  padding:.6rem 1rem;
+  border-radius:999px;
+  background:var(--pill);
+  cursor:pointer;
+  font-weight:800;
 }
-/* ---------------------------
-   HOME polish (header card + CTA + spacing)
----------------------------- */
+.tab.active{ background:var(--gold); }
+.pane{ display:none; }
+.pane.active{ display:block; }
 
-/* Make header and pink section feel connected, with a clear gap */
-body { background: #fff; }
-.app-header { padding: 18px 16px 10px; }
-.header-card{
-  width: min(92%, 720px);
-  background: #fff;
-  border-radius: 22px;
-  padding: 18px 16px 14px;
-  box-shadow: 0 10px 26px rgba(0,0,0,.10);
-  margin: 10px auto 18px; /* creates gap before the pink section */
-}
-
-/* Move logo + text slightly down but not too tall */
-.logo-container { margin-top: 6px; margin-bottom: 12px; }
-.welcome-title { margin-top: 6px; }
-.welcome-subtitle { margin-bottom: 6px; }
-
-/* Pink screen: add top padding so it doesn't “touch” the header */
-.screen--pink{
-  padding-top: 18px;
-}
-
-/* Home heading smaller + helper line */
-.home-title{
-  margin: .25rem 0 .25rem 0;
-  font-size: 1.6rem; /* ~10–20% smaller than your current look */
-  font-weight: 800;
-}
-.home-helper{
-  margin: 0 0 14px 0;
-  opacity: .85;
-  font-size: 1rem;
-}
-
-/* Sticky-ish main CTA */
-.sticky-cta{
-  position: sticky;
-  top: 10px;
-  z-index: 20;
-  width: 100%;
+/* Settings */
+.settings{
+  padding:1rem;
   display:flex;
-  justify-content:center;
-  padding: 6px 0 10px;
-  /* subtle fade so it looks intentional */
-  background: linear-gradient(to bottom, rgba(255,231,227,.95), rgba(255,231,227,0));
+  flex-direction:column;
+  align-items:center;
+  gap:1rem;
 }
-
-/* Make main CTA more special than the rest */
-.pill--cta{
+.settings-card{
+  width:min(92%,720px);
+  background:#fff;
+  border-radius:18px;
+  box-shadow:0 10px 26px rgba(0,0,0,.10);
+  padding:16px;
+  text-align:left;
+}
+.settings-card h2{ margin:.25rem 0 .25rem; font-size:1.15rem; }
+.settings-help{ margin:.25rem 0 1rem; color:var(--muted); font-size:.95rem; }
+.check-row{
   display:flex;
   align-items:center;
-  justify-content:center;
-  gap: 10px;
-  font-weight: 800;
-  box-shadow: 0 10px 22px rgba(0,0,0,.18);
-  background: linear-gradient(180deg, #ff5a4c, #ff3f2e);
+  gap:.6rem;
+  margin:.25rem 0 1rem;
+  font-weight:700;
 }
-.pill__icon{ font-size: 1.2rem; }
-.pill__text{ line-height: 1; }
+.check-row input{ width:20px; height:20px; }
 
-/* Phase 2 label as a rounded “divider card” */
-.phase-chip{
-  margin: 18px 0 10px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.7);
-  box-shadow: 0 6px 16px rgba(0,0,0,.08);
-  font-weight: 800;
+.bottom-gap{ height:26px; }
+
+/* Toast */
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:16px;
+  transform:translateX(-50%);
+  background:#111;
+  color:#fff;
+  padding:.7rem 1rem;
+  border-radius:14px;
+  box-shadow:0 10px 26px rgba(0,0,0,.22);
+  max-width:min(92vw, 720px);
+  z-index:50;
 }
-
+.hidden{ display:none; }
