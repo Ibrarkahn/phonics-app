@@ -1,4 +1,4 @@
-:root {
+:root{
   --primary:#ff4b3a;
   --gold:#ff9f1a;
   --pill:#ffd7c7;
@@ -7,10 +7,10 @@
   --muted:#555;
 }
 
-* { box-sizing: border-box; }
+*{ box-sizing:border-box; }
 
 body{
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family:'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   margin:0;
   text-align:center;
   color:var(--text);
@@ -47,7 +47,7 @@ body{
   cursor:pointer;
 }
 
-/* Home header card */
+/* Home settings icon */
 .home-top{
   width:min(92%,720px);
   display:flex;
@@ -65,6 +65,7 @@ body{
   font-size:1.25rem;
 }
 
+/* Header card */
 .welcome-card{
   width:min(92%,720px);
   background:#fff;
@@ -81,8 +82,8 @@ body{
   margin-bottom:12px;
 }
 .welcome-title{
-  font-family: 'Poppins', system-ui, sans-serif;
-  font-size:28px;
+  font-family:'Poppins', system-ui, sans-serif;
+  font-size:30px;
   font-weight:800;
   margin:0;
   line-height:1.15;
@@ -93,12 +94,14 @@ body{
 /* Home headings */
 .choose-title{
   margin:.25rem 0 .65rem 0;
-  font-size:1.65rem; /* slightly smaller */
+  font-size:1.65rem;
   font-weight:800;
 }
 
 /* Pills */
 .pill{
+  font-family:'Comic Neue','Poppins', system-ui, sans-serif;
+  font-weight:600;
   background:var(--primary);
   color:#fff;
   border:none;
@@ -122,18 +125,8 @@ body{
   background:linear-gradient(180deg, #ff5a4c, #ff3e31);
   box-shadow:0 10px 22px rgba(0,0,0,.16);
 }
-.pill__icon{ font-size:1.1rem; }
-
-/* Sticky CTA */
-.sticky-cta{
-  position:sticky;
-  top:76px; /* below settings icon area */
-  z-index:15;
-  width:100%;
-  display:flex;
-  justify-content:center;
-  padding-bottom:.35rem;
-}
+.pill__icon, .cta-icon{ font-size:1.1rem; }
+.pill__text, .cta-text{ font-weight:700; }
 
 /* Groups */
 .section-chip{
@@ -165,17 +158,14 @@ body{
 
 /* Locked + done states via data-status */
 .pill[data-status="locked"]{
-  background:#e5e5e5;
-  color:#7a7a7a;
+  background:#e5e5e5 !important;
+  color:#7a7a7a !important;
   box-shadow:none;
   cursor:not-allowed;
 }
 .pill[data-status="locked"]::before{
   content:"🔒";
   margin-right:.35rem;
-}
-.pill[data-status="done"]{
-  filter:none;
 }
 .pill[data-status="done"]::after{
   content:"⭐";
@@ -194,7 +184,7 @@ body{
   padding:1rem;
 }
 .big-letter, .big-word{
-  font-family: 'Comic Neue', 'Poppins', sans-serif;
+  font-family:'Comic Neue','Poppins', sans-serif;
   font-weight:500;
   letter-spacing:2px;
   user-select:none;
