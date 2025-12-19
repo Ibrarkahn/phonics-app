@@ -119,6 +119,33 @@
     </main>
   </section>
 
+<section id="celebrate" class="screen">
+  <header class="topbar">
+    <button id="celebrateHomeTop" class="back" aria-label="Back to Home">←</button>
+    <h1>Completed</h1>
+    <div style="width:2rem"></div>
+  </header>
+
+  <main class="celebrate">
+    <div class="celebrate-card">
+      <div class="celebrate-emoji" aria-hidden="true">🎉</div>
+      <h2 id="celebrateTitle" class="celebrate-title">Week complete!</h2>
+
+      <div class="celebrate-sub">You practised:</div>
+      <div id="celebrateList" class="celebrate-list" aria-label="You practised list"></div>
+
+      <div id="celebrateExtra" class="celebrate-extra"></div>
+
+      <div class="celebrate-actions">
+        <button id="celebrateReplay" class="pill pill--gold">Replay</button>
+        <button id="celebrateNext" class="pill pill--cta">Next week</button>
+        <button id="celebrateHome" class="pill">Home</button>
+      </div>
+    </div>
+  </main>
+</section>
+
+  
 <section id="settings" class="screen">
     <header class="topbar">
       <button id="backSettings" class="back" aria-label="Back">←</button>
@@ -1065,6 +1092,18 @@
       </main>
     </div>
   </section>
+<!-- Soft Overlay Prompt -->
+<div id="softOverlay" class="overlay hidden" aria-hidden="true">
+  <div class="overlay-card" role="dialog" aria-modal="true" aria-labelledby="overlayTitle">
+    <h2 id="overlayTitle" class="overlay-title">Great job!</h2>
+    <p id="overlayMsg" class="overlay-msg">Ready to try blending words?</p>
+
+    <div class="overlay-actions">
+      <button id="overlayPrimary" class="pill pill--cta">Start blending</button>
+      <button id="overlaySecondary" class="pill pill--gold">Not now</button>
+    </div>
+  </div>
+</div>
 
 <!-- Toast -->
 <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
