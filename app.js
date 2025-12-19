@@ -252,11 +252,16 @@ function showToast(msg){
 
 
 function show(name){
-  const screens = [
-  'home','letters','settings','week2','week3','week4','week5',
+ const screens = [
+  'home','letters','settings','celebrate',
+  'week2','week3','week4','week5',
   'a2w1','weekA2W2','weekA2W3','weekA2W4','weekA2W5',
-  'spring1w1','spring1w2','spring1w3','spring1w4','spring1w5'
+  'spring1w1','spring1w2','spring1w3','spring1w4','spring1w5',
+  'spring2w1','spring2w2','spring2w3','spring2w4',
+  'summer1w1','summer1w2','summer1w3','summer1w4',
+  'summer2w1','summer2w2','summer2w3','summer2w4','summer2w5'
 ];
+
 
   for (const id of screens){
     const el = qs('#' + id);
@@ -373,6 +378,78 @@ function playBlend(word){
   step();
 }
 
+// ===== Overlay + Celebration helpers =====
+let ACTIVE_WEEK_KEY = null;
+
+function setOverlay(open, title, msg, primaryText, secondaryText, onPrimary, onSecondary){
+  const overlay = document.querySelector('#softOverlay');
+  if(!overlay) return;
+
+  const t = document.querySelector('#overlayTitle');
+  const m = document.querySelector('#overlayMsg');
+  const p = document.querySelector('#overlayPrimary');
+  const s = document.querySelector('#overlaySecondary');
+
+  if (t) t.textContent = title || "Great job!";
+  if (m) m.textContent = msg || "Ready to try blending words?";
+  if (p) p.textContent = primaryText || "Start blending";
+  if (s) s.textContent = secondaryText || "Not now";
+
+  // reset handlers safely
+  if (p){
+    p.onclick = null;
+    p.onclick = () => {
+      setOverlay(false);
+      onPrimary && onPrimary();
+    };
+  }
+  if (s){
+    s.onclick = null;
+    s.onclick = () => {
+      setOverlay(false);
+      onSecondary && onSecondary();
+    };
+  }
+
+  overlay.classList.toggle('hidden', !open);
+  overlay.setAttribute('aria-hidden', open ? 'false' : 'true');
+}
+
+function showCelebration({ title, practised, extra, weekKey }){
+  ACTIVE_WEEK_KEY = weekKey || null;
+
+  const titleEl = document.querySelector('#celebrateTitle');
+  const listEl  = document.querySelector('#celebrateList');
+  const extraEl = document.querySelector('#celebrateExtra');
+
+  if (titleEl) titleEl.textContent = title || "Week complete!";
+  if (extraEl) extraEl.textContent = extra || "";
+
+  if (listEl){
+    listEl.innerHTML = '';
+    const arr = Array.isArray(practised) ? practised : [];
+    arr.forEach((item, i) => {
+      const chip = document.createElement('div');
+      chip.className = 'practised-chip';
+      chip.style.animationDelay = `${i * 70}ms`;
+      chip.textContent = item;
+      listEl.appendChild(chip);
+    });
+  }
+
+  show('celebrate');
+}
+
+// Navigate to next week using your existing HOME buttons
+function goToWeekByKey(key){
+  const sel = WEEK_BUTTONS[key];
+  if(!sel) return false;
+  const btn = document.querySelector(sel);
+  if(!btn || btn.disabled) return false;
+  btn.click();
+  return true;
+}
+
 
 /* ===================== General letter practice ===================== */
 let PRACTICE_KEY = null;
@@ -382,27 +459,34 @@ let CURRENT_SET = [], idx = 0;
 function startPractice(letters, progressKey = null){
   CURRENT_SET = letters.slice(); // ✅ NO randomisation
   idx = 0;
+
+  PRACTICE_KEY = progressKey;         // ✅ track which week this is
+  PRACTICE_SEEN_LAST = false;
+
   show('letters');
   renderLetter();
   setTimeout(()=>qs('#letterArea')?.focus(),50);
 }
 
-function renderLetter(){
-  const el = qs('#bigLetter');
-  if (el) el.textContent = CURRENT_SET[idx] ?? '';
 
-  // Mark practice set complete once the learner reaches the last item at least once
   if (PRACTICE_KEY && !PRACTICE_SEEN_LAST && CURRENT_SET.length){
     if (idx === CURRENT_SET.length - 1){
       PRACTICE_SEEN_LAST = true;
       markCompleted(PRACTICE_KEY);
       showToast("⭐ Week completed!");
       try{ if (window.confetti) window.confetti({ particleCount: 120, spread: 70, origin: { y: 0.7 } }); }catch(e){}
-      // Refresh home states if they go back
       updateHomeLocks();
+
+      // ✅ Dedicated celebration screen for L1W1
+      showCelebration({
+        title: "Level 1 – Week 1 complete!",
+        practised: CURRENT_SET,
+        extra: "",
+        weekKey: PRACTICE_KEY
+      });
     }
   }
-}
+
 
 function nextLetter(){
   idx = (idx + 1) % CURRENT_SET.length;
@@ -452,20 +536,38 @@ function setupWeek({
   const prevWord   = qs(`#prevWordBtn${prefix}`);
   const nextWord   = qs(`#nextWordBtn${prefix}`);
 // Completion tracking (mark week done when last letter + last word have been seen at least once)
+  let promptedBlend = false;
   let seenLastLetter = false;
   let seenLastWord = false;
   let didComplete = false;
 
-  function maybeComplete(){
+    function maybeComplete(){
     if (!weekKey || didComplete) return;
-    if (seenLastLetter && seenLastWord){
+
+    const needsWords = Array.isArray(words) && words.length > 0;
+    const completeNow = needsWords ? (seenLastLetter && seenLastWord) : seenLastLetter;
+
+    if (completeNow){
       didComplete = true;
       markCompleted(weekKey);
       showToast("⭐ Week completed!");
       try{ if (window.confetti) window.confetti({ particleCount: 140, spread: 75, origin: { y: 0.7 } }); }catch(e){}
       updateHomeLocks();
+
+      // ✅ Celebration screen
+      const letterList = (letters || []).slice();
+      const wordList = (words || []).slice();
+      const extraMsg = needsWords ? `Blending words complete ✅` : "";
+
+      showCelebration({
+        title: "Week complete!",
+        practised: letterList,
+        extra: extraMsg,
+        weekKey
+      });
     }
   }
+
 
 
   const tabLetters = qs(`#tabLetters${prefix}`);
@@ -483,12 +585,35 @@ function setupWeek({
   let wIdx = 0;
 
   function renderLetter(){
-    if (bigLetter) bigLetter.textContent = letters[lIdx] ?? '';
-    if (letters.length && lIdx === letters.length - 1){
-      seenLastLetter = true;
+  if (bigLetter) bigLetter.textContent = letters[lIdx] ?? '';
+
+  if (letters.length && lIdx === letters.length - 1){
+    seenLastLetter = true;
+
+    const hasWords = Array.isArray(words) && words.length > 0;
+
+    // 🔹 If this week has blending words, prompt once
+    if (hasWords && !promptedBlend){
+      promptedBlend = true;
+
+      setOverlay(
+        true,
+        "Great job!",
+        "Ready to try blending words?",
+        "Start blending",
+        "Not now",
+        () => activate('blend'),
+        () => {} // stay on letters
+      );
+    }
+
+    // ❗ Do NOT complete yet if blending words exist
+    if (!hasWords){
       maybeComplete();
     }
   }
+}
+
   function renderWord(){
     if (bigWord) bigWord.textContent = words[wIdx] ?? '';
     if (words.length && wIdx === words.length - 1){
@@ -496,6 +621,8 @@ function setupWeek({
       maybeComplete();
     }
   }
+
+
 
   function nextL(){ lIdx = (lIdx + 1) % letters.length; renderLetter(); playSoundFor(letters[lIdx]); }
   function prevL(){ lIdx = (lIdx - 1 + letters.length) % letters.length; renderLetter(); playSoundFor(letters[lIdx]); }
@@ -607,6 +734,37 @@ document.addEventListener('DOMContentLoaded', () => {
   const su2w4 = setupWeek({ screenId:'summer2w4', weekKey:'L6W4', letters: SU2W4_LETTERS, words: SU2W4_WORDS, prefix:'SU2W4' });
   const su2w5 = setupWeek({ screenId:'summer2w5', weekKey:'L6W5', letters: SU2W5_LETTERS, words: SU2W5_WORDS, prefix:'SU2W5' });
 
+  // ===== Celebration screen buttons =====
+  safeOn('#celebrateHomeTop', 'click', ()=>show('home'));
+  safeOn('#celebrateHome', 'click', ()=>show('home'));
+
+  safeOn('#celebrateReplay', 'click', ()=>{
+    if (ACTIVE_WEEK_KEY) {
+      show('home');
+      setTimeout(()=>goToWeekByKey(ACTIVE_WEEK_KEY), 0);
+    } else {
+      show('home');
+    }
+  });
+
+  safeOn('#celebrateNext', 'click', ()=>{
+    if(!ACTIVE_WEEK_KEY) return show('home');
+
+    const idx = WEEK_ORDER.indexOf(ACTIVE_WEEK_KEY);
+    const nextKey = (idx >= 0 && idx < WEEK_ORDER.length - 1) ? WEEK_ORDER[idx + 1] : null;
+
+    show('home');
+    if(nextKey){
+      setTimeout(()=>{
+        const ok = goToWeekByKey(nextKey);
+        if(!ok) showToast("Next week is locked 🔒");
+      }, 0);
+    } else {
+      showToast("You're at the last week 🎉");
+    }
+  });
+
+  
   /* ========= 2) Home navigation handlers ========= */
 
   // Always unlocked
@@ -711,3 +869,4 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
