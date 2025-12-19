@@ -234,11 +234,12 @@ let currentBlend = null; // controller to cancel ongoing blends
 
 const qs = (s) => document.querySelector(s);
 
-function safeOn(selector, event, handler){
-  const el = qs(selector);
+function safeOn(target, event, handler, options){
+  const el = (typeof target === 'string') ? qs(target) : target;
   if (!el) return;
-  el.addEventListener(event, handler);
+  el.addEventListener(event, handler, options);
 }
+
 
 function showToast(msg){
   const el = document.getElementById("toast");
@@ -252,10 +253,10 @@ function showToast(msg){
 
 function show(name){
   const screens = [
-    'home','letters','week2','week3','week4','week5',
-    'a2w1','weekA2W2','weekA2W3','weekA2W4','weekA2W5',
-    'spring1w1','spring1w2','spring1w3','spring1w4','spring1w5'
-  ];
+  'home','letters','settings','week2','week3','week4','week5',
+  'a2w1','weekA2W2','weekA2W3','weekA2W4','weekA2W5',
+  'spring1w1','spring1w2','spring1w3','spring1w4','spring1w5'
+];
 
   for (const id of screens){
     const el = qs('#' + id);
@@ -675,10 +676,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // Settings navigation + controls
-  const openSettings = qs('#openSettings');
-  const backSettings = qs('#backSettings');
-  safeOn(openSettings, 'click', () => show('settings'));
-  safeOn(backSettings, 'click', () => show('home'));
+safeOn('#openSettings', 'click', () => show('settings'));
+safeOn('#backSettings', 'click', () => show('home'));
+
 
   const parentMode = qs('#parentMode');
   const unlockAllBtn = qs('#unlockAllBtn');
@@ -714,3 +714,4 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initial lock/star state on Home
   updateHomeLocks();
 });
+
