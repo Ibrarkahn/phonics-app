@@ -567,7 +567,8 @@ function setupWeek({
   let promptedBlend = false;
   let seenLastLetter = false;
   let seenLastWord = false;
-  let didComplete = false;
+  let didComplete = !!(weekKey && isCompleted(weekKey));
+
 
     function maybeComplete(){
     if (!weekKey || didComplete) return;
@@ -621,19 +622,20 @@ function setupWeek({
     const hasWords = Array.isArray(words) && words.length > 0;
 
     // 🔹 If this week has blending words, prompt once
-    if (hasWords && !promptedBlend){
-      promptedBlend = true;
+   if (hasWords && !didComplete && !promptedBlend){
+  promptedBlend = true;
 
-      setOverlay(
-        true,
-        "Great job!",
-        "Ready to try blending words?",
-        "Start blending",
-        "Not now",
-        () => activate('blend'),
-        () => {} // stay on letters
-      );
-    }
+  setOverlay(
+    true,
+    "Great job!",
+    "Ready to try blending words?",
+    "Start blending",
+    "Not now",
+    () => activate('blend'),
+    () => {} // stay on letters
+  );
+}
+
 
     // ❗ Do NOT complete yet if blending words exist
     if (!hasWords){
@@ -711,12 +713,30 @@ function setupWeek({
   if (tabLetters) tabLetters.addEventListener('click', ()=>activate('letters'));
   if (tabBlend)   tabBlend.addEventListener('click',   ()=>activate('blend'));
 
-  // expose init
-  return {
-    initLetters(){ lIdx = 0; wIdx = 0; activate('letters'); },
-    initBlend(){ lIdx = 0; wIdx = 0; activate('blend'); },
-  };
-}
+ // expose init
+return {
+  initLetters(){
+    lIdx = 0;
+    wIdx = 0;
+
+    // ✅ reset per-entry prompt state
+    promptedBlend = false;
+    seenLastLetter = false;
+    seenLastWord = false;
+
+    // ✅ lock prompt forever if week already completed
+    didComplete = !!(weekKey && isCompleted(weekKey));
+
+    activate('letters');
+  },
+
+  initBlend(){
+    lIdx = 0;
+    wIdx = 0;
+    activate('blend');
+  },
+};
+
 
 
 /* ===================== Boot (after DOM loaded) ===================== */
@@ -897,6 +917,7 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
