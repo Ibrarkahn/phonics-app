@@ -454,67 +454,87 @@ function goToWeekByKey(key){
 /* ===================== General letter practice ===================== */
 let PRACTICE_KEY = null;
 let PRACTICE_SEEN_LAST = false;
-let CURRENT_SET = [], idx = 0;
+let CURRENT_SET = [];
+let idx = 0;
 
 function startPractice(letters, progressKey = null){
-  CURRENT_SET = letters.slice(); // ✅ NO randomisation
+  CURRENT_SET = (letters || []).slice(); // ✅ copy
   idx = 0;
 
-  PRACTICE_KEY = progressKey;         // ✅ track which week this is
+  PRACTICE_KEY = progressKey;            // ✅ track week key or null
   PRACTICE_SEEN_LAST = false;
 
   show('letters');
   renderLetter();
-  setTimeout(()=>qs('#letterArea')?.focus(),50);
+  setTimeout(()=>qs('#letterArea')?.focus(), 50);
 }
 
+function renderLetter(){
+  const big = qs('#bigLetter');
 
-  if (PRACTICE_KEY && !PRACTICE_SEEN_LAST && CURRENT_SET.length){
-    if (idx === CURRENT_SET.length - 1){
-      PRACTICE_SEEN_LAST = true;
-      markCompleted(PRACTICE_KEY);
-      showToast("⭐ Week completed!");
-      try{ if (window.confetti) window.confetti({ particleCount: 120, spread: 70, origin: { y: 0.7 } }); }catch(e){}
-      updateHomeLocks();
-
-      // ✅ Dedicated celebration screen for L1W1
-      showCelebration({
-        title: "Level 1 – Week 1 complete!",
-        practised: CURRENT_SET,
-        extra: "",
-        weekKey: PRACTICE_KEY
-      });
-    }
+  if (!CURRENT_SET.length){
+    if (big) big.textContent = '';
+    return;
   }
 
+  if (big) big.textContent = CURRENT_SET[idx] ?? '';
+
+  // ✅ Week completion logic (only when progressKey is provided)
+  if (PRACTICE_KEY && !PRACTICE_SEEN_LAST && idx === CURRENT_SET.length - 1){
+    PRACTICE_SEEN_LAST = true;
+    markCompleted(PRACTICE_KEY);
+    showToast("⭐ Week completed!");
+    try{
+      if (window.confetti) window.confetti({ particleCount: 120, spread: 70, origin: { y: 0.7 } });
+    }catch(e){}
+    updateHomeLocks();
+
+    showCelebration({
+      title: "Week complete!",
+      practised: CURRENT_SET,
+      extra: "",
+      weekKey: PRACTICE_KEY
+    });
+  }
+}
 
 function nextLetter(){
+  if (!CURRENT_SET.length) return;
   idx = (idx + 1) % CURRENT_SET.length;
   renderLetter();
   playSoundFor(CURRENT_SET[idx]);
 }
 
 function prevLetter(){
+  if (!CURRENT_SET.length) return;
   idx = (idx - 1 + CURRENT_SET.length) % CURRENT_SET.length;
   renderLetter();
   playSoundFor(CURRENT_SET[idx]);
 }
 
 // ✅ Tap to play ONLY (no auto-advance)
-safeOn('#letterArea','click', ()=> playSoundFor(CURRENT_SET[idx]));
+safeOn('#letterArea', 'click', () => {
+  if (!CURRENT_SET.length) return;
+  playSoundFor(CURRENT_SET[idx]);
+});
 
 // buttons
-safeOn('#prevBtn','click', prevLetter);
-safeOn('#nextBtn','click', nextLetter);
+safeOn('#prevBtn', 'click', prevLetter);
+safeOn('#nextBtn', 'click', nextLetter);
 
 // swipe
 let touchStartX = 0;
-safeOn('#letterArea','touchstart', e => { touchStartX = e.changedTouches[0].clientX; }, {passive:true});
-safeOn('#letterArea','touchend', e => {
+safeOn('#letterArea', 'touchstart', e => {
+  touchStartX = e.changedTouches[0].clientX;
+}, { passive: true });
+
+safeOn('#letterArea', 'touchend', e => {
+  if (!CURRENT_SET.length) return;
+
   const dx = e.changedTouches[0].clientX - touchStartX;
   if (Math.abs(dx) > 40) dx < 0 ? nextLetter() : prevLetter();
   else playSoundFor(CURRENT_SET[idx]);
-}, {passive:true});
+}, { passive: true });
 
 
 /* ===================== Generic Week Setup ===================== */
@@ -869,4 +889,5 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
