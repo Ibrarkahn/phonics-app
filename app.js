@@ -308,13 +308,21 @@ function playSoundFor(key){
 const PHONICS_CLUSTERS = [
   // double consonants
   'ff','ss','ll','vv',
-  // digraphs
+
+  // consonant digraphs
   'ck','sh','ch','th','ng','nk',
+
   // other
-  'qu','zz',
-  // special sound keys
+  'qu',
+
+  // vowel digraphs / trigraphs (needed for Spring 1 etc.)
+  'ai','ee','igh','oa',
   'oo-long','oo-short',
+  'ar','or','ur',
+  'ow','oi',
+  'ear','air','er',
 ];
+
 
 function splitForPhonics(word){
   const parts = [];
@@ -889,5 +897,6 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
