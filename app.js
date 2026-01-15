@@ -736,7 +736,7 @@ return {
     activate('blend');
   },
 };
-
+}
 
 
 /* ===================== Boot (after DOM loaded) ===================== */
@@ -917,6 +917,7 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
