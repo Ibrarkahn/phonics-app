@@ -423,34 +423,24 @@ function playBlend(word){
       return;
     }
 
-   const rawKey = parts[i];
+   const rawKey  = parts[i];
 const baseKey = baseSoundKey(rawKey);
 
-const repeat = isHeldConsonant(rawKey) ? HELD_REPEAT_COUNT : 1;
-let count = 0;
+const a = new Audio(`sounds/${baseKey}.mp3`);
+controller.audio = a;
 
-const playOnce = () => {
+a.play().catch(()=>{});
+
+a.onended = () => {
   if (controller.cancelled) return;
 
-  const a = new Audio(`sounds/${baseKey}.mp3`);
-  controller.audio = a;
-
-  a.play().catch(()=>{});
-
-  a.onended = () => {
-    if (controller.cancelled) return;
-
-    count++;
-    if (count < repeat){
-      setTimeout(playOnce, HELD_GAP_MS);
-    } else {
-      i++;
-      step();
-    }
-  };
+  // 👇 HOLD the sound instead of replaying it
+  const holdDelay = isHeldConsonant(rawKey) ? 180 : 0; // tweak 120–250ms
+  setTimeout(() => {
+    i++;
+    step();
+  }, holdDelay);
 };
-
-playOnce();
 
   };
 
@@ -1043,6 +1033,7 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
