@@ -358,7 +358,7 @@ function playSoundFor(key){
 // Phonics clusters that should be treated as a single sound
 const PHONICS_CLUSTERS = [
   // double consonants
-  'ff','ss','ll','vv',
+  'bb','dd','ff','gg','ll','mm','pp','rr','ss','tt','vv','zz',
 
   // consonant digraphs
   'ck','sh','ch','th','ng','nk',
@@ -1043,6 +1043,7 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
