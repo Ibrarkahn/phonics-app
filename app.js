@@ -227,10 +227,20 @@ const SU2W5_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'c
 const SU2W5_WORDS = ['greenest', 'smartest', 'brighter', 'brightest', 'painter', 'boaster', 'brownest', 'trainer', 'swiftest', 'freshest', 'helper', 'hunter'];
 
 
-
 /* ===================== Utils ===================== */
 let audio;
 let currentBlend = null; // controller to cancel ongoing blends
+
+// 🔊 Stretchy vs bouncy consonants (phonics rule)
+const STRETCHY_CONSONANTS = ['m','n','s','f','l','v','z','r'];
+
+function isHeldConsonant(key){
+  // mm → m, ss → s, etc.
+  const base = key.replace(/(.)\1/, '$1');
+  return STRETCHY_CONSONANTS.includes(base);
+}
+
+
 
 const qs = (s) => document.querySelector(s);
 
@@ -1033,6 +1043,7 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
