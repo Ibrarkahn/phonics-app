@@ -296,13 +296,64 @@ function show(name){
   if (name === 'home') updateHomeLocks();
 }
 
+// Double consonants should reuse the single-letter sound (held longer)
+const HELD_CONSONANTS = {
+  ff: 'f',
+  ll: 'l',
+  ss: 's',
+  vv: 'v',
+  bb: 'b',
+  dd: 'd',
+  gg: 'g',
+  mm: 'm',
+  pp: 'p',
+  rr: 'r',
+  tt: 't',
+  zz: 'z',
+};
+
+// How long to “hold” a double consonant (tweak if you want)
+const HELD_REPEAT_COUNT = 2;  // 2 plays total feels like a hold
+const HELD_GAP_MS = 80;       // small pause between repeats
+
+function baseSoundKey(key){
+  return HELD_CONSONANTS[key] || key;
+}
+
+function isHeldConsonant(key){
+  return !!HELD_CONSONANTS[key];
+}
+
+
 function playSoundFor(key){
   if (!key) return;
+
+  // cancel any previous audio
   if (audio && !audio.paused) audio.pause();
-  audio = new Audio(`sounds/${key}.mp3`);
-  audio.currentTime = 0;
-  audio.play().catch(()=>{});
+
+  const baseKey = baseSoundKey(key);
+  const repeat = isHeldConsonant(key) ? HELD_REPEAT_COUNT : 1;
+
+  let count = 0;
+
+  const playOnce = () => {
+    if (audio && !audio.paused) audio.pause();
+
+    audio = new Audio(`sounds/${baseKey}.mp3`);
+    audio.currentTime = 0;
+    audio.play().catch(()=>{});
+
+    audio.onended = () => {
+      count++;
+      if (count < repeat){
+        setTimeout(playOnce, HELD_GAP_MS);
+      }
+    };
+  };
+
+  playOnce();
 }
+
 
 // Phonics clusters that should be treated as a single sound
 const PHONICS_CLUSTERS = [
@@ -372,15 +423,35 @@ function playBlend(word){
       return;
     }
 
-    const key = parts[i];
-    const a = new Audio(`sounds/${key}.mp3`);
-    controller.audio = a;
-    a.play().catch(()=>{});
-    a.onended = () => {
-      if (controller.cancelled) return;
+   const rawKey = parts[i];
+const baseKey = baseSoundKey(rawKey);
+
+const repeat = isHeldConsonant(rawKey) ? HELD_REPEAT_COUNT : 1;
+let count = 0;
+
+const playOnce = () => {
+  if (controller.cancelled) return;
+
+  const a = new Audio(`sounds/${baseKey}.mp3`);
+  controller.audio = a;
+
+  a.play().catch(()=>{});
+
+  a.onended = () => {
+    if (controller.cancelled) return;
+
+    count++;
+    if (count < repeat){
+      setTimeout(playOnce, HELD_GAP_MS);
+    } else {
       i++;
       step();
-    };
+    }
+  };
+};
+
+playOnce();
+
   };
 
   step();
@@ -972,6 +1043,7 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
