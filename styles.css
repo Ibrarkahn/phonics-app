@@ -379,3 +379,24 @@ body{
   gap:.55rem;
   margin-top:.25rem;
 }
+
+/* ===================== Dots for long and short OO ===================== */
+
+/* Duration dots (short vs long sounds) */
+.duration-dots{
+  margin-top: 10px;
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  align-items:center;
+}
+.duration-dots .dot{
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background: rgba(0,0,0,.35);
+}
+.duration-dots .dot.on{
+  background: #ff4b3a; /* same as your primary */
+}
+
