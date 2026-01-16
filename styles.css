@@ -382,7 +382,7 @@ body{
 
 /* Duration dots (short vs long sounds) */
 .duration-dots{
-  margin-top: 4px;      /* 🔽 closer to letters */
+  margin-top: 2px;      /* 🔽 closer to letters */
   margin-bottom: 18px; /* 🔼 space before buttons */
   display:flex;
   gap:10px;
@@ -400,5 +400,6 @@ body{
 .duration-dots .dot.on{
   background: #ff4b3a;
 }
+
 
 
