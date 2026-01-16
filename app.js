@@ -323,45 +323,20 @@ const HELD_CONSONANTS = {
 };
 
 // How long to “hold” a double consonant (tweak if you want)
-const HELD_REPEAT_COUNT = 2;  // 2 plays total feels like a hold
-const HELD_GAP_MS = 80;       // small pause between repeats
 
 function baseSoundKey(key){
   return HELD_CONSONANTS[key] || key;
 }
 
-function isHeldConsonant(key){
-  return !!HELD_CONSONANTS[key];
-}
-
-
 function playSoundFor(key){
   if (!key) return;
 
-  // cancel any previous audio
   if (audio && !audio.paused) audio.pause();
 
   const baseKey = baseSoundKey(key);
-  const repeat = isHeldConsonant(key) ? HELD_REPEAT_COUNT : 1;
-
-  let count = 0;
-
-  const playOnce = () => {
-    if (audio && !audio.paused) audio.pause();
-
-    audio = new Audio(`sounds/${baseKey}.mp3`);
-    audio.currentTime = 0;
-    audio.play().catch(()=>{});
-
-    audio.onended = () => {
-      count++;
-      if (count < repeat){
-        setTimeout(playOnce, HELD_GAP_MS);
-      }
-    };
-  };
-
-  playOnce();
+  audio = new Audio(`sounds/${baseKey}.mp3`);
+  audio.currentTime = 0;
+  audio.play().catch(()=>{});
 }
 
 
@@ -1043,6 +1018,7 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
