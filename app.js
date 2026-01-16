@@ -386,6 +386,54 @@ function playBlend(word){
   step();
 }
 
+// ===== For Long and short oo =====
+function getDisplayLabel(key){
+  // Show kid-friendly text for special keys
+  if (key === 'oo-long' || key === 'oo-short') return 'oo';
+  return key;
+}
+
+function getDurationCount(key){
+  // How many dots to show (0 = show nothing)
+  if (key === 'oo-short') return 1;
+  if (key === 'oo-long')  return 3;
+  return 0;
+}
+
+function ensureDotsEl(prefix, bigLetterEl){
+  // Try to find existing dots container
+  let el = document.querySelector(`#durationDots${prefix}`);
+  if (el) return el;
+
+  // If not present, create it right under the big letter
+  el = document.createElement('div');
+  el.id = `durationDots${prefix}`;
+  el.className = 'duration-dots';
+
+  if (bigLetterEl && bigLetterEl.parentNode){
+    bigLetterEl.parentNode.insertBefore(el, bigLetterEl.nextSibling);
+  }
+  return el;
+}
+
+function renderDots(dotsEl, count){
+  if (!dotsEl) return;
+  if (!count){
+    dotsEl.innerHTML = '';
+    return;
+  }
+  dotsEl.innerHTML = '';
+  for (let i=0; i<count; i++){
+    const d = document.createElement('span');
+    d.className = 'dot on';
+    dotsEl.appendChild(d);
+  }
+}
+
+
+
+
+
 // ===== Overlay + Celebration helpers =====
 let ACTIVE_WEEK_KEY = null;
 
@@ -614,7 +662,14 @@ function setupWeek({
   let wIdx = 0;
 
   function renderLetter(){
-  if (bigLetter) bigLetter.textContent = letters[lIdx] ?? '';
+  const key = letters[lIdx] ?? '';
+  const label = getDisplayLabel(key);
+
+  if (bigLetter) bigLetter.textContent = label;
+
+  // ✅ show dots for oo-short / oo-long (and nothing for others)
+  const dotsEl = ensureDotsEl(prefix, bigLetter);
+  renderDots(dotsEl, getDurationCount(key));
 
   if (letters.length && lIdx === letters.length - 1){
     seenLastLetter = true;
@@ -917,6 +972,7 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
