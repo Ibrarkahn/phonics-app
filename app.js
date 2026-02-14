@@ -354,6 +354,7 @@ const PHONICS_CLUSTERS = [
 
   // vowel digraphs / trigraphs (needed for Spring 1 etc.)
   'ai','ee','igh','oa',
+  'oo',
   'oo-long','oo-short',
   'ar','or','ur',
   'ow','oi',
@@ -409,8 +410,18 @@ function playBlend(word){
       return;
     }
 
-   const rawKey  = parts[i];
-const baseKey = baseSoundKey(rawKey);
+   const rawKey = parts[i];
+
+// ✅ Resolve "oo" to the correct sound file
+let resolvedKey = rawKey;
+if (rawKey === 'oo') {
+  const OO_SHORT_WORDS = new Set([
+    'good', 'book', 'look', 'cook', 'hook', 'foot', 'wood'
+  ]);
+  resolvedKey = OO_SHORT_WORDS.has(word.toLowerCase()) ? 'oo-short' : 'oo-long';
+}
+
+const baseKey = baseSoundKey(resolvedKey);
 
 const a = new Audio(`sounds/${baseKey}.mp3`);
 controller.audio = a;
@@ -1019,6 +1030,7 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
