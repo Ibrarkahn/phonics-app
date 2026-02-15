@@ -18,7 +18,7 @@ body{
 }
 
 /* Screens */
-.screen{ display:none; min-height:100vh; }
+.screen{ display:none; min-height:100vh; min-height:100dvh; }
 .screen--pink{
   display:flex;
   flex-direction:column;
@@ -327,6 +327,7 @@ body{
 /* ===================== Celebration Screen ===================== */
 .celebrate{
   min-height:calc(100vh - 64px);
+  min-height:calc(100dvh - 64px);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -412,6 +413,7 @@ body{
 .duration-dots .dot.on{
   background: #ff4b3a;
 }
+
 
 
 
