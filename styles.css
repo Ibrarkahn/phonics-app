@@ -197,7 +197,7 @@ body{
 
 .big-letter.split-double{
   display: inline-flex;
-  gap: 0.05em;   /* reduce this if too far apart */
+  gap: 0.04em;   /* reduce this if too far apart */
   align-items: center;
   justify-content: center;
 }
@@ -417,6 +417,7 @@ body{
   font-size: clamp(120px, 30vw, 220px);
   letter-spacing: 0.08em;
 }
+
 
 
 
