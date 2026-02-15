@@ -1067,10 +1067,23 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast("Progress reset");
   });
 
+ /* ========= Splash (show every app open) ========= */
+  const splash = document.getElementById('splashOverlay');
+  if (splash){
+    splash.classList.add('is-visible');
+    setTimeout(() => {
+      splash.classList.add('is-hiding');
+      setTimeout(() => splash.remove(), 650);
+    }, 1200);
+  }
+ 
+  
   /* ========= 5) Start app ========= */
+  
   show('home');
   updateHomeLocks();
 });
+
 
 
 
