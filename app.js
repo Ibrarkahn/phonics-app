@@ -230,48 +230,6 @@ const SU2W5_WORDS = ['greenest', 'smartest', 'brighter', 'brightest', 'painter',
 /* ===================== Utils ===================== */
 let audio;
 let currentBlend = null; // controller to cancel ongoing blends
-let blendTimer = null;   // ✅ used to cancel scheduled next blend step
-
-function stopAllAudio(){
-
-  // ✅ Stop any scheduled next blend step
-  if (blendTimer){
-    clearTimeout(blendTimer);
-    blendTimer = null;
-  }
-
-  // Stop single-letter audio (playSoundFor)
-  if (audio){
-    try { audio.pause(); audio.currentTime = 0; } catch(e){}
-    audio = null;
-  }
-
-  // Stop blending audio (playBlend)
-  if (currentBlend){
-    currentBlend.cancelled = true;
-    if (currentBlend.audio){
-      try { currentBlend.audio.pause(); currentBlend.audio.currentTime = 0; } catch(e){}
-      currentBlend.audio = null;
-    }
-  }
-
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
-}
-
-
-  // Stop blending audio (playBlend)
-  if (currentBlend){
-    currentBlend.cancelled = true;
-    if (currentBlend.audio){
-      try { currentBlend.audio.pause(); currentBlend.audio.currentTime = 0; } catch(e){}
-      currentBlend.audio = null;
-    }
-  }
-
-  // Optional: if you ever use speechSynthesis
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
-}
-
 
 // 🔊 Stretchy vs bouncy consonants (phonics rule)
 const STRETCHY_CONSONANTS = ['m','n','s','f','l','v','z','r'];
@@ -304,10 +262,7 @@ function showToast(msg){
 
 
 function show(name){
-  stopAllAudio(); // ✅ stop any phonics/blend audio when navigating
-
  const screens = [
-
   'home','letters','settings','celebrate',
   'week2','week3','week4','week5',
   'a2w1','weekA2W2','weekA2W3','weekA2W4','weekA2W5',
@@ -436,20 +391,11 @@ function splitForPhonics(word){
 function playBlend(word){
   if (!word) return;
 
-  // cancel previous blend + any scheduled next step
-if (blendTimer){
-  clearTimeout(blendTimer);
-  blendTimer = null;
-}
-
-if (currentBlend){
-  currentBlend.cancelled = true;
-  if (currentBlend.audio){
-    try { currentBlend.audio.pause(); currentBlend.audio.currentTime = 0; } catch {}
-    currentBlend.audio = null;
+  // cancel previous blend
+  if (currentBlend && currentBlend.audio){
+    currentBlend.cancelled = true;
+    try { currentBlend.audio.pause(); } catch {}
   }
-}
-
 
   const controller = { cancelled:false, audio:null };
   currentBlend = controller;
@@ -487,12 +433,10 @@ a.onended = () => {
 
   // 👇 HOLD the sound instead of replaying it
   const holdDelay = isHeldConsonant(rawKey) ? 180 : 0; // tweak 120–250ms
-  blendTimer = setTimeout(() => {
-  blendTimer = null;
-  i++;
-  step();
-}, holdDelay);
-
+  setTimeout(() => {
+    i++;
+    step();
+  }, holdDelay);
 };
 
   };
@@ -607,10 +551,8 @@ function showCelebration({ title, practised, extra, weekKey }){
     });
   }
 
-    stopAllAudio(); // ✅ make sure blend is cancelled before celebration UI
   show('celebrate');
 }
-
 
 // Navigate to next week using your existing HOME buttons
 function goToWeekByKey(key){
@@ -1114,8 +1056,6 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
-
-
 
 
 
