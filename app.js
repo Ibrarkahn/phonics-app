@@ -559,7 +559,7 @@ if (nextBtn){
   const hasNext = (idx >= 0 && idx < WEEK_ORDER.length - 1);
 
   nextBtn.classList.toggle('hidden', !hasNext);
-  nextBtn.style.display = hasNext ? '' : 'none';
+  nextBtn.style.setProperty('display', hasNext ? 'inline-flex' : 'none', 'important');
   nextBtn.setAttribute('aria-hidden', hasNext ? 'false' : 'true');
 
   console.log('Celebrate:', { weekKey, idx, hasNext });
@@ -1071,6 +1071,7 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
