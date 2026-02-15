@@ -415,8 +415,9 @@ body{
 
 .letter-display {
   font-size: clamp(120px, 30vw, 220px);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
 }
+
 
 
 
