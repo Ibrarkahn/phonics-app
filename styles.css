@@ -186,7 +186,6 @@ body{
 .big-letter, .big-word{
   font-family: 'Comic Neue', 'Poppins', sans-serif;
   font-weight:500;
-  letter-spacing:2px;
   user-select:none;
 }
 .big-letter{
@@ -417,6 +416,7 @@ body{
   font-size: clamp(120px, 30vw, 220px);
   letter-spacing: 0.08em;
 }
+
 
 
 
