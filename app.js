@@ -555,13 +555,15 @@ function showCelebration({ title, practised, extra, weekKey }){
 const nextBtn = document.querySelector('#celebrateNext');
 
 if (nextBtn){
-  const idx = WEEK_ORDER.indexOf(weekKey);
+  const idx = weekKey ? WEEK_ORDER.indexOf(weekKey) : -1;
   const hasNext = (idx >= 0 && idx < WEEK_ORDER.length - 1);
 
-  nextBtn.hidden = !hasNext;   // ✅ much safer
+  nextBtn.classList.toggle('hidden', !hasNext);
+  nextBtn.style.display = hasNext ? '' : 'none';
+  nextBtn.setAttribute('aria-hidden', hasNext ? 'false' : 'true');
+
+  console.log('Celebrate:', { weekKey, idx, hasNext });
 }
-
-
 
   
   show('celebrate');
@@ -1069,6 +1071,7 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
