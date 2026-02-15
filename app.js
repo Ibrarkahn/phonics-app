@@ -583,6 +583,24 @@ function startPractice(letters, progressKey = null){
   setTimeout(()=>qs('#letterArea')?.focus(), 50);
 }
 
+function setBigLetterDisplay(el, key){
+  if (!el) return;
+
+  const label = getDisplayLabel(key);
+
+  // For double letters like tt, mm, ss: render as two spans with a gap
+  if (key && key.length === 2 && key[0] === key[1]){
+    el.classList.add('split-double');
+    el.innerHTML = `<span>${label[0]}</span><span>${label[1]}</span>`;
+    return;
+  }
+
+  // Normal single letters / digraphs
+  el.classList.remove('split-double');
+  el.textContent = label;
+}
+
+
 function renderLetter(){
   const big = qs('#bigLetter');
 
@@ -1038,6 +1056,7 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
