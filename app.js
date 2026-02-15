@@ -554,12 +554,13 @@ function showCelebration({ title, practised, extra, weekKey }){
 // ✅ Hide Next button if this is the last week
 const nextBtn = document.querySelector('#celebrateNext');
 
-if (nextBtn && weekKey){
+if (nextBtn){
   const idx = WEEK_ORDER.indexOf(weekKey);
   const hasNext = (idx >= 0 && idx < WEEK_ORDER.length - 1);
 
-  nextBtn.style.display = hasNext ? 'inline-block' : 'none';
+  nextBtn.hidden = !hasNext;   // ✅ much safer
 }
+
 
 
   
@@ -1068,6 +1069,7 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
