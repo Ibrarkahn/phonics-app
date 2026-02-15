@@ -591,7 +591,7 @@ function setBigLetterDisplay(el, key){
   // For double letters like tt, mm, ss: render as two spans with a gap
   if (key && key.length === 2 && key[0] === key[1]){
     el.classList.add('split-double');
-    el.innerHTML = `<span>${label[0]}${label[1]}</span>`;
+    el.innerHTML = `<span>${label[0]}</span><span>${label[1]}</span>`;
     return;
   }
 
@@ -1056,6 +1056,7 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
