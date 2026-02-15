@@ -189,7 +189,12 @@ body{
   letter-spacing:2px;
   user-select:none;
 }
-.big-letter{ font-size:34vh; line-height:1; }
+.big-letter{
+  font-size: clamp(140px, 28vw, 340px);
+  line-height: 1;
+  white-space: nowrap;
+}
+
 .big-word{ font-size:10vh; line-height:1.05; }
 
 .nav-buttons button{
@@ -400,6 +405,7 @@ body{
 .duration-dots .dot.on{
   background: #ff4b3a;
 }
+
 
 
 
