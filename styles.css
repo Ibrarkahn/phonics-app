@@ -199,6 +199,7 @@ body{
   gap: 0.01em;   /* reduce this if too far apart */
   align-items: center;
   justify-content: center;
+  letter-spacing: 0;
 }
 
 .big-word{ font-size:10vh; line-height:1.05; }
@@ -416,6 +417,7 @@ body{
   font-size: clamp(120px, 30vw, 220px);
   letter-spacing: 0.08em;
 }
+
 
 
 
