@@ -723,7 +723,15 @@ function setupWeek({
   const key = letters[lIdx] ?? '';
   const label = getDisplayLabel(key);
 
-  if (bigLetter) bigLetter.textContent = label;
+  if (bigLetter){
+  // Fix "tt" (and any double letter) showing too close by inserting a thin space
+  if (key.length === 2 && key[0] === key[1]){
+    bigLetter.textContent = `${label[0]}\u2009${label[1]}`; // thin space
+  } else {
+    bigLetter.textContent = label;
+  }
+}
+
 
   // ✅ show dots for oo-short / oo-long (and nothing for others)
   const dotsEl = ensureDotsEl(prefix, bigLetter);
@@ -1030,6 +1038,7 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
