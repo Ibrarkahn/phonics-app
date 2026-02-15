@@ -195,6 +195,13 @@ body{
   white-space: nowrap;
 }
 
+.big-letter.split-double{
+  display: inline-flex;
+  gap: 0.08em;   /* reduce this if too far apart */
+  align-items: center;
+  justify-content: center;
+}
+
 .big-word{ font-size:10vh; line-height:1.05; }
 
 .nav-buttons button{
@@ -410,6 +417,7 @@ body{
   font-size: clamp(120px, 30vw, 220px);
   letter-spacing: 0.08em;
 }
+
 
 
 
