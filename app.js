@@ -231,6 +231,27 @@ const SU2W5_WORDS = ['greenest', 'smartest', 'brighter', 'brightest', 'painter',
 let audio;
 let currentBlend = null; // controller to cancel ongoing blends
 
+function stopAllAudio(){
+  // Stop single-letter audio (playSoundFor)
+  if (audio){
+    try { audio.pause(); audio.currentTime = 0; } catch(e){}
+    audio = null;
+  }
+
+  // Stop blending audio (playBlend)
+  if (currentBlend){
+    currentBlend.cancelled = true;
+    if (currentBlend.audio){
+      try { currentBlend.audio.pause(); currentBlend.audio.currentTime = 0; } catch(e){}
+      currentBlend.audio = null;
+    }
+  }
+
+  // Optional: if you ever use speechSynthesis
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+}
+
+
 // 🔊 Stretchy vs bouncy consonants (phonics rule)
 const STRETCHY_CONSONANTS = ['m','n','s','f','l','v','z','r'];
 
@@ -262,7 +283,10 @@ function showToast(msg){
 
 
 function show(name){
+  stopAllAudio(); // ✅ stop any phonics/blend audio when navigating
+
  const screens = [
+
   'home','letters','settings','celebrate',
   'week2','week3','week4','week5',
   'a2w1','weekA2W2','weekA2W3','weekA2W4','weekA2W5',
@@ -551,8 +575,10 @@ function showCelebration({ title, practised, extra, weekKey }){
     });
   }
 
+    stopAllAudio(); // ✅ make sure blend is cancelled before celebration UI
   show('celebrate');
 }
+
 
 // Navigate to next week using your existing HOME buttons
 function goToWeekByKey(key){
@@ -1056,6 +1082,7 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
