@@ -50,59 +50,87 @@
         <span>Practise single letter sounds</span>
       </button>
 
-    <div class="section-chip">Weekly Phonics</div>
+   <div class="section-chip">Reception Journey</div>
 
-    <div class="level-group">
-      <div class="level-chip">Level 1</div>
-      <button class="pill pill--gold" id="btn-phase-1">Week 1</button>
-      <button class="pill pill--gold" id="btn-phase-2">Week 2</button>
-      <button class="pill pill--gold" id="btn-phase-3">Week 3</button>
-      <button class="pill pill--gold" id="btn-phase-4">Week 4</button>
-      <button class="pill pill--gold" id="btn-phase-5">Week 5</button>
-    </div>
+<!-- TERM: Autumn -->
+<div class="term">
+  <button class="term-head" type="button" data-term="autumn" aria-expanded="true">
+    <span class="term-head__left">
+      <span class="term-emoji">🍂</span>
+      <span class="term-title">Autumn Term</span>
+    </span>
+    <span class="term-chevron">▾</span>
+  </button>
 
-    <div class="level-group">
-      <div class="level-chip">Level 2</div>
-      <button class="pill pill--gold" id="btn-phase-6">Week 1</button>
-      <button class="pill pill--orange" id="btn-phase-7">Week 2</button>
-      <button class="pill pill--orange" id="btn-phase-8">Week 3</button>
-      <button class="pill pill--orange" id="btn-phase-9">Week 4</button>
-      <button class="pill pill--gold" id="btn-phase-10">Week 5</button>
-    </div>
+  <div class="term-panel is-open" data-panel="autumn">
+    <div class="term-sub">Weeks 1–10</div>
 
-    <div class="level-group">
-      <div class="level-chip">Level 3</div>
-      <button class="pill" id="btn-s1w1">Week 1</button>
-      <button class="pill" id="btn-s1w2">Week 2</button>
-      <button class="pill" id="btn-s1w3">Week 3</button>
-      <button class="pill" id="btn-s1w4">Week 4</button>
-      <button class="pill" id="btn-s1w5">Week 5</button>
-    </div>
+    <!-- Keep SAME IDs (locks + clicks rely on these) -->
+    <button class="pill pill--gold" id="btn-phase-1">Week 1</button>
+    <button class="pill pill--gold" id="btn-phase-2">Week 2</button>
+    <button class="pill pill--gold" id="btn-phase-3">Week 3</button>
+    <button class="pill pill--gold" id="btn-phase-4">Week 4</button>
+    <button class="pill pill--gold" id="btn-phase-5">Week 5</button>
 
-    <div class="level-group">
-      <div class="level-chip">Level 4</div>
-      <button id="btn-s2w1" class="pill">Week 1</button>
-      <button id="btn-s2w2" class="pill">Week 2</button>
-      <button id="btn-s2w3" class="pill">Week 3</button>
-      <button id="btn-s2w4" class="pill">Week 4</button>
-    </div>
+    <button class="pill pill--gold" id="btn-phase-6">Week 6</button>
+    <button class="pill pill--orange" id="btn-phase-7">Week 7</button>
+    <button class="pill pill--orange" id="btn-phase-8">Week 8</button>
+    <button class="pill pill--orange" id="btn-phase-9">Week 9</button>
+    <button class="pill pill--gold" id="btn-phase-10">Week 10</button>
+  </div>
+</div>
 
-    <div class="level-group">
-      <div class="level-chip">Level 5</div>
-      <button id="btn-su1w1" class="pill">Week 1</button>
-      <button id="btn-su1w2" class="pill">Week 2</button>
-      <button id="btn-su1w3" class="pill">Week 3</button>
-      <button id="btn-su1w4" class="pill">Week 4</button>
-    </div>
+<!-- TERM: Spring -->
+<div class="term">
+  <button class="term-head" type="button" data-term="spring" aria-expanded="false">
+    <span class="term-head__left">
+      <span class="term-emoji">🌸</span>
+      <span class="term-title">Spring Term</span>
+    </span>
+    <span class="term-chevron">▸</span>
+  </button>
 
-    <div class="level-group">
-      <div class="level-chip">Level 6</div>
-      <button id="btn-su2w1" class="pill">Week 1</button>
-      <button id="btn-su2w2" class="pill">Week 2</button>
-      <button id="btn-su2w3" class="pill">Week 3</button>
-      <button id="btn-su2w4" class="pill">Week 4</button>
-      <button id="btn-su2w5" class="pill pill--orange">Week 5</button>
-    </div>
+  <div class="term-panel" data-panel="spring">
+    <div class="term-sub">Weeks 1–9</div>
+
+    <button class="pill" id="btn-s1w1">Week 1</button>
+    <button class="pill" id="btn-s1w2">Week 2</button>
+    <button class="pill" id="btn-s1w3">Week 3</button>
+    <button class="pill" id="btn-s1w4">Week 4</button>
+    <button class="pill" id="btn-s1w5">Week 5</button>
+
+    <button id="btn-s2w1" class="pill">Week 6</button>
+    <button id="btn-s2w2" class="pill">Week 7</button>
+    <button id="btn-s2w3" class="pill">Week 8</button>
+    <button id="btn-s2w4" class="pill">Week 9</button>
+  </div>
+</div>
+
+<!-- TERM: Summer -->
+<div class="term">
+  <button class="term-head" type="button" data-term="summer" aria-expanded="false">
+    <span class="term-head__left">
+      <span class="term-emoji">☀️</span>
+      <span class="term-title">Summer Term</span>
+    </span>
+    <span class="term-chevron">▸</span>
+  </button>
+
+  <div class="term-panel" data-panel="summer">
+    <div class="term-sub">Weeks 1–9</div>
+
+    <button id="btn-su1w1" class="pill">Week 1</button>
+    <button id="btn-su1w2" class="pill">Week 2</button>
+    <button id="btn-su1w3" class="pill">Week 3</button>
+    <button id="btn-su1w4" class="pill">Week 4</button>
+
+    <button id="btn-su2w1" class="pill">Week 5</button>
+    <button id="btn-su2w2" class="pill">Week 6</button>
+    <button id="btn-su2w3" class="pill">Week 7</button>
+    <button id="btn-su2w4" class="pill">Week 8</button>
+    <button id="btn-su2w5" class="pill pill--orange">Week 9</button>
+  </div>
+</div>
 
     <div class="bottom-gap" aria-hidden="true"></div>
   </section>
