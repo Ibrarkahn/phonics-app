@@ -1077,12 +1077,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3000);
   }
  
+  /* ========= Home term accordion ========= */
+  document.querySelectorAll('.term-head').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const term = btn.dataset.term;
+      const panel = document.querySelector(`.term-panel[data-panel="${term}"]`);
+      if (!panel) return;
+
+      const isOpen = panel.classList.contains('is-open');
+
+      // close all
+      document.querySelectorAll('.term-panel').forEach(p => p.classList.remove('is-open'));
+      document.querySelectorAll('.term-head').forEach(h => {
+        h.setAttribute('aria-expanded', 'false');
+        const chev = h.querySelector('.term-chevron');
+        if (chev) chev.textContent = '▸';
+      });
+
+      // open clicked (if it was closed)
+      if (!isOpen){
+        panel.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+        const chev = btn.querySelector('.term-chevron');
+        if (chev) chev.textContent = '▾';
+      }
+    });
+  });
+
+
   
   /* ========= 5) Start app ========= */
   
   show('home');
   updateHomeLocks();
 });
+
 
 
 
