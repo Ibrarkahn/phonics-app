@@ -1074,7 +1074,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       splash.classList.add('is-hiding');
       setTimeout(() => splash.remove(), 650);
-    }, 1200);
+    }, 2000);
   }
  
   
@@ -1083,6 +1083,7 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
