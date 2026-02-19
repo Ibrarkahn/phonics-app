@@ -501,6 +501,75 @@ body{
   font-size:.95rem;
 }
 
+/* ===================== Term Cards (Home dashboard) ===================== */
+.termcard{
+  width:min(92%,720px);
+  margin:12px auto;
+  border-radius:18px;
+  overflow:hidden;
+  background: rgba(255,255,255,.70);
+  box-shadow: 0 10px 26px rgba(0,0,0,.10);
+}
+
+.termcard__head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 14px;
+  color:#fff;
+  font-weight:900;
+}
+
+.termcard__title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:1.05rem;
+}
+
+.termcard__open{
+  border:none;
+  background: rgba(255,255,255,.22);
+  color:#fff;
+  font-weight:900;
+  padding:8px 10px;
+  border-radius:999px;
+  cursor:pointer;
+}
+.termcard__open:active{ transform: scale(.99); }
+
+.termcard__weeks{
+  padding:12px 12px 6px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+/* This uses your existing .pill styles, so no extra changes needed */
+
+.termcard__viewall{
+  width:100%;
+  border:none;
+  background: rgba(255,255,255,.60);
+  padding:12px 14px;
+  font-weight:900;
+  color: rgba(0,0,0,.70);
+  text-align:right;
+  cursor:pointer;
+  border-top: 1px solid rgba(0,0,0,.06);
+}
+.termcard__viewall:active{ transform: scale(.99); }
+
+/* Header gradients per term */
+.termcard--autumn .termcard__head{
+  background: linear-gradient(90deg, #FF9F1A, #FF7A00);
+}
+.termcard--spring .termcard__head{
+  background: linear-gradient(90deg, #FFB347, #FF8C42);
+}
+.termcard--summer .termcard__head{
+  background: linear-gradient(90deg, #FF6B6B, #FF4B3A);
+}
 
 
 
