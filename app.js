@@ -1077,22 +1077,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3000);
   }
  
-  /* ========= Home term accordion ========= */
-  document.querySelectorAll('.term-head').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const term = btn.dataset.term;
-      const panel = document.querySelector(`.term-panel[data-panel="${term}"]`);
-      if (!panel) return;
-
-      const isOpen = panel.classList.contains('is-open');
-
-      // close all
-      document.querySelectorAll('.term-panel').forEach(p => p.classList.remove('is-open'));
-      document.querySelectorAll('.term-head').forEach(h => {
-        h.setAttribute('aria-expanded', 'false');
-        const chev = h.querySelector('.term-chevron');
-        if (chev) chev.textContent = '▸';
-      });
+ 
 
       // open clicked (if it was closed)
       if (!isOpen){
@@ -1104,6 +1089,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+/* ========= Term navigation (Home -> Term screens) ========= */
+document.querySelectorAll('[data-open-term]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.getAttribute('data-open-term');
+    if (target) show(target);
+  });
+});
+
+/* ========= Back buttons (Term screens -> Home) ========= */
+document.querySelectorAll('[data-back-home]').forEach(btn => {
+  btn.addEventListener('click', () => show('home'));
+});
+
+/* ========= Proxy buttons (Home shortcuts click real week buttons) ========= */
+document.querySelectorAll('.proxy-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const sel = btn.getAttribute('data-proxy');
+    const real = sel ? document.querySelector(sel) : null;
+    if (real) real.click();
+  });
+});
 
   
   /* ========= 5) Start app ========= */
@@ -1111,6 +1117,7 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
