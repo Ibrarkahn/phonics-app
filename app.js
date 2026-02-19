@@ -264,6 +264,7 @@ function showToast(msg){
 function show(name){
  const screens = [
   'home','letters','settings','celebrate',
+  'term-autumn','term-spring','term-summer',
   'week2','week3','week4','week5',
   'a2w1','weekA2W2','weekA2W3','weekA2W4','weekA2W5',
   'spring1w1','spring1w2','spring1w3','spring1w4','spring1w5',
@@ -1077,18 +1078,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3000);
   }
  
- 
-
-      // open clicked (if it was closed)
-      if (!isOpen){
-        panel.classList.add('is-open');
-        btn.setAttribute('aria-expanded', 'true');
-        const chev = btn.querySelector('.term-chevron');
-        if (chev) chev.textContent = '▾';
-      }
-    });
-  });
-
+      
 /* ========= Term navigation (Home -> Term screens) ========= */
 document.querySelectorAll('[data-open-term]').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -1117,6 +1107,7 @@ document.querySelectorAll('.proxy-btn').forEach(btn => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
