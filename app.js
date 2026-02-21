@@ -10,7 +10,10 @@ const PHASE_SETS = {
 };
 
 // Autumn 1
-const WEEK2_LETTERS = ['i','n','m','d'];// ===== Progress (localStorage) =====
+const WEEK1_WORDS = ['sat','tap','pat','sap','map','pan'];
+const WEEK2_LETTERS = ['i','n','m','d'];
+
+// ===== Progress (localStorage) =====
 const STORAGE_KEY = "phonics_progress_v1";
 function getProgress(){
   try{
@@ -225,6 +228,106 @@ const SU2W4_WORDS = ['cloaked', 'scooped', 'sleeping', 'creeping', 'crowned', 's
 const SU2W5_LETTERS = ['s', 'a', 't', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'l', 'ff', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz', 'qu', 'ch', 'sh', 'th', 'ng', 'nk', 'ai', 'ee', 'igh', 'oa', 'oo-long', 'oo-short', 'ar', 'or', 'ur', 'ow', 'oi', 'ear', 'air', 'er'];
 
 const SU2W5_WORDS = ['greenest', 'smartest', 'brighter', 'brightest', 'painter', 'boaster', 'brownest', 'trainer', 'swiftest', 'freshest', 'helper', 'hunter'];
+
+
+
+/* ===================== Autumn Term Week Cards (Option 2) ===================== */
+/*
+  Renders the 1-column “card” layout for Autumn Term:
+  - Week title + completion star (from progress)
+  - Sounds line
+  - Blending words as wrapping chips (shows all, wraps naturally)
+  Requires an element in index.html inside #term-autumn:
+    <div id="autumnWeeksList"></div>
+*/
+
+const AUTUMN_TERM_CARDS = [
+  { key:'L1W1', title:'Week 1',  sounds: PHASE_SETS.phase1, blending: WEEK1_WORDS },
+  { key:'L1W2', title:'Week 2',  sounds: WEEK2_LETTERS,     blending: WEEK2_WORDS },
+  { key:'L1W3', title:'Week 3',  sounds: WEEK3_LETTERS,     blending: WEEK3_WORDS },
+  { key:'L1W4', title:'Week 4',  sounds: WEEK4_LETTERS,     blending: WEEK4_WORDS },
+  { key:'L1W5', title:'Week 5',  sounds: WEEK5_LETTERS,     blending: WEEK5_WORDS },
+
+  { key:'L2W1', title:'Week 6',  sounds: A2W1_LETTERS,      blending: A2W1_WORDS },
+  { key:'L2W2', title:'Week 7',  sounds: A2W2_LETTERS,      blending: A2W2_WORDS },
+  { key:'L2W3', title:'Week 8',  sounds: A2W3_LETTERS,      blending: A2W3_WORDS },
+  { key:'L2W4', title:'Week 9',  sounds: A2W4_LETTERS,      blending: A2W4_WORDS },
+  { key:'L2W5', title:'Week 10', sounds: A2W5_LETTERS,      blending: A2W5_WORDS },
+];
+
+function formatSoundsForCard(arr){
+  if (!Array.isArray(arr) || !arr.length) return '';
+  return arr.map(k => getDisplayLabel(k)).join(' • ');
+}
+
+function renderAutumnTermCards(){
+  const wrap = document.getElementById('autumnWeeksList');
+  if (!wrap) return;
+
+  const completed = new Set(getProgress().completed || []);
+  wrap.innerHTML = '';
+
+  AUTUMN_TERM_CARDS.forEach(w => {
+    const card = document.createElement('div');
+    card.className = 'term-week-card';
+    card.setAttribute('role','button');
+    card.tabIndex = 0;
+
+    const top = document.createElement('div');
+    top.className = 'term-week-top';
+
+    const title = document.createElement('div');
+    title.className = 'term-week-title';
+    title.textContent = w.title;
+
+    const star = document.createElement('div');
+    star.className = 'term-week-stars';
+    star.textContent = completed.has(w.key) ? '⭐' : '';
+
+    top.appendChild(title);
+    top.appendChild(star);
+    card.appendChild(top);
+
+    const sounds = document.createElement('div');
+    sounds.className = 'term-week-sounds';
+    sounds.textContent = formatSoundsForCard(w.sounds);
+    card.appendChild(sounds);
+
+    if (Array.isArray(w.blending) && w.blending.length){
+      const label = document.createElement('div');
+      label.className = 'term-week-label';
+      label.textContent = 'Blending words:';
+      card.appendChild(label);
+
+      const chips = document.createElement('div');
+      chips.className = 'term-week-chips';
+
+      w.blending.forEach(word => {
+        const chip = document.createElement('span');
+        chip.className = 'term-week-chip';
+        chip.textContent = word;
+        chips.appendChild(chip);
+      });
+
+      card.appendChild(chips);
+    }
+
+    const start = () => {
+      const ok = goToWeekByKey(w.key);
+      if (!ok) showToast("This week is locked 🔒");
+    };
+
+    card.addEventListener('click', start);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        start();
+      }
+    });
+
+    wrap.appendChild(card);
+  });
+}
 
 
 /* ===================== Utils ===================== */
@@ -1083,7 +1186,14 @@ document.addEventListener('DOMContentLoaded', () => {
 document.querySelectorAll('[data-open-term]').forEach(btn => {
   btn.addEventListener('click', () => {
     const target = btn.getAttribute('data-open-term');
-    if (target) show(target);
+    if (!target) return;
+
+    show(target);
+
+    // Render Autumn Term cards when opening Autumn
+    if (target === 'term-autumn') {
+      renderAutumnTermCards();
+    }
   });
 });
 
