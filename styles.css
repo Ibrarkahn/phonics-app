@@ -572,16 +572,83 @@ body{
 }
 
 
+/* ===================== Term Week Cards (Autumn Term) ===================== */
+.term-weeks-list{
+  width:min(92%,720px);
+  margin: 0 auto;
+}
 
+.term-week-card{
+  width:100%;
+  text-align:left;
+  background: rgba(255,255,255,.70);
+  border-radius: 14px;
+  box-shadow: 0 10px 26px rgba(0,0,0,.10);
+  padding: 14px 14px 12px;
+  margin: 12px 0;
+  cursor:pointer;
+  border: 1px solid rgba(0,0,0,.06);
+}
 
+.term-week-card:active{ transform: scale(.995); }
 
+.term-week-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+}
 
+.term-week-title{
+  font-weight: 900;
+  font-size: 1.15rem;
+  color: var(--primary);
+  margin:0;
+}
 
+.term-week-stars{
+  font-size: 1.25rem;
+  line-height:1;
+}
 
+.term-week-sounds{
+  margin-top: 8px;
+  font-weight: 900;
+  color: var(--text);
+  letter-spacing: .08em;
+  font-size: 1.05rem;
+}
 
+.term-week-label{
+  margin-top: 10px;
+  font-weight: 800;
+  color: rgba(0,0,0,.55);
+  font-size: .95rem;
+}
 
+.term-week-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
 
+.term-week-chip{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 6px 10px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(0,0,0,.08);
+  color: rgba(0,0,0,.78);
+  font-weight: 800;
+  font-size: .98rem;
+  line-height:1;
+  white-space:nowrap;
+}
 
-
-
-
+/* Keep the legacy week buttons in DOM for navigation/locks but hide visually */
+.autumn-hidden-buttons{
+  display:none;
+}
