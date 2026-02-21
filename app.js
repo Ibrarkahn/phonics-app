@@ -329,6 +329,171 @@ function renderAutumnTermCards(){
   });
 }
 
+/* ===================== Spring Term Week Cards (Option 2) ===================== */
+const SPRING_TERM_CARDS = [
+  { key:'L3W1', title:'Week 1', sounds: S1W1_LETTERS, blending: S1W1_WORDS },
+  { key:'L3W2', title:'Week 2', sounds: S1W2_LETTERS, blending: S1W2_WORDS },
+  { key:'L3W3', title:'Week 3', sounds: S1W3_LETTERS, blending: S1W3_WORDS },
+  { key:'L3W4', title:'Week 4', sounds: S1W4_LETTERS, blending: S1W4_WORDS },
+  { key:'L3W5', title:'Week 5', sounds: S1W5_LETTERS, blending: S1W5_WORDS },
+
+  { key:'L4W1', title:'Week 6', sounds: S2W1_LETTERS, blending: S2W1_WORDS },
+  { key:'L4W2', title:'Week 7', sounds: S2W2_LETTERS, blending: S2W2_WORDS },
+  { key:'L4W3', title:'Week 8', sounds: S2W3_LETTERS, blending: S2W3_WORDS },
+  { key:'L4W4', title:'Week 9', sounds: S2W4_LETTERS, blending: S2W4_WORDS },
+];
+
+function renderSpringTermCards(){
+  const wrap = document.getElementById('springWeeksList');
+  if (!wrap) return;
+
+  const completed = new Set(getProgress().completed || []);
+  wrap.innerHTML = '';
+
+  SPRING_TERM_CARDS.forEach(w => {
+    const card = document.createElement('div');
+    card.className = 'term-week-card';
+    card.setAttribute('role','button');
+    card.tabIndex = 0;
+
+    const top = document.createElement('div');
+    top.className = 'term-week-top';
+
+    const title = document.createElement('div');
+    title.className = 'term-week-title';
+    title.textContent = w.title;
+
+    const star = document.createElement('div');
+    star.className = 'term-week-stars';
+    star.textContent = completed.has(w.key) ? '⭐' : '';
+
+    top.appendChild(title);
+    top.appendChild(star);
+    card.appendChild(top);
+
+    const sounds = document.createElement('div');
+    sounds.className = 'term-week-sounds';
+    sounds.textContent = formatSoundsForCard(w.sounds);
+    card.appendChild(sounds);
+
+    if (Array.isArray(w.blending) && w.blending.length){
+      const label = document.createElement('div');
+      label.className = 'term-week-label';
+      label.textContent = 'Blending words:';
+      card.appendChild(label);
+
+      const chips = document.createElement('div');
+      chips.className = 'term-week-chips';
+
+      w.blending.forEach(word => {
+        const chip = document.createElement('span');
+        chip.className = 'term-week-chip';
+        chip.textContent = word;
+        chips.appendChild(chip);
+      });
+
+      card.appendChild(chips);
+    }
+
+    const start = () => {
+      const ok = goToWeekByKey(w.key);
+      if (!ok) showToast("This week is locked 🔒");
+    };
+
+    card.addEventListener('click', start);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        start();
+      }
+    });
+
+    wrap.appendChild(card);
+  });
+}
+
+/* ===================== Summer Term Week Cards (Option 2) ===================== */
+const SUMMER_TERM_CARDS = [
+  { key:'L5W1', title:'Week 1', sounds: SU1W1_LETTERS, blending: SU1W1_WORDS },
+  { key:'L5W2', title:'Week 2', sounds: SU1W2_LETTERS, blending: SU1W2_WORDS },
+  { key:'L5W3', title:'Week 3', sounds: SU1W3_LETTERS, blending: SU1W3_WORDS },
+  { key:'L5W4', title:'Week 4', sounds: SU1W4_LETTERS, blending: SU1W4_WORDS },
+
+  { key:'L6W1', title:'Week 5', sounds: SU2W1_LETTERS, blending: SU2W1_WORDS },
+  { key:'L6W2', title:'Week 6', sounds: SU2W2_LETTERS, blending: SU2W2_WORDS },
+  { key:'L6W3', title:'Week 7', sounds: SU2W3_LETTERS, blending: SU2W3_WORDS },
+  { key:'L6W4', title:'Week 8', sounds: SU2W4_LETTERS, blending: SU2W4_WORDS },
+  { key:'L6W5', title:'Week 9', sounds: SU2W5_LETTERS, blending: SU2W5_WORDS },
+];
+
+function renderSummerTermCards(){
+  const wrap = document.getElementById('summerWeeksList');
+  if (!wrap) return;
+
+  const completed = new Set(getProgress().completed || []);
+  wrap.innerHTML = '';
+
+  SUMMER_TERM_CARDS.forEach(w => {
+    const card = document.createElement('div');
+    card.className = 'term-week-card';
+    card.setAttribute('role','button');
+    card.tabIndex = 0;
+
+    const top = document.createElement('div');
+    top.className = 'term-week-top';
+
+    const title = document.createElement('div');
+    title.className = 'term-week-title';
+    title.textContent = w.title;
+
+    const star = document.createElement('div');
+    star.className = 'term-week-stars';
+    star.textContent = completed.has(w.key) ? '⭐' : '';
+
+    top.appendChild(title);
+    top.appendChild(star);
+    card.appendChild(top);
+
+    const sounds = document.createElement('div');
+    sounds.className = 'term-week-sounds';
+    sounds.textContent = formatSoundsForCard(w.sounds);
+    card.appendChild(sounds);
+
+    if (Array.isArray(w.blending) && w.blending.length){
+      const label = document.createElement('div');
+      label.className = 'term-week-label';
+      label.textContent = 'Blending words:';
+      card.appendChild(label);
+
+      const chips = document.createElement('div');
+      chips.className = 'term-week-chips';
+
+      w.blending.forEach(word => {
+        const chip = document.createElement('span');
+        chip.className = 'term-week-chip';
+        chip.textContent = word;
+        chips.appendChild(chip);
+      });
+
+      card.appendChild(chips);
+    }
+
+    const start = () => {
+      const ok = goToWeekByKey(w.key);
+      if (!ok) showToast("This week is locked 🔒");
+    };
+
+    card.addEventListener('click', start);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        start();
+      }
+    });
+
+    wrap.appendChild(card);
+  });
+}
 
 /* ===================== Utils ===================== */
 let audio;
@@ -1190,10 +1355,10 @@ document.querySelectorAll('[data-open-term]').forEach(btn => {
 
     show(target);
 
-    // Render Autumn Term cards when opening Autumn
-    if (target === 'term-autumn') {
-      renderAutumnTermCards();
-    }
+    // Render term cards when opening a term
+    if (target === 'term-autumn') renderAutumnTermCards();
+    if (target === 'term-spring') renderSpringTermCards();
+    if (target === 'term-summer') renderSummerTermCards();
   });
 });
 
