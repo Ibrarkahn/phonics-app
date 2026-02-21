@@ -606,7 +606,7 @@ body{
   margin:0;
 }
 
-.term-week-stars{
+.term-week-badge{
   font-size: 1.25rem;
   line-height:1;
 }
@@ -653,6 +653,8 @@ body{
   display:none;
 }
 
-/* Hide legacy buttons for other terms (kept for navigation/locks) */
-.spring-hidden-buttons,
+/* Hide legacy term week buttons (we render cards instead) */
+
+.spring-hidden-buttons{ display:none; }
+
 .summer-hidden-buttons{ display:none; }
