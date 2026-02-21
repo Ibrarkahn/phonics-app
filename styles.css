@@ -652,3 +652,7 @@ body{
 .autumn-hidden-buttons{
   display:none;
 }
+
+/* Hide legacy buttons for other terms (kept for navigation/locks) */
+.spring-hidden-buttons,
+.summer-hidden-buttons{ display:none; }
