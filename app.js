@@ -1238,13 +1238,12 @@ document.querySelectorAll('[data-open-term]').forEach(btn => {
 
     show(target);
 
-    // Render Autumn Term cards when opening Autumn
-    if (target === 'term-autumn') {
-      renderAutumnTermCards();
-    }
+    // Render term cards on open
+    if (target === 'term-autumn') renderAutumnTermCards();
+    if (target === 'term-spring') renderSpringTermCards();
+    if (target === 'term-summer') renderSummerTermCards();
   });
 });
-
 /* ========= Back buttons (Term screens -> Home) ========= */
 document.querySelectorAll('[data-back-home]').forEach(btn => {
   btn.addEventListener('click', () => show('home'));
