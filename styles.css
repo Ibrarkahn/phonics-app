@@ -658,3 +658,7 @@ body{
 .spring-hidden-buttons{ display:none; }
 
 .summer-hidden-buttons{ display:none; }
+
+
+/* Hide legacy term week buttons (kept for locks/navigation) */
+.term-hidden-buttons{ display:none; }
