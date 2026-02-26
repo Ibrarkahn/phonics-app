@@ -651,7 +651,7 @@ body{
 
 /* ================= SPLASH SCREEN ================= */
 
-.splash-overlay {
+.splash-overlay{
   position: fixed;
   inset: 0;
   background: linear-gradient(180deg, #f5d6dc 0%, #eec5cf 100%);
@@ -665,39 +665,40 @@ body{
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  object-fit: cover;   /* fills entire screen */
+  object-fit: cover;       /* fills screen (may crop slightly) */
   object-position: center;
-  display:block;
+  display: block;
 }
 
 /* Optional fade-out animation */
-.splash-overlay.hide {
+.splash-overlay.hide{
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity .4s ease;
   pointer-events: none;
 }
 
 
-/* ===== Homepage Hero ===== */
+/* ================= HOMEPAGE HERO ================= */
 
 .welcome-card{
-  width:min(92%,720px);
-  margin-top:.65rem;
-  margin-bottom:1rem;
-  position: relative;
+  width: min(92%, 720px);
+  margin-top: .65rem;
+  margin-bottom: 1rem;
   background: #f5f3f4;
   border-radius: 24px;
-  padding: 52px 20px 18px;   /* reduced top + bottom */
+  padding: 70px 20px 20px;   /* extra top padding to make room for monkey */
   text-align: center;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+  position: relative;
 }
 
+/* Bigger monkey (works best with the CROPPED image) */
 .home-monkey{
-  width: 190px;
+  width: 200px;
   height: auto;
   max-width: none;
   display: block;
-  margin: 0 auto -28px;
+  margin: 0 auto -36px;      /* pulls it into the card */
 }
 
 .brand-title{
@@ -713,11 +714,3 @@ body{
   margin: 6px 0 0;
 }
 
-.hero-card, .home-hero, .brand-card{
-  height: auto !important;
-  min-height: 0 !important;
-  padding: 22px 18px !important;
-}
-
-/* SPLASH IMAGE: fill screen without stretching */
-img.splash-img,
