@@ -694,11 +694,11 @@ body{
 
 /* Bigger monkey (works best with the CROPPED image) */
 .home-monkey{
-  width: 200px;
-  height: auto;
-  max-width: none;
-  display: block;
-  margin: 0 auto -18px;      /* pulls it into the card */
+  position: absolute;
+  top: -110px;   /* move higher */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;  /* slightly bigger looks better */
 }
 
 .brand-title{
@@ -713,5 +713,6 @@ body{
   color: #ff5a3c;
   margin: 6px 0 0;
 }
+
 
 
