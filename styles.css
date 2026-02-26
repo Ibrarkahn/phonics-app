@@ -729,5 +729,37 @@ body{
   display: none;
 }
 
+/* Splash: make the image fill the whole viewport without distortion */
+.splash-img{
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  object-fit: cover;   /* fills screen, may crop slightly */
+  display: block;
+  margin: 0;
+  z-index: 9999;
+}
+
+/* Ensure the splash screen itself doesn't add padding/margins */
+#screen-splash, .screen--splash, .splash{
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.home-monkey{
+  width: 150px;     /* try 140–180 */
+  height: auto;
+  max-width: none;  /* important: stops it being capped */
+  display: block;
+  margin: 0 auto -18px;
+}
+
+.hero-card, .home-hero, .brand-card{
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 22px 18px !important;
+}
 
 
