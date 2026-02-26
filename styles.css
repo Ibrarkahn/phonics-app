@@ -654,19 +654,21 @@ body{
 .splash-overlay{
   position: fixed;
   inset: 0;
-  background: linear-gradient(180deg, #f5d6dc 0%, #eec5cf 100%);
+  background: #f5d6dc; /* fallback color */
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
+  padding: 0;
+  margin: 0;
 }
 
 .splash-image{
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  object-fit: cover;       /* fills screen (may crop slightly) */
-  object-position: center;
+  object-fit: cover;      /* fills screen without distortion */
+  object-position: center top;
   display: block;
 }
 
@@ -678,6 +680,8 @@ body{
 }
 
 
+
+
 /* ================= HOMEPAGE HERO ================= */
 
 .welcome-card{
@@ -686,19 +690,21 @@ body{
   margin-bottom: 1rem;
   background: #f5f3f4;
   border-radius: 24px;
-  padding: 70px 20px 20px;   /* extra top padding to make room for monkey */
+  padding: 55px 20px 20px;   /* reduced to remove white gap */
   text-align: center;
   box-shadow: 0 8px 20px rgba(0,0,0,.08);
   position: relative;
 }
 
-/* Bigger monkey (works best with the CROPPED image) */
+/* Monkey perfectly positioned */
 .home-monkey{
   position: absolute;
-  top: -110px;   /* move higher */
+  top: -130px;            /* moved higher */
   left: 50%;
   transform: translateX(-50%);
-  width: 150px;  /* slightly bigger looks better */
+  width: 165px;           /* slightly bigger for balance */
+  height: auto;
+  pointer-events: none;
 }
 
 .brand-title{
@@ -713,6 +719,7 @@ body{
   color: #ff5a3c;
   margin: 6px 0 0;
 }
+
 
 
 
