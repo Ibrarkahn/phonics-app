@@ -65,15 +65,6 @@ body{
   font-size:1.25rem;
 }
 
-.welcome-card{
-  width:min(92%,720px);
-  background:#fff;
-  border-radius:22px;
-  box-shadow:0 10px 26px rgba(0,0,0,.12);
-  padding:18px 16px 16px;
-  margin-top:.65rem;
-  margin-bottom:1rem;
-}
 .logo-container{
   display:flex;
   justify-content:center;
@@ -414,32 +405,7 @@ body{
   background: #ff4b3a;
 }
 
-/* ===================== Splash Overlay ===================== */
-.splash-overlay{
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: #ffe7e3; /* fallback while image loads */
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 520ms ease;
-}
 
-.splash-overlay.is-visible{
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.splash-overlay.is-hiding{
-  opacity: 0;
-  pointer-events: none;
-}
-
-.splash-bg{
-  width: 100%;
-  height: 100%;
-  background: url("assets/early-phonics-splash.png") center/cover no-repeat;
-}
 
 /* ===================== Term Accordion (Home) ===================== */
 .term{
@@ -710,7 +676,10 @@ body{
 
 /* ===== Homepage Hero ===== */
 
-.welcome-card {
+.welcome-card{
+  width:min(92%,720px);
+  margin-top:.65rem;
+  margin-bottom:1rem;
   position: relative;
   background: #f5f3f4;
   border-radius: 24px;
@@ -718,6 +687,7 @@ body{
   text-align: center;
   box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
+
 
 .home-monkey {
   position: absolute;
@@ -739,3 +709,4 @@ body{
   color: #ff5a3c;
   margin-top: 6px;
 }
+
