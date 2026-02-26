@@ -692,12 +692,10 @@ body{
 }
 
 .home-monkey{
-  position:absolute;
-  top:-46px;                 /* less floating */
-  left:50%;
-  transform:translateX(-50%);
-  width:140px;               /* smaller + cleaner */
-  height:auto;
+  width: 140px;      
+  height: auto;
+  display: block;
+  margin: 0 auto -18px; /* pulls it into the card */
 }
 
 .brand-title{
@@ -713,5 +711,23 @@ body{
   margin: 6px 0 0;
 }
 
+/* Splash screen container should fill viewport */
+#screen-splash, .screen--splash {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* full background */
+  background: url("assets/splash.png") center / cover no-repeat;
+}
+
+/* If you still have the <img>, hide it */
+#screen-splash img,
+.screen--splash img,
+.splash-img {
+  display: none;
+}
 
 
