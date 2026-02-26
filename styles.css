@@ -762,4 +762,23 @@ body{
   padding: 22px 18px !important;
 }
 
+/* SPLASH IMAGE: fill screen without stretching */
+img.splash-img,
+.splash-img {
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  object-fit: cover !important;   /* fills screen (may crop, never distort) */
+  object-position: center !important;
+  display: block !important;
+  margin: 0 !important;
+}
+
+/* If splash screen container adds padding/margins */
+#screen-splash,
+.screen--splash,
+.splash {
+  padding: 0 !important;
+  margin: 0 !important;
+}
 
