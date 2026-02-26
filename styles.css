@@ -662,10 +662,9 @@ body{
 }
 
 .splash-image{
-  width: min(560px, 92vw);   /* sensible on desktop */
-  height: auto;             /* prevents stretching */
-  max-height: 78vh;         /* stops it taking over */
-  object-fit: contain;      /* show whole image, no crop */
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;   /* fills entire screen */
   display:block;
 }
 
@@ -686,16 +685,16 @@ body{
   position: relative;
   background: #f5f3f4;
   border-radius: 24px;
-  padding: 64px 20px 22px;   /* reduced top + bottom */
+  padding: 52px 20px 18px;   /* reduced top + bottom */
   text-align: center;
   box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
 .home-monkey{
-  width: 140px;      
-  height: auto;
-  display: block;
-  margin: 0 auto -18px; /* pulls it into the card */
+  width: 180px;
+  height:auto;
+  display:block;
+  margin: 0 auto -30px;
 }
 
 .brand-title{
@@ -729,5 +728,6 @@ body{
 .splash-img {
   display: none;
 }
+
 
 
