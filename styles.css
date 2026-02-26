@@ -698,7 +698,7 @@ body{
   height: auto;
   max-width: none;
   display: block;
-  margin: 0 auto -36px;      /* pulls it into the card */
+  margin: 0 auto -18px;      /* pulls it into the card */
 }
 
 .brand-title{
@@ -713,4 +713,5 @@ body{
   color: #ff5a3c;
   margin: 6px 0 0;
 }
+
 
