@@ -664,7 +664,9 @@ body{
 .splash-image{
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   object-fit: cover;   /* fills entire screen */
+  object-position: center;
   display:block;
 }
 
@@ -691,10 +693,11 @@ body{
 }
 
 .home-monkey{
-  width: 180px;
-  height:auto;
-  display:block;
-  margin: 0 auto -30px;
+  width: 190px;
+  height: auto;
+  max-width: none;
+  display: block;
+  margin: 0 auto -28px;
 }
 
 .brand-title{
@@ -710,52 +713,6 @@ body{
   margin: 6px 0 0;
 }
 
-/* Splash screen container should fill viewport */
-#screen-splash, .screen--splash {
-  min-height: 100vh;
-  min-height: 100dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  /* full background */
-  background: url("assets/splash.png") center / cover no-repeat;
-}
-
-/* If you still have the <img>, hide it */
-#screen-splash img,
-.screen--splash img,
-.splash-img {
-  display: none;
-}
-
-/* Splash: make the image fill the whole viewport without distortion */
-.splash-img{
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  object-fit: cover;   /* fills screen, may crop slightly */
-  display: block;
-  margin: 0;
-  z-index: 9999;
-}
-
-/* Ensure the splash screen itself doesn't add padding/margins */
-#screen-splash, .screen--splash, .splash{
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
-.home-monkey{
-  width: 150px;     /* try 140–180 */
-  height: auto;
-  max-width: none;  /* important: stops it being capped */
-  display: block;
-  margin: 0 auto -18px;
-}
-
 .hero-card, .home-hero, .brand-card{
   height: auto !important;
   min-height: 0 !important;
@@ -764,21 +721,3 @@ body{
 
 /* SPLASH IMAGE: fill screen without stretching */
 img.splash-img,
-.splash-img {
-  width: 100vw !important;
-  height: 100vh !important;
-  height: 100dvh !important;
-  object-fit: cover !important;   /* fills screen (may crop, never distort) */
-  object-position: center !important;
-  display: block !important;
-  margin: 0 !important;
-}
-
-/* If splash screen container adds padding/margins */
-#screen-splash,
-.screen--splash,
-.splash {
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
