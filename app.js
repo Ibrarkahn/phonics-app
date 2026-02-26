@@ -1265,6 +1265,12 @@ document.querySelectorAll('.proxy-btn').forEach(btn => {
   updateHomeLocks();
 });
 
+window.addEventListener("load", () => {
+  const splash = document.getElementById("splashOverlay");
+  setTimeout(() => {
+    splash.style.display = "none";
+  }, 2500);
+});
 
 
 
