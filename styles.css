@@ -690,7 +690,7 @@ body{
   margin-bottom: 1rem;
   background: #f5f3f4;
   border-radius: 24px;
-  padding: 55px 20px 20px;   /* reduced to remove white gap */
+  padding: 12px 20px 20px;   /* reduced to remove white gap */
   text-align: center;
   box-shadow: 0 8px 20px rgba(0,0,0,.08);
   position: relative;
@@ -699,7 +699,7 @@ body{
 /* Monkey perfectly positioned */
 .home-monkey{
   position: absolute;
-  top: -130px;            /* moved higher */
+  top: -95px;            /* moved higher */
   left: 50%;
   transform: translateX(-50%);
   width: 165px;           /* slightly bigger for balance */
@@ -719,6 +719,7 @@ body{
   color: #ff5a3c;
   margin: 6px 0 0;
 }
+
 
 
 
