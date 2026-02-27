@@ -3,50 +3,123 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Privacy Policy — Phonics Fun</title>
+  <title>Privacy Policy - Phonics Fun</title>
+
+  <!-- Use the same stylesheet as the rest of the app -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Small, privacy-only tweaks so it matches your app layout -->
   <style>
-    body{font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:0; padding:24px; line-height:1.5; color:#111; background:#fff;}
-    .wrap{max-width:800px; margin:0 auto;}
-    h1{margin:0 0 12px;}
-    h2{margin:22px 0 8px; font-size:1.1rem;}
-    p, li{color:#333;}
-    .muted{color:#666;}
-    a{color:#111;}
-    .card{background:#f7f7f7; border:1px solid #e6e6e6; border-radius:14px; padding:14px 16px;}
+    .privacy-wrap{
+      width:100%;
+      max-width:900px;
+      margin:1rem auto 2.5rem;
+      padding:0 1rem;
+      text-align:left;
+    }
+    .privacy-card{
+      background:#fff;
+      border-radius:18px;
+      padding:1rem 1.1rem;
+      box-shadow:0 10px 22px rgba(0,0,0,.08);
+      border:1px solid rgba(0,0,0,.06);
+    }
+    .privacy-card h1{
+      font-size:1.6rem;
+      margin:.25rem 0 .25rem;
+      line-height:1.2;
+    }
+    .privacy-card h2{
+      font-size:1.15rem;
+      margin:1.25rem 0 .5rem;
+    }
+    .privacy-card p, .privacy-card li{
+      line-height:1.55;
+      color:var(--text);
+      font-size:1rem;
+    }
+    .privacy-card ul{
+      margin:.25rem 0 0 1.1rem;
+      padding:0;
+    }
+    .muted{
+      color:var(--muted);
+      font-size:.95rem;
+      margin:0 0 1rem;
+    }
+    .callout{
+      background:rgba(0,0,0,.03);
+      border:1px solid rgba(0,0,0,.06);
+      border-radius:14px;
+      padding:.9rem 1rem;
+      margin:1rem 0 1.25rem;
+    }
+    .privacy-card a{
+      color:inherit;
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
   </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <h1>Privacy Policy</h1>
-    <p class="muted">Last updated: 2026-02-25</p>
+  <!-- Same screen styling as the app -->
+  <main class="screen screen--pink" style="display:flex;">
+    <!-- Same top bar styling as the app -->
+    <header class="topbar">
+      <button class="back" type="button" onclick="goBack()">← Back</button>
+      <div style="font-weight:800;">Privacy</div>
+      <div style="width:48px;"></div>
+    </header>
 
-    <div class="card">
-      <p><strong>Phonics Fun</strong> is designed for children’s phonics practice. We do not ask for names, accounts, or contact details inside the app.</p>
+    <div class="privacy-wrap">
+      <div class="privacy-card">
+        <h1>Privacy Policy</h1>
+        <p class="muted">Last updated: 2026-02-25</p>
+
+        <div class="callout">
+          <p><strong>Phonics Fun</strong> is designed for children’s phonics practice. We do not ask for names, accounts, or contact details inside the app.</p>
+        </div>
+
+        <h2>What data we collect</h2>
+        <ul>
+          <li><strong>Anonymous analytics events (if enabled):</strong> basic usage signals such as week opened, week completed, and sounds played.</li>
+          <li><strong>Local device storage:</strong> progress (stars/completed weeks) is saved on your device using localStorage so the app can remember what you’ve completed.</li>
+        </ul>
+
+        <h2>How we use this data</h2>
+        <ul>
+          <li>To understand which weeks and sounds are used most often.</li>
+          <li>To improve the learning experience and fix issues.</li>
+        </ul>
+
+        <h2>Data sharing</h2>
+        <p>We do not sell your data. Analytics data (if enabled) is processed by Firebase Analytics.</p>
+
+        <h2>Your choices</h2>
+        <ul>
+          <li>You can reset your progress from the in-app Settings page.</li>
+          <li>If you do not want analytics, you can remove the Firebase analytics integration from the app build.</li>
+        </ul>
+
+        <h2>Contact</h2>
+        <p>If you have questions, contact us at:
+          <a href="mailto:PhonicsFunFeedback@gmail.com">PhonicsFunFeedback@gmail.com</a>
+        </p>
+      </div>
     </div>
+  </main>
 
-    <h2>What data we collect</h2>
-    <ul>
-      <li><strong>Anonymous analytics events</strong> (if enabled): basic usage signals such as week opened, week completed, and sounds played.</li>
-      <li><strong>Local device storage</strong>: progress (stars/completed weeks) is saved on your device using localStorage so the app can remember what you’ve completed.</li>
-    </ul>
-
-    <h2>How we use this data</h2>
-    <ul>
-      <li>To understand which weeks and sounds are used most often.</li>
-      <li>To improve the learning experience and fix issues.</li>
-    </ul>
-
-    <h2>Data sharing</h2>
-    <p>We do not sell your data. Analytics data (if enabled) is processed by Firebase Analytics.</p>
-
-    <h2>Your choices</h2>
-    <ul>
-      <li>You can reset your progress from the in-app Settings page.</li>
-      <li>If you do not want analytics, you can remove the Firebase analytics integration from the app build.</li>
-    </ul>
-
-    <h2>Contact</h2>
-    <p>If you have questions, contact us at: <a href="mailto:phonicsfunfeedback@gmail.com">PhonicsFunFeedback@gmail.com</a></p>
-  </div>
+  <script>
+    function goBack() {
+      // Best UX: go back if user came from inside the app,
+      // otherwise fall back to the homepage.
+      if (document.referrer && history.length > 1) {
+        history.back();
+      } else {
+        window.location.href = "index.html";
+      }
+    }
+  </script>
 </body>
 </html>
