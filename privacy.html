@@ -60,6 +60,34 @@
       text-underline-offset:3px;
     }
   </style>
+
+  <style>
+  /* === Privacy page overrides (keep app styling, but fix layout) === */
+
+  /* Force topbar to stretch full width even though screen--pink centers children */
+  .topbar{
+    width:100%;
+    align-self:stretch;
+    box-sizing:border-box;
+  }
+
+  /* Make the back button look like your app header buttons (smaller + cleaner) */
+  .topbar .back{
+    padding:.45rem .75rem !important;
+    border-radius:12px !important;
+    font-weight:800 !important;
+    font-size:1rem !important;
+    line-height:1 !important;
+    min-height:auto !important;
+  }
+
+  /* Make title sit nicely next to back, and keep spacing */
+  .topbar > div{
+    font-size:1.05rem;
+    font-weight:800;
+  }
+</style>
+  
 </head>
 
 <body>
@@ -67,10 +95,10 @@
   <main class="screen screen--pink" style="display:flex;">
     <!-- Same top bar styling as the app -->
     <header class="topbar">
-      <button class="back" type="button" onclick="goBack()">← Back</button>
-      <div style="font-weight:800;">Privacy</div>
-      <div style="width:48px;"></div>
-    </header>
+  <button class="back" type="button" onclick="goBack()">← Back</button>
+  <div style="font-weight:800;">Privacy Policy</div>
+  <div style="width:60px;"></div>
+</header>
 
     <div class="privacy-wrap">
       <div class="privacy-card">
