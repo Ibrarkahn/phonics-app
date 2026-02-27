@@ -699,7 +699,7 @@ body{
 /* Monkey perfectly positioned */
 .home-monkey{
   position: absolute;
-  top: -95px;            /* moved higher */
+  top: -85px;            /* moved higher */
   left: 50%;
   transform: translateX(-50%);
   width: 165px;           /* slightly bigger for balance */
@@ -719,6 +719,7 @@ body{
   color: #ff5a3c;
   margin: 6px 0 0;
 }
+
 
 
 
