@@ -1,6 +1,17 @@
 /* ===================== Data ===================== */
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
+/* ===================== Analytics ===================== */
+
+function trackEvent(name, params = {}) {
+  try {
+    if (!window.fbAnalytics?.analytics) return;
+    window.fbAnalytics.logEvent(window.fbAnalytics.analytics, name, params);
+  } catch (e) {
+    // never break app
+  }
+}
+
 // Phase 2 (general letters)
 const PHASE_SETS = {
   phase1: ['s','a','t','p'],
@@ -42,6 +53,9 @@ function markCompleted(key){
   if(!p.completed.includes(key)){
     p.completed.push(key);
     setProgress(p);
+
+    // ✅ Analytics: week completed (fires only once per week)
+    trackEvent("week_completed", { week_key: key });
   }
 }
 
@@ -343,10 +357,10 @@ function renderTermCards({ containerId, cards }){
       card.appendChild(chips);
     }
 
-    const start = () => {
-      const ok = goToWeekByKey(w.key);
-      if (!ok) showToast("This week is locked 🔒");
-    };
+   const start = () => {
+  const ok = goToWeekByKey(w.key);
+  if (!ok) showToast("This week is locked 🔒");
+};
 
     card.addEventListener('click', start);
     card.addEventListener('keydown', (e) => {
@@ -476,7 +490,11 @@ function baseSoundKey(key){
 
 function playSoundFor(key){
   if (!key) return;
-
+  // ✅ Analytics: letter played
+  trackEvent("letter_played", {
+    week_key: ACTIVE_WEEK_KEY || PRACTICE_KEY || null,
+    sound_key: key
+  });
   if (audio && !audio.paused) audio.pause();
 
   const baseKey = baseSoundKey(key);
@@ -535,7 +553,11 @@ function splitForPhonics(word){
 // Play sound for each phonics part (NO final full-word sound)
 function playBlend(word){
   if (!word) return;
-
+// ✅ Analytics: word blended
+  trackEvent("word_blended", {
+    week_key: ACTIVE_WEEK_KEY || null,
+    word: word
+  });
   // cancel previous blend
   if (currentBlend && currentBlend.audio){
     currentBlend.cancelled = true;
@@ -676,6 +698,11 @@ function setOverlay(open, title, msg, primaryText, secondaryText, onPrimary, onS
 
 function showCelebration({ title, practised, extra, weekKey }){
   ACTIVE_WEEK_KEY = weekKey || null;
+
+    // ✅ Analytics: celebrate screen viewed
+  trackEvent("celebrate_screen_viewed", {
+    week_key: ACTIVE_WEEK_KEY
+  });
 
   const titleEl = document.querySelector('#celebrateTitle');
   const listEl  = document.querySelector('#celebrateList');
@@ -1021,20 +1048,25 @@ function setupWeek({
 
  // expose init
 return {
-  initLetters(){
-    lIdx = 0;
-    wIdx = 0;
+initLetters(){
 
-    // ✅ reset per-entry prompt state
-    promptedBlend = false;
-    seenLastLetter = false;
-    seenLastWord = false;
+  // ✅ Set active week + track start (Week2+)
+  ACTIVE_WEEK_KEY = weekKey || null;
+  if (weekKey) trackEvent("week_started", { week_key: weekKey });
 
-    // ✅ lock prompt forever if week already completed
-    didComplete = !!(weekKey && isCompleted(weekKey));
+  lIdx = 0;
+  wIdx = 0;
 
-    activate('letters');
-  },
+  // ✅ reset per-entry prompt state
+  promptedBlend = false;
+  seenLastLetter = false;
+  seenLastWord = false;
+
+  // ✅ lock prompt forever if week already completed
+  didComplete = !!(weekKey && isCompleted(weekKey));
+
+  activate('letters');
+},
 
   initBlend(){
     lIdx = 0;
@@ -1129,11 +1161,15 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Level 1 – Week 1 (phase1 set)
-  safeOn('#btn-phase-1','click', () => {
-    PRACTICE_KEY = 'L1W1';
-    PRACTICE_SEEN_LAST = false;
-    startPractice(PHASE_SETS.phase1, 'L1W1');
-  });
+safeOn('#btn-phase-1','click', () => {
+  ACTIVE_WEEK_KEY = 'L1W1';         
+  PRACTICE_KEY = 'L1W1';
+  PRACTICE_SEEN_LAST = false;
+
+  trackEvent("week_started", { week_key: "L1W1" });
+
+  startPractice(PHASE_SETS.phase1, 'L1W1');
+});
 
   // Level 1
   safeOn('#btn-phase-2','click', () => { show('week2'); week2.initLetters(); });
@@ -1265,12 +1301,7 @@ document.querySelectorAll('.proxy-btn').forEach(btn => {
   updateHomeLocks();
 });
 
-window.addEventListener("load", () => {
-  const splash = document.getElementById("splashOverlay");
-  setTimeout(() => {
-    splash.style.display = "none";
-  }, 2500);
-});
+
 
 
 
