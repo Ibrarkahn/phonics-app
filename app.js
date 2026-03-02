@@ -4,11 +4,15 @@ const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'.split('');
 /* ===================== Analytics ===================== */
 
 function trackEvent(name, params = {}) {
+  console.log("🔥 TRACK EVENT:", name, params);
   try {
-    if (!window.fbAnalytics?.analytics) return;
+    if (!window.fbAnalytics?.analytics) {
+      console.warn("Analytics not ready");
+      return;
+    }
     window.fbAnalytics.logEvent(window.fbAnalytics.analytics, name, params);
   } catch (e) {
-    // never break app
+    console.error("Analytics error:", e);
   }
 }
 
@@ -1300,6 +1304,7 @@ document.querySelectorAll('.proxy-btn').forEach(btn => {
   show('home');
   updateHomeLocks();
 });
+
 
 
 
