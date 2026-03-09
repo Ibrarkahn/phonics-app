@@ -154,12 +154,6 @@ body{
 .pill[data-status="done"]{
   filter:none;
 }
-.pill[data-status="done"]::after{
-  content:"⭐";
-  position:absolute;
-  right:18px;
-  font-size:1.1rem;
-}
 
 /* Letter/word screens */
 .letter-area{
@@ -732,6 +726,13 @@ body{
   box-shadow:0 2px 4px rgba(0,0,0,0.15);
 }
 
+.week-star{
+  position:absolute;
+  right:12px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:16px;
+}
 
 
 
