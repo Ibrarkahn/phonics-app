@@ -142,7 +142,10 @@ function setWeekButtonLockVisual(btn, isLocked){
     btn.dataset.baseLabel = btn.textContent.replace(/\s*🔒|\s*⭐/g, '').trim();
   }
 
-  btn.textContent = btn.dataset.baseLabel + (isLocked ? ' 🔒' : '');
+  const label = btn.dataset.baseLabel;
+  btn.innerHTML = isLocked
+    ? `${label}<span class="week-lock">🔒</span>`
+    : label;
 }
 
 function updateHomeLocks(){
@@ -198,7 +201,11 @@ function updateHomeLocks(){
     const baseLabel = btn.dataset.baseLabel || btn.textContent.replace(/\s*🔒|\s*⭐/g, '').trim();
     btn.dataset.baseLabel = baseLabel;
 
-    btn.textContent = isDone ? `${baseLabel} ⭐` : isLocked ? `${baseLabel} 🔒` : baseLabel;
+    btn.innerHTML = isDone
+  ? `${baseLabel} <span class="week-star">⭐</span>`
+  : isLocked
+    ? `${baseLabel}<span class="week-lock">🔒</span>`
+    : baseLabel;
     btn.disabled = false;
     btn.setAttribute('aria-disabled', 'false');
   });
@@ -1299,3 +1306,4 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
+
