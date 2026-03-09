@@ -720,6 +720,28 @@ body{
   margin: 6px 0 0;
 }
 
+.pill{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.week-lock{
+  position:absolute;
+  right:12px;
+  top:50%;
+  transform:translateY(-50%);
+  background:white;
+  border-radius:50%;
+  width:22px;
+  height:22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  box-shadow:0 2px 4px rgba(0,0,0,0.15);
+}
 
 
 
