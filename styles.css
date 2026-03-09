@@ -150,11 +150,7 @@ body{
   box-shadow:none;
   cursor:not-allowed;
 }
-.pill[data-status="locked"]::before{
-  display:inline-block;
-  content:"🔒";
-  margin-right:.35rem;
-}
+
 .pill[data-status="done"]{
   filter:none;
 }
@@ -720,13 +716,6 @@ body{
   margin: 6px 0 0;
 }
 
-.pill{
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
 .week-lock{
   position:absolute;
   right:12px;
@@ -742,6 +731,7 @@ body{
   font-size:14px;
   box-shadow:0 2px 4px rgba(0,0,0,0.15);
 }
+
 
 
 
