@@ -206,7 +206,6 @@ function updateHomeLocks(){
       : isLocked
         ? `${baseLabel}<span class="week-lock">🔒</span>`
         : baseLabel;
-
     btn.disabled = false;
     btn.setAttribute('aria-disabled', 'false');
   });
@@ -463,15 +462,16 @@ function stopAllAudio(){
     audio = null;
   }
 
-  if (currentBlend && currentBlend.audio){
+  if (currentBlend){
     currentBlend.cancelled = true;
-    try {
-      currentBlend.audio.pause();
-      currentBlend.audio.currentTime = 0;
-    } catch(e){}
+    if (currentBlend.audio){
+      try {
+        currentBlend.audio.pause();
+        currentBlend.audio.currentTime = 0;
+      } catch(e){}
+    }
+    currentBlend = null;
   }
-
-  currentBlend = null;
 }
 
 function show(name){
@@ -524,8 +524,11 @@ function baseSoundKey(key){
   return HELD_CONSONANTS[key] || key;
 }
 
-function playSoundFor(key, source = 'tap'){
-  if (!key) return;
+function playSoundFor(key, source = 'tap', onDone = null){
+  if (!key) {
+    if (onDone) onDone();
+    return;
+  }
 
   if (source === 'tap') {
     const params = { letter: key };
@@ -536,14 +539,28 @@ function playSoundFor(key, source = 'tap'){
     trackEvent("letter_played", params);
   }
 
-  if (audio && !audio.paused) {
-    try { audio.pause(); } catch(e){}
+  if (audio){
+    try {
+      audio.pause();
+      audio.currentTime = 0;
+    } catch(e){}
   }
 
   const baseKey = baseSoundKey(key);
   audio = new Audio(`sounds/${baseKey}.mp3`);
   audio.currentTime = 0;
-  audio.play().catch(()=>{});
+
+  audio.onended = () => {
+    if (onDone) onDone();
+  };
+
+  audio.onerror = () => {
+    if (onDone) onDone();
+  };
+
+  audio.play().catch(() => {
+    if (onDone) onDone();
+  });
 }
 
 const PHONICS_CLUSTERS = [
@@ -583,8 +600,11 @@ function splitForPhonics(word){
   return parts;
 }
 
-function playBlend(word){
-  if (!word) return;
+function playBlend(word, onDone = null){
+  if (!word) {
+    if (onDone) onDone();
+    return;
+  }
 
   if (currentBlend && currentBlend.audio){
     currentBlend.cancelled = true;
@@ -602,8 +622,10 @@ function playBlend(word){
 
   const step = () => {
     if (controller.cancelled) return;
+
     if (i >= parts.length){
       controller.audio = null;
+      if (onDone) onDone();
       return;
     }
 
@@ -619,8 +641,6 @@ function playBlend(word){
     const a = new Audio(`sounds/${baseKey}.mp3`);
     controller.audio = a;
 
-    a.play().catch(()=>{});
-
     a.onended = () => {
       if (controller.cancelled) return;
 
@@ -630,6 +650,18 @@ function playBlend(word){
         step();
       }, holdDelay);
     };
+
+    a.onerror = () => {
+      if (controller.cancelled) return;
+      i++;
+      step();
+    };
+
+    a.play().catch(() => {
+      if (controller.cancelled) return;
+      i++;
+      step();
+    });
   };
 
   step();
@@ -786,12 +818,9 @@ function startPractice(letters, progressKey = null){
 
   show('letters');
   renderLetter();
-
   if (CURRENT_SET.length) {
-    playSoundFor(CURRENT_SET[idx], 'auto');
-    handlePracticeLetterPlayed();
+    playSoundFor(CURRENT_SET[idx], 'auto', handlePracticeLetterPlayed);
   }
-
   setTimeout(()=>qs('#letterArea')?.focus(), 50);
 }
 
@@ -833,16 +862,14 @@ function nextLetter(){
   if (!CURRENT_SET.length) return;
   idx = (idx + 1) % CURRENT_SET.length;
   renderLetter();
-  playSoundFor(CURRENT_SET[idx], 'auto');
-  handlePracticeLetterPlayed();
+  playSoundFor(CURRENT_SET[idx], 'auto', handlePracticeLetterPlayed);
 }
 
 function prevLetter(){
   if (!CURRENT_SET.length) return;
   idx = (idx - 1 + CURRENT_SET.length) % CURRENT_SET.length;
   renderLetter();
-  playSoundFor(CURRENT_SET[idx], 'auto');
-  handlePracticeLetterPlayed();
+  playSoundFor(CURRENT_SET[idx], 'auto', handlePracticeLetterPlayed);
 }
 
 let lastTouchTime = 0;
@@ -853,8 +880,7 @@ safeOn('#letterArea', 'click', (e) => {
     return;
   }
   if (!CURRENT_SET.length) return;
-  playSoundFor(CURRENT_SET[idx]);
-  handlePracticeLetterPlayed();
+  playSoundFor(CURRENT_SET[idx], 'tap', handlePracticeLetterPlayed);
 });
 
 safeOn('#prevBtn', 'click', prevLetter);
@@ -874,8 +900,7 @@ safeOn('#letterArea', 'touchend', e => {
   if (Math.abs(dx) > 40) {
     dx < 0 ? nextLetter() : prevLetter();
   } else {
-    playSoundFor(CURRENT_SET[idx]);
-    handlePracticeLetterPlayed();
+    playSoundFor(CURRENT_SET[idx], 'tap', handlePracticeLetterPlayed);
   }
 }, { passive: false });
 
@@ -968,7 +993,7 @@ function setupWeek({
   }
 
   function handleLetterPlayed(){
-    if (!Array.isArray(letters) || !letters.length) return;
+    if (!letters.length) return;
 
     if (lIdx === letters.length - 1){
       seenLastLetter = true;
@@ -1008,16 +1033,14 @@ function setupWeek({
     if (!letters.length) return;
     lIdx = (lIdx + 1) % letters.length;
     renderLetterLocal();
-    playSoundFor(letters[lIdx], 'auto');
-    handleLetterPlayed();
+    playSoundFor(letters[lIdx], 'auto', handleLetterPlayed);
   }
 
   function prevL(){
     if (!letters.length) return;
     lIdx = (lIdx - 1 + letters.length) % letters.length;
     renderLetterLocal();
-    playSoundFor(letters[lIdx], 'auto');
-    handleLetterPlayed();
+    playSoundFor(letters[lIdx], 'auto', handleLetterPlayed);
   }
 
   if (letterArea){
@@ -1027,8 +1050,7 @@ function setupWeek({
         return;
       }
       if (!letters.length) return;
-      playSoundFor(letters[lIdx]);
-      handleLetterPlayed();
+      playSoundFor(letters[lIdx], 'tap', handleLetterPlayed);
     });
 
     let sx = 0;
@@ -1046,8 +1068,7 @@ function setupWeek({
       if (Math.abs(dx) > 40) {
         dx < 0 ? nextL() : prevL();
       } else {
-        playSoundFor(letters[lIdx]);
-        handleLetterPlayed();
+        playSoundFor(letters[lIdx], 'tap', handleLetterPlayed);
       }
     }, { passive:false });
   }
@@ -1059,16 +1080,14 @@ function setupWeek({
     if (!words.length) return;
     wIdx = (wIdx + 1) % words.length;
     renderWord();
-    playBlend(words[wIdx]);
-    handleWordPlayed();
+    playBlend(words[wIdx], handleWordPlayed);
   }
 
   function prevW(){
     if (!words.length) return;
     wIdx = (wIdx - 1 + words.length) % words.length;
     renderWord();
-    playBlend(words[wIdx]);
-    handleWordPlayed();
+    playBlend(words[wIdx], handleWordPlayed);
   }
 
   if (blendArea){
@@ -1084,8 +1103,7 @@ function setupWeek({
       if (ACTIVE_WEEK_KEY) blendParams.week_key = ACTIVE_WEEK_KEY;
 
       trackEvent("word_blended", blendParams);
-      playBlend(words[wIdx]);
-      handleWordPlayed();
+      playBlend(words[wIdx], handleWordPlayed);
     });
 
     let sx = 0;
@@ -1107,8 +1125,7 @@ function setupWeek({
         if (ACTIVE_WEEK_KEY) blendParams.week_key = ACTIVE_WEEK_KEY;
 
         trackEvent("word_blended", blendParams);
-        playBlend(words[wIdx]);
-        handleWordPlayed();
+        playBlend(words[wIdx], handleWordPlayed);
       }
     }, { passive:false });
   }
@@ -1127,8 +1144,7 @@ function setupWeek({
       renderLetterLocal();
 
       if (letters.length){
-        playSoundFor(letters[lIdx], 'auto');
-        handleLetterPlayed();
+        playSoundFor(letters[lIdx], 'auto', handleLetterPlayed);
       }
 
       setTimeout(()=>letterArea?.focus(),50);
@@ -1140,8 +1156,7 @@ function setupWeek({
       renderWord();
 
       if (words.length){
-        playBlend(words[wIdx]);
-        handleWordPlayed();
+        playBlend(words[wIdx], handleWordPlayed);
       }
 
       setTimeout(()=>blendArea?.focus(),50);
