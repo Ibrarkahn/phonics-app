@@ -202,10 +202,11 @@ function updateHomeLocks(){
     btn.dataset.baseLabel = baseLabel;
 
     btn.innerHTML = isDone
-  ? `${baseLabel} <span class="week-star">⭐</span>`
-  : isLocked
-    ? `${baseLabel}<span class="week-lock">🔒</span>`
-    : baseLabel;
+      ? `${baseLabel} <span class="week-star">⭐</span>`
+      : isLocked
+        ? `${baseLabel}<span class="week-lock">🔒</span>`
+        : baseLabel;
+
     btn.disabled = false;
     btn.setAttribute('aria-disabled', 'false');
   });
@@ -453,7 +454,29 @@ function showToast(msg){
   showToast._t = setTimeout(() => el.classList.add("hidden"), 1800);
 }
 
+function stopAllAudio(){
+  if (audio){
+    try {
+      audio.pause();
+      audio.currentTime = 0;
+    } catch(e){}
+    audio = null;
+  }
+
+  if (currentBlend && currentBlend.audio){
+    currentBlend.cancelled = true;
+    try {
+      currentBlend.audio.pause();
+      currentBlend.audio.currentTime = 0;
+    } catch(e){}
+  }
+
+  currentBlend = null;
+}
+
 function show(name){
+  stopAllAudio();
+
   const screens = [
     'home','letters','settings','celebrate',
     'term-autumn','term-spring','term-summer',
@@ -513,7 +536,9 @@ function playSoundFor(key, source = 'tap'){
     trackEvent("letter_played", params);
   }
 
-  if (audio && !audio.paused) audio.pause();
+  if (audio && !audio.paused) {
+    try { audio.pause(); } catch(e){}
+  }
 
   const baseKey = baseSoundKey(key);
   audio = new Audio(`sounds/${baseKey}.mp3`);
@@ -563,7 +588,10 @@ function playBlend(word){
 
   if (currentBlend && currentBlend.audio){
     currentBlend.cancelled = true;
-    try { currentBlend.audio.pause(); } catch {}
+    try {
+      currentBlend.audio.pause();
+      currentBlend.audio.currentTime = 0;
+    } catch {}
   }
 
   const controller = { cancelled:false, audio:null };
@@ -686,6 +714,7 @@ function setOverlay(open, title, msg, primaryText, secondaryText, onPrimary, onS
 }
 
 function showCelebration({ title, practised, extra, weekKey }){
+  stopAllAudio();
   ACTIVE_WEEK_KEY = weekKey || null;
 
   const celebrateParams = {};
@@ -757,6 +786,12 @@ function startPractice(letters, progressKey = null){
 
   show('letters');
   renderLetter();
+
+  if (CURRENT_SET.length) {
+    playSoundFor(CURRENT_SET[idx], 'auto');
+    handlePracticeLetterPlayed();
+  }
+
   setTimeout(()=>qs('#letterArea')?.focus(), 50);
 }
 
@@ -769,8 +804,12 @@ function renderLetter(){
   }
 
   if (big) big.textContent = CURRENT_SET[idx] ?? '';
+}
 
-  if (PRACTICE_KEY && !PRACTICE_SEEN_LAST && idx === CURRENT_SET.length - 1){
+function handlePracticeLetterPlayed(){
+  if (!PRACTICE_KEY || PRACTICE_SEEN_LAST || !CURRENT_SET.length) return;
+
+  if (idx === CURRENT_SET.length - 1){
     PRACTICE_SEEN_LAST = true;
     markCompleted(PRACTICE_KEY);
     showToast("⭐ Week completed!");
@@ -795,6 +834,7 @@ function nextLetter(){
   idx = (idx + 1) % CURRENT_SET.length;
   renderLetter();
   playSoundFor(CURRENT_SET[idx], 'auto');
+  handlePracticeLetterPlayed();
 }
 
 function prevLetter(){
@@ -802,6 +842,7 @@ function prevLetter(){
   idx = (idx - 1 + CURRENT_SET.length) % CURRENT_SET.length;
   renderLetter();
   playSoundFor(CURRENT_SET[idx], 'auto');
+  handlePracticeLetterPlayed();
 }
 
 let lastTouchTime = 0;
@@ -813,6 +854,7 @@ safeOn('#letterArea', 'click', (e) => {
   }
   if (!CURRENT_SET.length) return;
   playSoundFor(CURRENT_SET[idx]);
+  handlePracticeLetterPlayed();
 });
 
 safeOn('#prevBtn', 'click', prevLetter);
@@ -833,6 +875,7 @@ safeOn('#letterArea', 'touchend', e => {
     dx < 0 ? nextLetter() : prevLetter();
   } else {
     playSoundFor(CURRENT_SET[idx]);
+    handlePracticeLetterPlayed();
   }
 }, { passive: false });
 
@@ -918,8 +961,16 @@ function setupWeek({
 
     const dotsEl = ensureDotsEl(prefix, bigLetter);
     renderDots(dotsEl, getDurationCount(key));
+  }
 
-    if (letters.length && lIdx === letters.length - 1){
+  function renderWord(){
+    if (bigWord) bigWord.textContent = words[wIdx] ?? '';
+  }
+
+  function handleLetterPlayed(){
+    if (!Array.isArray(letters) || !letters.length) return;
+
+    if (lIdx === letters.length - 1){
       seenLastLetter = true;
 
       const hasWords = Array.isArray(words) && words.length > 0;
@@ -944,25 +995,29 @@ function setupWeek({
     }
   }
 
-  function renderWord(){
-    if (bigWord) bigWord.textContent = words[wIdx] ?? '';
+  function handleWordPlayed(){
+    if (!Array.isArray(words) || !words.length) return;
 
-    if (words.length && wIdx === words.length - 1){
+    if (wIdx === words.length - 1){
       seenLastWord = true;
       maybeComplete();
     }
   }
 
   function nextL(){
+    if (!letters.length) return;
     lIdx = (lIdx + 1) % letters.length;
     renderLetterLocal();
     playSoundFor(letters[lIdx], 'auto');
+    handleLetterPlayed();
   }
 
   function prevL(){
+    if (!letters.length) return;
     lIdx = (lIdx - 1 + letters.length) % letters.length;
     renderLetterLocal();
     playSoundFor(letters[lIdx], 'auto');
+    handleLetterPlayed();
   }
 
   if (letterArea){
@@ -971,7 +1026,9 @@ function setupWeek({
         e.preventDefault();
         return;
       }
+      if (!letters.length) return;
       playSoundFor(letters[lIdx]);
+      handleLetterPlayed();
     });
 
     let sx = 0;
@@ -983,11 +1040,14 @@ function setupWeek({
     letterArea.addEventListener('touchend', e => {
       lastLetterTouchTime = Date.now();
 
+      if (!letters.length) return;
+
       const dx = e.changedTouches[0].clientX - sx;
       if (Math.abs(dx) > 40) {
         dx < 0 ? nextL() : prevL();
       } else {
         playSoundFor(letters[lIdx]);
+        handleLetterPlayed();
       }
     }, { passive:false });
   }
@@ -996,15 +1056,19 @@ function setupWeek({
   if (nextBtn) nextBtn.addEventListener('click', nextL);
 
   function nextW(){
+    if (!words.length) return;
     wIdx = (wIdx + 1) % words.length;
     renderWord();
     playBlend(words[wIdx]);
+    handleWordPlayed();
   }
 
   function prevW(){
+    if (!words.length) return;
     wIdx = (wIdx - 1 + words.length) % words.length;
     renderWord();
     playBlend(words[wIdx]);
+    handleWordPlayed();
   }
 
   if (blendArea){
@@ -1014,11 +1078,14 @@ function setupWeek({
         return;
       }
 
+      if (!words.length) return;
+
       const blendParams = { word: words[wIdx] };
       if (ACTIVE_WEEK_KEY) blendParams.week_key = ACTIVE_WEEK_KEY;
 
       trackEvent("word_blended", blendParams);
       playBlend(words[wIdx]);
+      handleWordPlayed();
     });
 
     let sx = 0;
@@ -1030,6 +1097,8 @@ function setupWeek({
     blendArea.addEventListener('touchend', e => {
       lastBlendTouchTime = Date.now();
 
+      if (!words.length) return;
+
       const dx = e.changedTouches[0].clientX - sx;
       if (Math.abs(dx) > 40) {
         dx < 0 ? nextW() : prevW();
@@ -1039,6 +1108,7 @@ function setupWeek({
 
         trackEvent("word_blended", blendParams);
         playBlend(words[wIdx]);
+        handleWordPlayed();
       }
     }, { passive:false });
   }
@@ -1055,6 +1125,12 @@ function setupWeek({
       paneLetters.classList.add('active');
       paneBlend.classList.remove('active');
       renderLetterLocal();
+
+      if (letters.length){
+        playSoundFor(letters[lIdx], 'auto');
+        handleLetterPlayed();
+      }
+
       setTimeout(()=>letterArea?.focus(),50);
     } else {
       tabBlend.classList.add('active');
@@ -1062,6 +1138,12 @@ function setupWeek({
       paneBlend.classList.add('active');
       paneLetters.classList.remove('active');
       renderWord();
+
+      if (words.length){
+        playBlend(words[wIdx]);
+        handleWordPlayed();
+      }
+
       setTimeout(()=>blendArea?.focus(),50);
     }
   }
@@ -1306,4 +1388,3 @@ document.addEventListener('DOMContentLoaded', () => {
   show('home');
   updateHomeLocks();
 });
-
