@@ -429,6 +429,9 @@ function renderSummerTermCards(){
 let audio;
 let currentBlend = null;
 
+const LETTER_FINISH_DELAY = 350;
+const WORD_FINISH_DELAY = 500;
+
 const STRETCHY_CONSONANTS = ['m','n','s','f','l','v','z','r'];
 
 function isHeldConsonant(key){
@@ -547,18 +550,25 @@ function playSoundFor(key, source = 'tap', onDone = null){
   }
 
   const baseKey = baseSoundKey(key);
-  audio = new Audio(`sounds/${baseKey}.mp3`);
-  audio.currentTime = 0;
+  const a = new Audio(`sounds/${baseKey}.mp3`);
+  audio = a;
+  a.currentTime = 0;
 
-  audio.onended = () => {
+  a.onended = () => {
+    if (audio !== a) return;
+    setTimeout(() => {
+      if (audio !== a) return;
+      if (onDone) onDone();
+    }, LETTER_FINISH_DELAY);
+  };
+
+  a.onerror = () => {
+    if (audio !== a) return;
     if (onDone) onDone();
   };
 
-  audio.onerror = () => {
-    if (onDone) onDone();
-  };
-
-  audio.play().catch(() => {
+  a.play().catch(() => {
+    if (audio !== a) return;
     if (onDone) onDone();
   });
 }
@@ -606,12 +616,14 @@ function playBlend(word, onDone = null){
     return;
   }
 
-  if (currentBlend && currentBlend.audio){
+  if (currentBlend){
     currentBlend.cancelled = true;
-    try {
-      currentBlend.audio.pause();
-      currentBlend.audio.currentTime = 0;
-    } catch {}
+    if (currentBlend.audio){
+      try {
+        currentBlend.audio.pause();
+        currentBlend.audio.currentTime = 0;
+      } catch {}
+    }
   }
 
   const controller = { cancelled:false, audio:null };
@@ -625,7 +637,11 @@ function playBlend(word, onDone = null){
 
     if (i >= parts.length){
       controller.audio = null;
-      if (onDone) onDone();
+      setTimeout(() => {
+        if (controller.cancelled) return;
+        if (currentBlend !== controller) return;
+        if (onDone) onDone();
+      }, WORD_FINISH_DELAY);
       return;
     }
 
@@ -646,6 +662,7 @@ function playBlend(word, onDone = null){
 
       const holdDelay = isHeldConsonant(rawKey) ? 180 : 0;
       setTimeout(() => {
+        if (controller.cancelled) return;
         i++;
         step();
       }, holdDelay);
