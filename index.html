@@ -10,28 +10,28 @@
 
   <!-- Confetti (optional) -->
   <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
- 
+
   <!--
-<script type="module" defer>
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
+  <script type="module" defer>
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
 
-  const firebaseConfig = {
-    apiKey: "...",
-    authDomain: "...",
-    ...
-  };
+    const firebaseConfig = {
+      apiKey: "...",
+      authDomain: "...",
+      ...
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
 
-  window.fbAnalytics = { analytics, logEvent };
+    window.fbAnalytics = { analytics, logEvent };
 
-  console.log("Firebase Analytics ready", analytics);
-</script>
--->
-  
-<script defer src="app.js"></script>
+    console.log("Firebase Analytics ready", analytics);
+  </script>
+  -->
+
+  <script defer src="app.js"></script>
 </head>
 <body>
 
@@ -62,7 +62,10 @@
   <!-- Autumn card -->
   <div class="termcard termcard--autumn">
     <div class="termcard__head">
-      <div class="termcard__title"><span class="term-emoji">🍂</span> Autumn Term</div>
+      <div class="termcard__titlewrap">
+        <div class="termcard__title"><span class="term-emoji">🍂</span> Autumn Term</div>
+        <div class="termcard__progress" id="autumnProgressText">0/10 completed</div>
+      </div>
       <button class="termcard__open" type="button" data-open-term="term-autumn">Open →</button>
     </div>
 
@@ -80,7 +83,10 @@
   <!-- Spring card -->
   <div class="termcard termcard--spring">
     <div class="termcard__head">
-      <div class="termcard__title"><span class="term-emoji">🌸</span> Spring Term</div>
+      <div class="termcard__titlewrap">
+        <div class="termcard__title"><span class="term-emoji">🌸</span> Spring Term</div>
+        <div class="termcard__progress" id="springProgressText">0/9 completed</div>
+      </div>
       <button class="termcard__open" type="button" data-open-term="term-spring">Open →</button>
     </div>
 
@@ -98,7 +104,10 @@
   <!-- Summer card -->
   <div class="termcard termcard--summer">
     <div class="termcard__head">
-      <div class="termcard__title"><span class="term-emoji">☀️</span> Summer Term</div>
+      <div class="termcard__titlewrap">
+        <div class="termcard__title"><span class="term-emoji">☀️</span> Summer Term</div>
+        <div class="termcard__progress" id="summerProgressText">0/9 completed</div>
+      </div>
       <button class="termcard__open" type="button" data-open-term="term-summer">Open →</button>
     </div>
 
@@ -169,7 +178,7 @@
     <button class="pill" id="btn-s2w3">Week 8</button>
     <button class="pill" id="btn-s2w4">Week 9</button>
   </div>
-  
+
   <div class="bottom-gap" aria-hidden="true"></div>
 </section>
 
