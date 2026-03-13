@@ -37,7 +37,7 @@ async function trackEvent(name, params = {}) {
   }
 }
 
-// Phase sets
+/* ===================== Phase sets ===================== */
 const PHASE_SETS = {
   phase1: ['s','a','t','p'],
   phase4: ['ck','e','u','r'],
@@ -141,6 +141,28 @@ const TERM_GROUPS = {
   summer: ['L5W1','L5W2','L5W3','L5W4','L6W1','L6W2','L6W3','L6W4','L6W5'],
 };
 
+function getTermCompletion(termKey){
+  const completed = new Set(getProgress().completed || []);
+  const weeks = TERM_GROUPS[termKey] || [];
+  const done = weeks.filter(k => completed.has(k)).length;
+  const total = weeks.length;
+  return { done, total };
+}
+
+function updateTermProgressText(){
+  const autumn = getTermCompletion('autumn');
+  const spring = getTermCompletion('spring');
+  const summer = getTermCompletion('summer');
+
+  const autumnEl = document.getElementById('autumnProgressText');
+  const springEl = document.getElementById('springProgressText');
+  const summerEl = document.getElementById('summerProgressText');
+
+  if (autumnEl) autumnEl.textContent = `${autumn.done}/${autumn.total} completed`;
+  if (springEl) springEl.textContent = `${spring.done}/${spring.total} completed`;
+  if (summerEl) summerEl.textContent = `${summer.done}/${summer.total} completed`;
+}
+
 function setWeekButtonLockVisual(btn, isLocked){
   if (!btn) return;
 
@@ -217,6 +239,8 @@ function updateHomeLocks(){
     btn.disabled = false;
     btn.setAttribute('aria-disabled', 'false');
   });
+
+  updateTermProgressText();
 }
 
 /* ===================== Week data ===================== */
@@ -1035,7 +1059,6 @@ function setupWeek({
   }
 
   function handleLetterPlayed(){}
-
   function handleWordPlayed(){}
 
   function nextL(){
@@ -1098,7 +1121,7 @@ function setupWeek({
   }
 
   if (prevBtn) prevBtn.addEventListener('click', prevL);
-  if (nextBtn) prevBtn !== nextBtn && nextBtn.addEventListener('click', nextL);
+  if (nextBtn) nextBtn.addEventListener('click', nextL);
 
   function nextW(){
     if (!words.length) return;
@@ -1446,4 +1469,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   show('home');
   updateHomeLocks();
+  updateTermProgressText();
 });
