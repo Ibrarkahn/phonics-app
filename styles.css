@@ -734,6 +734,17 @@ body{
   font-size:16px;
 }
 
+.termcard__titlewrap{
+  display:flex;
+  flex-direction:column;
+  gap:0.2rem;
+}
+
+.termcard__progress{
+  font-size:0.9rem;
+  font-weight:600;
+  opacity:0.85;
+}
 
 
 
