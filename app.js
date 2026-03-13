@@ -943,7 +943,7 @@ function setupWeek({
   let promptedBlend = false;
   let seenLastLetter = false;
   let seenLastWord = false;
-  let didComplete = !!(weekKey && isCompleted(weekKey));
+  let didComplete = false;
 
   function maybeComplete(){
     if (!weekKey || didComplete) return;
@@ -1193,14 +1193,21 @@ function setupWeek({
       promptedBlend = false;
       seenLastLetter = false;
       seenLastWord = false;
-      didComplete = !!(weekKey && isCompleted(weekKey));
+      didComplete = false;
 
       activate('letters');
     },
 
     initBlend(){
+      ACTIVE_WEEK_KEY = weekKey || null;
+
       lIdx = 0;
       wIdx = 0;
+      promptedBlend = false;
+      seenLastLetter = false;
+      seenLastWord = false;
+      didComplete = false;
+
       activate('blend');
     },
   };
@@ -1246,8 +1253,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   safeOn('#celebrateReplay', 'click', ()=>{
     if (ACTIVE_WEEK_KEY) {
-      show('home');
-      setTimeout(()=>goToWeekByKey(ACTIVE_WEEK_KEY), 0);
+      const ok = goToWeekByKey(ACTIVE_WEEK_KEY);
+      if (!ok) {
+        show('home');
+        showToast("Unable to reopen this week");
+      }
     } else {
       show('home');
     }
