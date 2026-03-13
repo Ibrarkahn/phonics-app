@@ -135,6 +135,12 @@ const WEEK_BUTTONS = {
   L6W5: '#btn-su2w5',
 };
 
+const TERM_GROUPS = {
+  autumn: ['L1W1','L1W2','L1W3','L1W4','L1W5','L2W1','L2W2','L2W3','L2W4','L2W5'],
+  spring: ['L3W1','L3W2','L3W3','L3W4','L3W5','L4W1','L4W2','L4W3','L4W4'],
+  summer: ['L5W1','L5W2','L5W3','L5W4','L6W1','L6W2','L6W3','L6W4','L6W5'],
+};
+
 function setWeekButtonLockVisual(btn, isLocked){
   if (!btn) return;
 
@@ -157,10 +163,12 @@ function updateHomeLocks(){
   if (firstIncompleteIdx === -1) firstIncompleteIdx = WEEK_ORDER.length - 1;
 
   const unlocked = new Set();
+
   if (unlockAll){
     WEEK_ORDER.forEach(k => unlocked.add(k));
-  }else{
+  } else {
     WEEK_ORDER.forEach((k, i) => {
+      if (i === 0) unlocked.add(k);
       if (i <= firstIncompleteIdx) unlocked.add(k);
       if (completed.has(k)) unlocked.add(k);
     });
@@ -189,7 +197,6 @@ function updateHomeLocks(){
     }
   }
 
-  // Visible homepage proxy buttons
   document.querySelectorAll('.proxy-btn[data-week-key]').forEach(btn => {
     const key = btn.getAttribute('data-week-key');
     if (!key) return;
@@ -206,6 +213,7 @@ function updateHomeLocks(){
       : isLocked
         ? `${baseLabel}<span class="week-lock">🔒</span>`
         : baseLabel;
+
     btn.disabled = false;
     btn.setAttribute('aria-disabled', 'false');
   });
@@ -945,11 +953,12 @@ function setupWeek({
   let seenLastWord = false;
   let didComplete = false;
 
+  const hasWords = Array.isArray(words) && words.length > 0;
+
   function maybeComplete(){
     if (!weekKey || didComplete) return;
 
-    const needsWords = Array.isArray(words) && words.length > 0;
-    const completeNow = needsWords ? (seenLastLetter && seenLastWord) : seenLastLetter;
+    const completeNow = hasWords ? (seenLastLetter && seenLastWord) : seenLastLetter;
 
     if (completeNow){
       didComplete = true;
@@ -957,21 +966,37 @@ function setupWeek({
       showToast("⭐ Week completed!");
 
       try{
-        if (window.confetti) window.confetti({ particleCount: 140, spread: 75, origin: { y: 0.7 } });
+        if (window.confetti) {
+          window.confetti({ particleCount: 140, spread: 75, origin: { y: 0.7 } });
+        }
       }catch(e){}
 
       updateHomeLocks();
 
-      const letterList = (letters || []).slice();
-      const extraMsg = needsWords ? `Blending words complete ✅` : "";
-
       showCelebration({
         title: "Week complete!",
-        practised: letterList,
-        extra: extraMsg,
+        practised: (letters || []).slice(),
+        extra: hasWords ? "Blending words complete ✅" : "",
         weekKey
       });
     }
+  }
+
+  function showBlendPrompt(){
+    if (!hasWords || promptedBlend) return;
+
+    promptedBlend = true;
+    seenLastLetter = true;
+
+    setOverlay(
+      true,
+      "Great job!",
+      "Ready to try blending words?",
+      "Start blending",
+      "Not now",
+      () => activate('blend'),
+      () => {}
+    );
   }
 
   const tabLetters = qs(`#tabLetters${prefix}`);
@@ -1009,55 +1034,37 @@ function setupWeek({
     if (bigWord) bigWord.textContent = words[wIdx] ?? '';
   }
 
-  function handleLetterPlayed(){
+  function handleLetterPlayed(){}
+
+  function handleWordPlayed(){}
+
+  function nextL(){
     if (!letters.length) return;
 
-    if (lIdx === letters.length - 1){
-      seenLastLetter = true;
-
-      const hasWords = Array.isArray(words) && words.length > 0;
-
-      if (hasWords && !didComplete && !promptedBlend){
-        promptedBlend = true;
-
-        setOverlay(
-          true,
-          "Great job!",
-          "Ready to try blending words?",
-          "Start blending",
-          "Not now",
-          () => activate('blend'),
-          () => {}
-        );
-      }
-
-      if (!hasWords){
-        maybeComplete();
-      }
+    if (lIdx < letters.length - 1){
+      lIdx++;
+      renderLetterLocal();
+      playSoundFor(letters[lIdx], 'auto', handleLetterPlayed);
+      return;
     }
-  }
 
-  function handleWordPlayed(){
-    if (!Array.isArray(words) || !words.length) return;
+    seenLastLetter = true;
 
-    if (wIdx === words.length - 1){
-      seenLastWord = true;
+    if (hasWords){
+      showBlendPrompt();
+    } else {
       maybeComplete();
     }
   }
 
-  function nextL(){
-    if (!letters.length) return;
-    lIdx = (lIdx + 1) % letters.length;
-    renderLetterLocal();
-    playSoundFor(letters[lIdx], 'auto', handleLetterPlayed);
-  }
-
   function prevL(){
     if (!letters.length) return;
-    lIdx = (lIdx - 1 + letters.length) % letters.length;
-    renderLetterLocal();
-    playSoundFor(letters[lIdx], 'auto', handleLetterPlayed);
+
+    if (lIdx > 0){
+      lIdx--;
+      renderLetterLocal();
+      playSoundFor(letters[lIdx], 'auto', handleLetterPlayed);
+    }
   }
 
   if (letterArea){
@@ -1091,20 +1098,30 @@ function setupWeek({
   }
 
   if (prevBtn) prevBtn.addEventListener('click', prevL);
-  if (nextBtn) nextBtn.addEventListener('click', nextL);
+  if (nextBtn) prevBtn !== nextBtn && nextBtn.addEventListener('click', nextL);
 
   function nextW(){
     if (!words.length) return;
-    wIdx = (wIdx + 1) % words.length;
-    renderWord();
-    playBlend(words[wIdx], handleWordPlayed);
+
+    if (wIdx < words.length - 1){
+      wIdx++;
+      renderWord();
+      playBlend(words[wIdx], handleWordPlayed);
+      return;
+    }
+
+    seenLastWord = true;
+    maybeComplete();
   }
 
   function prevW(){
     if (!words.length) return;
-    wIdx = (wIdx - 1 + words.length) % words.length;
-    renderWord();
-    playBlend(words[wIdx], handleWordPlayed);
+
+    if (wIdx > 0){
+      wIdx--;
+      renderWord();
+      playBlend(words[wIdx], handleWordPlayed);
+    }
   }
 
   if (blendArea){
@@ -1204,7 +1221,7 @@ function setupWeek({
       lIdx = 0;
       wIdx = 0;
       promptedBlend = false;
-      seenLastLetter = false;
+      seenLastLetter = true;
       seenLastWord = false;
       didComplete = false;
 
