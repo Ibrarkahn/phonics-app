@@ -680,6 +680,7 @@ body{
   object-fit:cover;
   object-position:top center;
   display:block;
+  transform:scale(1.06);
 }
 
 /* Optional fade-out animation */
